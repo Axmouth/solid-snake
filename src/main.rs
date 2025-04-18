@@ -267,12 +267,29 @@ Halt
     let mut vm = VmInterpretedExecutor::new();
 
     let bytecode = asm! {
-        LoadImmediateI64, R1, 123;
+        LoadImmediateI64, R1, (-123);
         LoadImmediateI64, R2, 456;
         AddI64, R3, R1, R2;
         DebugPrintI64, R3;
         Halt;
     };
+    vm.execute_bytecode(&bytecode).unwrap();
+
+    let bytecode = asm!(
+        LoadImmediateI64, R1, (-42);
+        LoadImmediateI64, R2, 100;
+        AddI64, R3, R1, R2;
+        DebugPrintI64, R3;
+        Halt;
+    );
+    vm.execute_bytecode(&bytecode).unwrap();
+    let bytecode = asm!(
+        LoadImmediateI64, R1, (-123);
+        LoadImmediateI64, R2, 999;
+        AddI64, R3, R1, R2;
+        DebugPrintI64, R3;
+        Halt;
+    );
     
     vm.execute_bytecode(&bytecode).unwrap();
 

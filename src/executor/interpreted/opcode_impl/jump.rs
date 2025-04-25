@@ -8,7 +8,7 @@ use crate::{
             implimentation::{RegisterFileExt, VmInterpretedExecutor},
             opcode_decoder::RegisterType,
         },
-    },
+    }, R,
 };
 
 define_instruction!(Jump, (u64), jump);
@@ -66,4 +66,87 @@ pub fn jumpiffalse(
     }
 
     Ok(())
+}
+
+#[test]
+fn jump_unconditional() {
+    use crate::executor::interpreted::opcode_impl::all::*;
+
+    crate::asm_internal::VmProgramTest::new()
+        .with_program(vec![
+            JumpInstruction::encode((14u64,)), // Jump forward to Halt
+            IncrementU8Instruction::encode((R!(0), 1u8)), // <-- skipped
+            HaltInstruction::encode(()),
+        ])
+        .expect_pc(14)
+        .expect_register(R!(0), 0u8)
+        .run();
+}
+
+#[test]
+fn jump_if_not_taken() {
+    use crate::executor::interpreted::opcode_impl::all::*;
+
+    crate::asm_internal::VmProgramTest::new()
+        .setup_register(0u8, R!(0)) // false
+        .setup_register(0u8, R!(1))
+        .with_program(vec![
+            JumpIfInstruction::encode((64u64, R!(0))), // No jump
+            IncrementU8Instruction::encode((R!(1), 1u8)), // executed
+            HaltInstruction::encode(()),
+        ])
+        .expect_pc(15) // JumpIf + Incr
+        .expect_register(R!(1), 1u8)
+        .run();
+}
+
+#[test]
+fn jump_if_taken() {
+    use crate::executor::interpreted::opcode_impl::all::*;
+
+    crate::asm_internal::VmProgramTest::new()
+        .setup_register(1u8, R!(0)) // true
+        .setup_register(0u8, R!(1))
+        .with_program(vec![
+            JumpIfInstruction::encode((15u64, R!(0))), // No jump
+            IncrementU8Instruction::encode((R!(1), 1u8)), // skipped
+            HaltInstruction::encode(()),
+        ])
+        .expect_pc(15) // JumpIf + Incr
+        .expect_register(R!(1), 0u8)
+        .run();
+}
+
+#[test]
+fn jump_if_false_not_taken() {
+    use crate::executor::interpreted::opcode_impl::all::*;
+
+    crate::asm_internal::VmProgramTest::new()
+        .setup_register(1u8, R!(0)) // true
+        .setup_register(0u8, R!(1))
+        .with_program(vec![
+            JumpIfFalseInstruction::encode((64u64, R!(0))), // No jump
+            IncrementU8Instruction::encode((R!(1), 1u8)), // executed
+            HaltInstruction::encode(()),
+        ])
+        .expect_pc(15) // JumpIf + Incr
+        .expect_register(R!(1), 1u8)
+        .run();
+}
+
+#[test]
+fn jump_if_false_taken() {
+    use crate::executor::interpreted::opcode_impl::all::*;
+
+    crate::asm_internal::VmProgramTest::new()
+        .setup_register(0u8, R!(0)) // false
+        .setup_register(0u8, R!(1))
+        .with_program(vec![
+            JumpIfFalseInstruction::encode((15u64, R!(0))), // No jump
+            IncrementU8Instruction::encode((R!(1), 1u8)), // skipped
+            HaltInstruction::encode(()),
+        ])
+        .expect_pc(15) // JumpIf + Incr
+        .expect_register(R!(1), 0u8)
+        .run();
 }

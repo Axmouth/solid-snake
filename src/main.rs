@@ -24,7 +24,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Solid Snake starting..");
 
-    vm_tests();
+    // vm_tests();
 
     let fib_n = 80;
     let iter_n = 1000;
@@ -283,6 +283,7 @@ Halt
         Halt;
     );
     vm.execute_bytecode(&bytecode).unwrap();
+
     let bytecode = asm!(
         LoadImmediateI64, R1, (-123);
         LoadImmediateI64, R2, 999;
@@ -292,6 +293,8 @@ Halt
     );
     
     vm.execute_bytecode(&bytecode).unwrap();
+    
+    let bytecode = asm_!(LoadImmediateI64 R1, -123);
 
     _lined_code
         .iter()

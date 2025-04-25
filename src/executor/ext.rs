@@ -27,5 +27,5 @@ impl fmt::Display for VmExecutionError {
 
 pub trait VmExecutorExt {
     fn execute_bytecode(&mut self, bytecode: &[u8]) -> Result<(), VmExecutionError>;
-    fn set_error(&mut self, error_code: u64);
+    fn set_error(&mut self, error_code: i64);
 }

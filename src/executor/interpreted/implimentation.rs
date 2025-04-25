@@ -7,7 +7,7 @@ use crate::executor::interpreted::opcode_decoder::{
 };
 use crate::opcodes::OpCode;
 
-use super::opcode_decoder::RegisterType;
+use super::opcode_decoder::{ParseHandler, RegisterType, RegisterValue};
 pub trait VmMemorySectionExt {
     fn is_empty(&self) -> bool;
     fn len(&self) -> usize;
@@ -181,7 +181,7 @@ impl VmHeapExt for VmHeap {
     }
 }
 
-pub trait RegisterFileExt<T, R: Into<usize>> {
+pub trait RegisterFileExt<T: RegisterValue, R: Into<usize>> {
     fn get_register_value(&self, idx: R) -> Result<T, VmExecutionError>;
     fn set_register_value(&mut self, idx: R, value: T) -> Result<(), VmExecutionError>;
 }
@@ -191,67 +191,70 @@ pub struct RegisterFile {
     pub raw: [u64; 128],
 }
 
+pub const MAX_REGISTERS: usize = 128;
+
 impl RegisterFile {
     pub fn new() -> Self {
-        Self { raw: [0u64; 128] }
+        Self { raw: [0u64; MAX_REGISTERS] }
     }
 }
 
-macro_rules! impl_register_file_ext {
+macro_rules! impl_register_value_ext {
     ($t:ty) => {
-        impl<R: Into<usize>> RegisterFileExt<$t, R> for RegisterFile {
-            fn get_register_value(&self, idx: R) -> Result<$t, VmExecutionError> {
-                let idx: usize = idx.into();
-                assert!(self.raw.len() > idx);
-                Ok(self.raw[idx] as $t)
+        impl RegisterValue for $t {
+            fn to_u64(&self) -> u64 {
+                *self as u64
             }
-
-            fn set_register_value(&mut self, idx: R, value: $t) -> Result<(), VmExecutionError> {
-                let idx: usize = idx.into();
-                assert!(self.raw.len() > idx);
-                self.raw[idx] = value as u64;
-                Ok(())
+            
+            fn from_u64(val: u64) -> Self {
+                val as $t
             }
         }
     };
 }
 
-impl_register_file_ext!(u8);
-impl_register_file_ext!(u16);
-impl_register_file_ext!(u32);
-impl_register_file_ext!(u64);
-impl_register_file_ext!(i8);
-impl_register_file_ext!(i16);
-impl_register_file_ext!(i32);
-impl_register_file_ext!(i64);
+impl_register_value_ext!(u8);
+impl_register_value_ext!(u16);
+impl_register_value_ext!(u32);
+impl_register_value_ext!(u64);
+impl_register_value_ext!(i8);
+impl_register_value_ext!(i16);
+impl_register_value_ext!(i32);
+impl_register_value_ext!(i64);
 
-impl<R: Into<usize>> RegisterFileExt<f64, R> for RegisterFile {
-    fn get_register_value(&self, idx: R) -> Result<f64, VmExecutionError> {
+
+impl<T: RegisterValue, R: Into<usize>> RegisterFileExt<T, R> for RegisterFile {
+    fn get_register_value(&self, idx: R) -> Result<T, VmExecutionError> {
         let idx: usize = idx.into();
         assert!(self.raw.len() > idx);
-        Ok(f64::from_bits(self.raw[idx]))
+        Ok(RegisterValue::from_u64(self.raw[idx]))
     }
 
-    fn set_register_value(&mut self, idx: R, value: f64) -> Result<(), VmExecutionError> {
+    fn set_register_value(&mut self, idx: R, value: T) -> Result<(), VmExecutionError> {
         let idx: usize = idx.into();
         assert!(self.raw.len() > idx);
-        self.raw[idx] = value.to_bits();
+        self.raw[idx] = value.to_u64();
         Ok(())
     }
 }
 
-impl<R: Into<usize>> RegisterFileExt<f32, R> for RegisterFile {
-    fn get_register_value(&self, idx: R) -> Result<f32, VmExecutionError> {
-        let idx: usize = idx.into();
-        assert!(self.raw.len() > idx);
-        Ok(f32::from_bits(self.raw[idx] as u32))
+impl RegisterValue for f32 {
+    fn to_u64(&self) -> u64 {
+        self.to_bits() as u64
     }
+            
+    fn from_u64(val: u64) -> Self {
+        f32::from_bits(val as u32)
+    }
+}
 
-    fn set_register_value(&mut self, idx: R, value: f32) -> Result<(), VmExecutionError> {
-        let idx: usize = idx.into();
-        assert!(self.raw.len() > idx);
-        self.raw[idx] = value.to_bits() as u64;
-        Ok(())
+impl RegisterValue for f64 {
+    fn to_u64(&self) -> u64 {
+        self.to_bits()
+    }
+            
+    fn from_u64(val: u64) -> Self {
+        f64::from_bits(val as u64)
     }
 }
 
@@ -281,10 +284,10 @@ impl CallFrame {
 pub struct VmInterpretedExecutor {
     pub frame_stack: Vec<CallFrame>,
     pub stack_top: usize,
-    pub error_code: u64,
+    pub error_code: i64,
     program_counter: usize,
     heap: VmHeap,
-    dispatch_table: Vec<(OpcodeHandler, usize)>,
+    dispatch_table: Vec<(OpcodeHandler, ParseHandler, usize)>,
 }
 
 impl VmInterpretedExecutor {
@@ -343,7 +346,7 @@ impl VmExecutorExt for VmInterpretedExecutor {
             self.program_counter += 2;
             // Lookup the function in the dispatch table and execute it
             assert!((opcode as usize) < self.dispatch_table.len());
-            let (exec, look_ahead_bytes) = self.dispatch_table[opcode as usize];
+            let (exec, _, look_ahead_bytes) = self.dispatch_table[opcode as usize];
             let look_ahead_counter = self.program_counter + look_ahead_bytes;
             let look_ahead = &bytecode[self.program_counter..look_ahead_counter];
             // TODO Better error handling in case untrue, or assert
@@ -352,7 +355,7 @@ impl VmExecutorExt for VmInterpretedExecutor {
         }
     }
 
-    fn set_error(&mut self, error_code: u64) {
+    fn set_error(&mut self, error_code: i64) {
         self.error_code = error_code
     }
 }

@@ -39,7 +39,7 @@ macro_rules! impl_incr_instruction {
                         executor
                             .registers_mut()
                             .set_register_value(dest, val.wrapping_sub(incr_val))?;
-                        executor.set_error(VmErrorCode::Overflow as u64);
+                        executor.set_error(VmErrorCode::Overflow as i64);
                     }
                 }
 
@@ -85,7 +85,7 @@ macro_rules! impl_incr_float_instruction {
             let result: $ty = val - incr_val;
 
             if result.is_nan() || result.is_infinite() {
-                executor.set_error(VmErrorCode::FloatInvalidResult as u64);
+                executor.set_error(VmErrorCode::FloatInvalidResult as i64);
             }
 
             executor

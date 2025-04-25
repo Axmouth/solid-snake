@@ -4,6 +4,7 @@ use paste::paste;
 use crate::executor::ext::{VmExecutionError, VmExecutorExt};
 use crate::executor::interpreted::implimentation::{RegisterFileExt, VmInterpretedExecutor};
 use crate::executor::interpreted::opcode_decoder::{RegisterType, VmErrorCode};
+use crate::{asm_, define_vm_tests, R};
 
 macro_rules! impl_add_instruction {
     ($opcode:ident, $ty:ty) => {
@@ -41,7 +42,7 @@ macro_rules! impl_add_instruction {
                         executor
                             .registers_mut()
                             .set_register_value(dest, val1.wrapping_add(val2))?;
-                        executor.set_error(VmErrorCode::Overflow as u64);
+                        executor.set_error(VmErrorCode::Overflow as i64);
                     }
                 }
 
@@ -89,7 +90,7 @@ macro_rules! impl_add_float_instruction {
             let result: $ty = val1 + val2;
 
             if result.is_nan() || result.is_infinite() {
-                executor.set_error(VmErrorCode::FloatInvalidResult as u64);
+                executor.set_error(VmErrorCode::FloatInvalidResult as i64);
             }
 
             executor
@@ -104,3 +105,146 @@ macro_rules! impl_add_float_instruction {
 impl_add_float_instruction!(AddF32, f32);
 impl_add_float_instruction!(AddF64, f64);
 
+define_vm_tests!(
+    add_zero,
+    [(AddU8, u8), (AddU16, u16), (AddU32, u32), (AddU64, u64), (AddI8, i8), (AddI16, i16),(AddI32, i32),(AddI64, i64), (AddF32, f32), (AddF64, f64)],
+    VmTest::new()
+        .setup(0 as T, R!(0))
+        .setup(20 as T, R!(1))
+        .expect(20 as T, R!(2)),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_small,
+    [(AddU8, u8), (AddU16, u16), (AddU32, u32), (AddU64, u64), (AddI8, i8), (AddI16, i16),(AddI32, i32),(AddI64, i64), (AddF32, f32), (AddF64, f64)],
+    VmTest::new()
+        .setup(10 as T, R!(0))
+        .setup(20 as T, R!(1))
+        .expect(30 as T, R!(2)),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_overflow,
+    [(AddU8, u8), (AddU16, u16), (AddU32, u32), (AddU64, u64), (AddI8, i8), (AddI16, i16),(AddI32, i32),(AddI64, i64)],
+    VmTest::new()
+        .setup(10 as T, R!(0))
+        .setup(T::MAX, R!(1))
+        .expect_error(VmErrorCode::Overflow),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_underflow,
+    [(AddI8, i8), (AddI16, i16),(AddI32, i32),(AddI64, i64)],
+    VmTest::new()
+        .setup(-10 as T, R!(0))
+        .setup(T::MIN, R!(1))
+        .expect_error(VmErrorCode::Overflow),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_overflow_f,
+    [(AddF32, f32), (AddF64, f64)],
+    VmTest::new()
+        .setup(T::MAX as T, R!(0))
+        .setup(T::MAX, R!(1))
+        .expect_error(VmErrorCode::FloatInvalidResult),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_nan_f,
+    [(AddF32, f32), (AddF64, f64)],
+    VmTest::new()
+        .setup(10 as T, R!(0))
+        .setup(T::NAN, R!(1))
+        .expect_error(VmErrorCode::FloatInvalidResult),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_inf_f,
+    [(AddF32, f32), (AddF64, f64)],
+    VmTest::new()
+        .setup(10 as T, R!(0))
+        .setup(T::INFINITY, R!(1))
+        .expect_error(VmErrorCode::FloatInvalidResult),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_same_registers,
+    [(AddU8, u8), (AddI8, i8), (AddF32, f32)],
+    VmTest::new()
+        .setup(10 as T, R!(0))
+        .expect(20 as T, R!(0)),
+    (R!(0), R!(0), R!(0))
+);
+
+define_vm_tests!(
+    add_aliasing_output_input1,
+    [(AddU8, u8), (AddI8, i8), (AddF32, f32)],
+    VmTest::new()
+        .setup(15 as T, R!(0))
+        .setup(5 as T, R!(1))
+        .expect(20 as T, R!(0)),
+    (R!(0), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_aliasing_output_input2,
+    [(AddU8, u8), (AddI8, i8), (AddF32, f32)],
+    VmTest::new()
+        .setup(5 as T, R!(0))
+        .setup(15 as T, R!(1))
+        .expect(20 as T, R!(0)),
+    (R!(0), R!(1), R!(0))
+);
+
+define_vm_tests!(
+    add_neg_pos_zero,
+    [(AddI8, i8), (AddI16, i16), (AddI32, i32), (AddI64, i64)],
+    VmTest::new()
+        .setup(-5 as T, R!(0))
+        .setup(5 as T, R!(1))
+        .expect(0 as T, R!(2)),
+    (R!(2), R!(0), R!(1))
+);
+define_vm_tests!(
+    add_min_plus_min,
+    [(AddI8, i8), (AddI16, i16), (AddI32, i32), (AddI64, i64)],
+    VmTest::new()
+        .setup(T::MIN, R!(0))
+        .setup(T::MIN, R!(1))
+        .expect_error(VmErrorCode::Overflow),
+    (R!(2), R!(0), R!(1))
+);
+
+define_vm_tests!(
+    add_mixed_bits,
+    [(AddU8, u8)],
+    VmTest::new()
+        .setup(0b10101010 as T, R!(0))
+        .setup(0b01010101 as T, R!(1))
+        .expect(0b11111111 as T, R!(2)),
+    (R!(2), R!(0), R!(1))
+);
+
+
+#[test]
+fn add_pc() {
+    use crate::executor::interpreted::opcode_impl::all::*;
+    crate::asm_internal::VmProgramTest::new()
+    .setup_register(10, R!(0))
+    .setup_register(20, R!(1))
+    .with_program(vec![
+        AddU16Instruction::encode((R!(2), R!(0), R!(1))),
+        HaltInstruction::encode(()),
+    ])
+    .expect_register(R!(2), 30)
+    .expect_pc(5) // 2 + 3 bytes: opcode + three register args
+    .run();
+}

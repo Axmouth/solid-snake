@@ -91,7 +91,8 @@ pub fn parse_byte_code_from_txt(code: &str) -> (Vec<u8>, Vec<(String, usize)>) {
 
         let opcode =
             OpCode::from_str(opcode_str).unwrap_or_else(|_| panic!("Wrong opcode {opcode_str}"));
-        byte_count += size_of::<u16>() + dispatch_table[opcode as usize].1;
+        let (op_instr, parse_handler, opcode_size) = dispatch_table[opcode as usize];
+        byte_count += size_of::<u16>() + opcode_size;
 
         if (opcode_str.starts_with("Jump") || opcode_str.starts_with("CallFunction"))
             && labels.contains((tokens[1].to_string() + ":").as_str())
@@ -148,44 +149,9 @@ pub fn parse_byte_code_from_txt(code: &str) -> (Vec<u8>, Vec<(String, usize)>) {
 
         tokens = tokens[1..].to_vec();
 
-        // TODO: work with hex
-        // TODO: handle cases where the type is not shown by the instruction, like memory handling
-        let num_encoder = |unparsed: &str| {
-            if opcode_str.ends_with("I8") {
-                parse_int_with_radix::<i8>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("I16") {
-                parse_int_with_radix::<i16>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("I32") {
-                parse_int_with_radix::<i32>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("I64") {
-                parse_int_with_radix::<i64>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("U8") {
-                parse_int_with_radix::<u8>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("U16") {
-                parse_int_with_radix::<u16>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("U32") {
-                parse_int_with_radix::<u32>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("U64") {
-                parse_int_with_radix::<u64>(unparsed).to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("F32") {
-                f32::from_str(unparsed).unwrap().to_be_bytes().to_vec()
-            } else if opcode_str.ends_with("F64") {
-                f64::from_str(unparsed).unwrap().to_be_bytes().to_vec()
-            } else {
-                panic!("Unhandled: {}", opcode_str);
-            }
-        };
-
         let mut byte_code = Vec::new();
         byte_code.extend_from_slice(&(opcode as u16).to_be_bytes());
-        for token in tokens {
-            if let Some(stripped) = token.strip_prefix('R') {
-                let reg_num = u8::from_str(stripped).unwrap();
-                byte_code.extend_from_slice(&reg_num.to_be_bytes());
-            } else {
-                byte_code.extend_from_slice(&num_encoder(token))
-            }
-        }
+        byte_code.extend_from_slice(&parse_handler(&tokens).unwrap());
 
         first_pass.push((ProcessedLinePassOne::Compiled(byte_code), line_idx));
     }

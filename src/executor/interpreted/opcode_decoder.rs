@@ -1,6 +1,8 @@
+use std::str::FromStr;
+
 use paste::paste;
 
-use crate::executor::{ext::VmExecutionError, interpreted::implimentation::VmInterpretedExecutor};
+use crate::executor::{ext::VmExecutionError, interpreted::implimentation::{MAX_REGISTERS, VmInterpretedExecutor}};
 use crate::opcodes::OpCode;
 
 pub const MAX_OPCODES: usize = 65536;
@@ -8,6 +10,32 @@ pub const MAX_OPCODES: usize = 65536;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct RegisterType(u8);
 pub const SIZE_OF_REGISTER: usize = size_of::<RegisterType>();
+
+#[derive(Debug)]
+pub enum VmParseError {
+    InvalidRegister(String),
+    InvalidArgument(String),
+    UnknownInstruction(String),
+    WrongArgumentCount { expected: usize, got: usize },
+}
+
+impl FromStr for RegisterType {
+    type Err = VmParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if let Some(stripped) = s.strip_prefix('R') {
+            let idx = stripped.parse::<u8>()
+                .map_err(|_| VmParseError::InvalidRegister(s.to_string()))?;
+            if (idx as usize) >= MAX_REGISTERS {
+                return Err(VmParseError::InvalidRegister(format!("Register index {} out of range", idx)));
+            }
+            Ok(RegisterType::from(idx))
+        } else {
+            Err(VmParseError::InvalidRegister(s.to_string()))
+        }
+    }
+}
+
 
 impl From<u8> for RegisterType {
     fn from(value: u8) -> Self {
@@ -59,6 +87,115 @@ impl ToBytes for RegisterType {
     }
 }
 
+pub trait RegisterValue {
+    fn to_u64(&self) -> u64;
+
+    fn from_u64(val: u64) -> Self;
+}
+
+pub trait VmParse: Sized {
+    fn parse_vm(s: &str) -> Result<Self, VmParseError>;
+}
+
+macro_rules! impl_vm_parse_for_ints {
+    ($($ty:ty),*) => {
+        $(
+            impl VmParse for $ty {
+                fn parse_vm(s: &str) -> Result<Self, VmParseError> {
+                    if let Some(stripped) = s.strip_prefix("0x") {
+                        <$ty>::from_str_radix(stripped, 16)
+                    } else if let Some(stripped) = s.strip_prefix("0b") {
+                        <$ty>::from_str_radix(stripped, 2)
+                    } else if let Some(stripped) = s.strip_prefix("0o") {
+                        <$ty>::from_str_radix(stripped, 8)
+                    } else {
+                        s.parse::<$ty>()
+                    }
+                    .map_err(|_| VmParseError::InvalidArgument(s.to_string()))
+                }
+            }
+        )*
+    };
+}
+
+impl_vm_parse_for_ints!(
+    u8, u16, u32, u64,
+    i8, i16, i32, i64
+);
+
+macro_rules! impl_vm_parse_for_floats {
+    ($($ty:ty),*) => {
+        $(
+            impl VmParse for $ty {
+                fn parse_vm(s: &str) -> Result<Self, VmParseError> {
+                    s.parse::<$ty>()
+                        .map_err(|_| VmParseError::InvalidArgument(s.to_string()))
+                }
+            }
+        )*
+    };
+}
+
+impl_vm_parse_for_floats!(f32, f64);
+
+impl VmParse for RegisterType {
+    fn parse_vm(s: &str) -> Result<Self, VmParseError> {
+        s.parse()
+    }
+}
+
+pub trait InstructionArgsFromStr: Sized {
+    fn parse_from_strs(strs: &[&str]) -> Result<Self, VmParseError>;
+    fn encode_from_strs(strs: &[&str]) -> Result<Vec<u8>, VmParseError>;
+}
+
+macro_rules! count_args {
+    () => { 0 };
+    ($name:ident) => { 1 };
+    ($first:ident, $($rest:ident),*) => {
+        1 + count_args!($($rest),*)
+    }
+}
+
+macro_rules! impl_instruction_args_from_str {
+    () => {
+        impl InstructionArgsFromStr for () {
+            fn parse_from_strs(_strs: &[&str]) -> Result<Self, VmParseError> {
+                Ok(())
+            }
+            
+            fn encode_from_strs(_: &[&str]) -> Result<Vec<u8>, VmParseError> {
+                Ok(vec![])
+            }
+        }
+    };
+    ($($T:ident),*) => {
+        impl<$($T),*> InstructionArgsFromStr for ($($T,)*)
+        where
+            $($T: VmParse + FromBytes + ToBytes),*
+        {
+            fn parse_from_strs(args: &[&str]) -> Result<Self, VmParseError> {
+                match args {
+                    [$($T),*] => Ok(($($T::parse_vm($T)?,)*)),
+                    _ => Err(VmParseError::WrongArgumentCount { expected: count_args!($($T),*), got: args.len() }),
+                }
+            }
+            
+            fn encode_from_strs(strs: &[&str]) -> Result<Vec<u8>, VmParseError> {
+                Ok(Self::encode(Self::parse_from_strs(strs)?))
+            }
+        }
+    };
+}
+
+impl_instruction_args_from_str!();
+impl_instruction_args_from_str!(Arg1);
+impl_instruction_args_from_str!(Arg1, Arg2);
+impl_instruction_args_from_str!(Arg1, Arg2, Arg3);
+impl_instruction_args_from_str!(Arg1, Arg2, Arg3, Arg4);
+impl_instruction_args_from_str!(Arg1, Arg2, Arg3, Arg4, Arg5);
+
+
 fn invalidop(_: &mut VmInterpretedExecutor, _: &[u8]) -> Result<(), VmExecutionError> {
     Err(VmExecutionError::InvalidOpCode)
 }
@@ -66,16 +203,16 @@ fn invalidop(_: &mut VmInterpretedExecutor, _: &[u8]) -> Result<(), VmExecutionE
 macro_rules! add_instr {
     ($table:ident, $name:ident) => {
         paste!{
-            $table[OpCode::$name as usize] = ([<$name Instruction>]::handler, [<$name Instruction>]::arg_size());
+            $table[OpCode::$name as usize] = ([<$name Instruction>]::handler, <[<$name Args>] as InstructionArgsFromStr>::encode_from_strs, [<$name Instruction>]::arg_size());
         }
     }
 }
 
-pub fn initialize_dispatch_table() -> Vec<(OpcodeHandler, usize)> {
-    let mut dispatch_table: Vec<(OpcodeHandler, usize)> = Vec::new();
-    dispatch_table.resize(MAX_OPCODES, (invalidop, 0));
+pub fn initialize_dispatch_table() -> Vec<(OpcodeHandler, ParseHandler, usize)> {
+    let mut dispatch_table: Vec<(OpcodeHandler, ParseHandler, usize)> = Vec::new();
+    dispatch_table.resize(MAX_OPCODES, (invalidop, <()>::encode_from_strs, 0));
 
-    // Example: Assign function pointers for specific opcodes
+    // Assign function pointers for specific opcodes
     // Add other opcode handlers as needed
     use crate::executor::interpreted::opcode_impl::add::*;
     add_instr!(dispatch_table, AddI8);
@@ -264,6 +401,9 @@ pub fn initialize_dispatch_table() -> Vec<(OpcodeHandler, usize)> {
 pub type OpcodeHandler =
     fn(&mut VmInterpretedExecutor, look_ahead: &[u8]) -> Result<(), VmExecutionError>;
 
+pub type ParseHandler =
+    fn(strs: &[&str]) -> Result<Vec<u8>, VmParseError>;
+
 pub struct OpCodeDecoder {}
 
 pub trait FromBytes: Sized {
@@ -330,7 +470,7 @@ pub trait InstructionArgs: Sized {
         size_of::<u16>() + Self::arg_size()
     }
     fn parse_args(bytes: &[u8]) -> Self;
-    fn encode(&self) -> Vec<u8>;
+    fn encode(self) -> Vec<u8>;
 }
 
 #[macro_export]
@@ -360,7 +500,7 @@ macro_rules! define_instruction {
             }
 
             #[inline]
-            pub fn encode(args: & [<$name Args>]) -> Vec<u8> {
+            pub fn encode(args: [<$name Args>]) -> Vec<u8> {
                 let mut result = Vec::with_capacity(2 + Self::arg_size()); // 2 bytes for opcode
                 result.extend_from_slice(&(Self::OPCODE as u16).to_be_bytes());
                 result.extend_from_slice(&$crate::executor::interpreted::opcode_decoder::InstructionArgs::encode(args));
@@ -384,7 +524,7 @@ macro_rules! impl_instruction_args {
         impl InstructionArgs for () {
             fn arg_size() -> usize { 0 }
             fn parse_args(_bytes: &[u8]) -> Self {  }
-            fn encode(&self) -> Vec<u8> { Vec::new() }
+            fn encode(self) -> Vec<u8> { Vec::new() }
         }
     };
     // Non-empty tuples
@@ -411,12 +551,12 @@ macro_rules! impl_instruction_args {
                 )
             }
 
-            fn encode(&self) -> Vec<u8> {
+            fn encode(self) -> Vec<u8> {
                 let mut bytes = Vec::new();
                 let ($($arg),+,) = self;
 
                 $(
-                    bytes.extend(ToBytes::to_be_bytes($arg));
+                    bytes.extend(ToBytes::to_be_bytes(& $arg));
                 )+
 
                 bytes
@@ -433,7 +573,27 @@ impl_instruction_args!(Arg1, Arg2, Arg3);
 impl_instruction_args!(Arg1, Arg2, Arg3, Arg4);
 impl_instruction_args!(Arg1, Arg2, Arg3, Arg4, Arg5);
 
-#[repr(u64)]
+#[macro_export]
+macro_rules! define_vm_tests {
+    ($name:ident, [$(($instr:ident, $ty:ty)),+], $body:expr, $args:expr) => {
+        paste::paste! {
+            $(
+                #[test]
+                fn [<$instr:lower _ $name>]() {
+                    use $crate::OpCode;
+                    use $crate::asm_internal::VmTest;
+                    type T = $ty;
+                    let mut bc = [<$instr Instruction>]::encode($args);
+                    bc.extend_from_slice(&mut (OpCode::Halt as u16).to_be_bytes());
+                    $body.run(bc)
+                }
+            )+
+        }
+    };
+}
+
+#[repr(i64)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum VmErrorCode {
     None = 0,
     Overflow = 1,

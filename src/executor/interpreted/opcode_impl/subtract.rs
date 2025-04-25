@@ -41,7 +41,7 @@ macro_rules! impl_subtract_instruction {
                         executor
                             .registers_mut()
                             .set_register_value(dest, val1.wrapping_sub(val2))?;
-                        executor.set_error(VmErrorCode::Underflow as u64);
+                        executor.set_error(VmErrorCode::Underflow as i64);
                     }
                 }
 
@@ -89,7 +89,7 @@ macro_rules! impl_subtract_float_instruction {
             let result: $ty = val1 - val2;
 
             if result.is_nan() || result.is_infinite() {
-                executor.set_error(VmErrorCode::FloatInvalidResult as u64);
+                executor.set_error(VmErrorCode::FloatInvalidResult as i64);
             }
 
             executor

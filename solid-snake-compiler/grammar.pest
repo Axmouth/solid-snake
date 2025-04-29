@@ -1,0 +1,17 @@
+WHITESPACE = _{ " " | "\t" }
+NEWLINE = _{ "\n" | "\r\n" | "\r" }
+COMMENT = _{ "#" ~ (!NEWLINE ~ ANY)* }
+
+program = { SOI ~ statement* ~ EOI }
+
+statement = { ((var_decl | assignment) ~ COMMENT? ~ NEWLINE) | NEWLINE }
+
+var_decl = { "let" ~ WHITESPACE+ ~ identifier }
+equals = { "=" }
+
+assignment = { identifier ~ WHITESPACE* ~ equals ~ WHITESPACE* ~ expr }
+
+expr = { number | identifier }
+
+number = @{ ASCII_DIGIT+ }
+identifier = @{ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }

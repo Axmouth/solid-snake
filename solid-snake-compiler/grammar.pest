@@ -1,17 +1,75 @@
+// Find a way to keep comments, for formatting
+COMMENT    = @{ "#" ~ (!NEWLINE ~ ANY)* }
+NEWLINE    = _{ "\n" | "\r\n" | "\r" }
 WHITESPACE = _{ " " | "\t" }
-NEWLINE = _{ "\n" | "\r\n" | "\r" }
-COMMENT = _{ "#" ~ (!NEWLINE ~ ANY)* }
+INDENT     =  { "<<INDENT>>" }
+DEDENT     =  { "<<DEDENT>>" }
 
-program = { SOI ~ statement* ~ EOI }
+Program = { SOI ~ Statement* ~ EOI }
 
-statement = { ((var_decl | assignment) ~ COMMENT? ~ NEWLINE) | NEWLINE }
+BlankLine = { NEWLINE }
 
-var_decl = { "let" ~ WHITESPACE+ ~ identifier }
-equals = { "=" }
+Statement = {
+    BlankLine
+  | (VarDecl | Assignment | IfStmt | WhileStmt | BreakStmt | ContinueStmt)
+}
 
-assignment = { identifier ~ WHITESPACE* ~ equals ~ WHITESPACE* ~ expr }
+WhileStmt    = { "while" ~ Expr ~ ":" ~ Block ~ NEWLINE? }
+BreakStmt    = { "break" }
+ContinueStmt = { "continue" }
 
-expr = { number | identifier }
+IfStmt    = { IfBlock ~ ElifBlock* ~ ElseBlock? }
+IfBlock   = { "if" ~ Expr ~ ":" ~ Block ~ NEWLINE? }
+ElifBlock = { "elif" ~ Expr ~ ":" ~ Block ~ NEWLINE? }
+ElseBlock = { "else:" ~ Block ~ NEWLINE? }
 
-number = @{ ASCII_DIGIT+ }
-identifier = @{ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }
+Block = { NEWLINE* ~ INDENT ~ Statement* ~ DEDENT }
+
+// TODO Add types
+VarDecl = {
+    "let" ~ Identifier ~ ("=" ~ Expr)?
+}
+
+Assignment = {
+    Identifier ~ "=" ~ Expr
+}
+
+Expr       = { BinaryExpr }
+BinaryExpr = _{ LogicalOr }
+
+LogicalOr  = { LogicalAnd ~ (LogicalOrOp ~ LogicalAnd)* }
+LogicalOrOp = { "or" }
+
+LogicalAnd = { Equality ~ (LogicalAndOp ~ Equality)* }
+LogicalAndOp = { "and" }
+
+Equality = { Comparison ~ (EqualityOp ~ Comparison)* }
+EqualityOp = { "==" | "!=" }
+
+Comparison = { AddSub ~ (ComparisonOp ~ AddSub)* }
+ComparisonOp = { ">" | ">=" | "<" | "<=" }
+
+AddSub     = { MulDiv ~ (AddSubOp ~ MulDiv)* }
+AddSubOp   = { "+" | "-" }
+
+MulDiv     = { UnaryExpr ~ (MulDivOp ~ UnaryExpr)* }
+MulDivOp   = { "*" | "/" | "%" }
+UnaryExpr  =  { UnaryOp* ~ Primary }
+Primary    =  { "(" ~ Expr ~ ")" | Int | Float | BoolValue | Identifier | String }
+
+TypeDeclaration = { ":" ~ TypeHint }
+TypeHint        = { ObjectType | ArrayType | ListType | PrimitiveType }
+ObjectType      = { "{" ~ (Identifier ~ ":" ~ TypeHint ~ ("," ~ Identifier ~ ":" ~ TypeHint)*)? ~ "}" }
+ArrayType       = { "Array" ~ "[" ~ (Identifier | PrimitiveType) ~ "]" }
+ListType        = { "List" ~ "[" ~ (Identifier | PrimitiveType) ~ "]" }
+PrimitiveType   = { "Int" | "Bool" | "Float" }
+
+// BinOp   = { "+" | "-" | "*" | "/" | "%" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | "&" | "|" }
+UnaryOp = { "-" | "not" }
+
+BoolValue  =  { "true" | "false" }
+String     = @{ "\"" ~ ("\\\"" | !"\"" ~ ANY)* ~ "\"" }
+Number     =  { Float | Int }
+Float      = @{ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT+ }
+Int        = @{ ASCII_DIGIT+ }
+Identifier = @{ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }

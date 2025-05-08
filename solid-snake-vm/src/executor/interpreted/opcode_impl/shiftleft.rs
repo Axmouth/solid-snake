@@ -55,7 +55,6 @@ impl_shift_left_instruction!(ShiftLeftI64, i64);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::executor::interpreted::opcode_impl::all::*;
     use crate::{R, define_vm_tests};
 
     define_vm_tests!(
@@ -68,7 +67,7 @@ mod tests {
         ],
         VmTest::new()
             .setup(0b00001111 as T, R!(0))
-            .setup(2 as u32 as T, R!(1)) // Shift by 2
+            .setup(2 as T, R!(1)) // Shift by 2
             .expect(0b00111100 as T, R!(2)),
         (R!(2), R!(0), R!(1))
     );
@@ -83,7 +82,7 @@ mod tests {
         ],
         VmTest::new()
             .setup(0b00000011 as T, R!(0))
-            .setup(3 as u32 as T, R!(1)) // Shift by 3
+            .setup(3 as T, R!(1)) // Shift by 3
             .expect((0b00000011 as T) << 3, R!(2)),
         (R!(2), R!(0), R!(1))
     );
@@ -93,7 +92,7 @@ mod tests {
         [(ShiftLeftU8, u8)],
         VmTest::new()
             .setup(0 as T, R!(0))
-            .setup(5 as u32 as T, R!(1))
+            .setup(5 as T, R!(1))
             .expect(0 as T, R!(2)),
         (R!(2), R!(0), R!(1))
     );
@@ -103,7 +102,7 @@ mod tests {
         [(ShiftLeftU8, u8)],
         VmTest::new()
             .setup(0b11110000 as T, R!(0))
-            .setup(0 as u32 as T, R!(1))
+            .setup(0 as T, R!(1))
             .expect(0b11110000 as T, R!(2)),
         (R!(2), R!(0), R!(1))
     );
@@ -113,7 +112,7 @@ mod tests {
         [(ShiftLeftU8, u8)],
         VmTest::new()
             .setup(0b00001111 as T, R!(0))
-            .setup(2 as u32 as T, R!(1))
+            .setup(2 as T, R!(1))
             .expect(0b00111100 as T, R!(0)),
         (R!(0), R!(0), R!(1))
     );
@@ -123,7 +122,7 @@ mod tests {
         [(ShiftLeftI16, i16)],
         VmTest::new()
             .setup(3 as T, R!(0))
-            .setup(1 as u32 as T, R!(1))
+            .setup(1 as T, R!(1))
             .expect((3 as T) << 1, R!(1)),
         (R!(1), R!(0), R!(1))
     );

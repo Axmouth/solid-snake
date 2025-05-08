@@ -21,6 +21,7 @@ pub mod modulo;
 pub mod mov;
 pub mod multiply;
 pub mod notequal;
+pub mod print;
 pub mod shiftleft;
 pub mod shiftright;
 pub mod store;
@@ -52,6 +53,7 @@ pub mod all {
     pub use mov::*;
     pub use multiply::*;
     pub use notequal::*;
+    pub use print::*;
     pub use shiftleft::*;
     pub use shiftright::*;
     pub use store::*;

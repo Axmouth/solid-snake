@@ -98,7 +98,6 @@ impl_mod_float_instruction!(ModuloF64, f64);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::executor::interpreted::opcode_impl::all::*;
     use crate::{R, define_vm_tests};
 
     define_vm_tests!(

@@ -105,7 +105,6 @@ pub fn halt(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::{R, define_vm_program_test, executor::ext::VmExecutionError};
 
     #[test]

@@ -1,6 +1,7 @@
 use log::debug;
 use paste::paste;
 
+use crate::define_instruction;
 use crate::executor::ext::VmExecutionError;
 use crate::executor::interpreted::implimentation::{
     RegisterFileExt, VmHeapExt, VmInterpretedExecutor, VmMemorySectionExt,
@@ -91,3 +92,44 @@ impl_store_from_imm_with_offset!(StoreFromImmediateWithOffsetF32, f32);
 impl_store_from_imm_with_offset!(StoreFromImmediateWithOffsetF64, f64);
 
 // todo more instrs, tests
+
+define_instruction!(
+    StoreConstantArray,
+    (RegisterType, u64),
+    store_constant_array_handler
+);
+
+#[inline(always)]
+fn store_constant_array_handler(
+    executor: &mut VmInterpretedExecutor,
+    args: StoreConstantArrayArgs,
+) -> Result<(), VmExecutionError> {
+    let (reg_ptr, const_id) = args;
+
+    let constant_bytes = executor
+        .get_constant(const_id as usize)
+        .ok_or(VmExecutionError::NullPointerException)?
+        .to_vec();
+    let alloc_size: usize = size_of::<u64>() + constant_bytes.len();
+    let section_idx = executor.heap_mut().alloc(alloc_size)?;
+
+    debug!(
+        "StoreConstantArray: Store Constant {} to R{} ({})",
+        const_id, reg_ptr, section_idx
+    );
+
+    let section = executor.heap_mut().section_mut(section_idx)?;
+    let target = section.bytes_n_mut(size_of::<u64>())?;
+
+    target.copy_from_slice(&alloc_size.to_be_bytes());
+
+    let target = section.bytes_n_with_offset_mut(constant_bytes.len(), size_of::<u64>())?;
+
+    target.copy_from_slice(&constant_bytes);
+
+    executor
+        .registers_mut()
+        .set_register_value(reg_ptr, section_idx as u64)?;
+
+    Ok(())
+}

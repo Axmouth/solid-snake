@@ -18,6 +18,19 @@ pub fn derive_decoded_instruction_enum(input: TokenStream) -> TokenStream {
         panic!("DecodedInstructionEnum can only be derived for enums");
     };
 
+    let jumpy_instructions = ["Jump", "JumpIf", "JumpIfFalse", "CallFunction"];
+
+    let variants_no_jump = if let syn::Data::Enum(data_enum) = &input.data {
+        &data_enum
+            .variants
+            .iter()
+            .filter(|&v| !jumpy_instructions.contains(&v.ident.to_string().as_str()))
+            .cloned()
+            .collect::<Vec<_>>()
+    } else {
+        panic!("DecodedInstructionEnum can only be derived for enums");
+    };
+
     let op_code_variant_iter_match_arms = variants.iter().map(|v| &v.ident);
 
     let generated_variants = variants.iter().map(|variant| {
@@ -29,12 +42,52 @@ pub fn derive_decoded_instruction_enum(input: TokenStream) -> TokenStream {
         }
     });
 
+    let generated_variants_no_jump = variants_no_jump.iter().map(|variant| {
+        let ident = &variant.ident;
+        let args_ident = syn::Ident::new(&format!("{}Args", ident), ident.span());
+
+        quote! {
+            #ident(#args_ident)
+        }
+    });
+
+    let generated_variants_no_jump_to_decoded_collect = variants_no_jump.iter().map(|variant| {
+        let ident = &variant.ident;
+
+        quote! {
+            UnprocessedInstruction::#ident(args) =>{
+                let new_instruction = DecodedInstruction::#ident(*args);
+                final_instructions.push(new_instruction);
+            },
+        }
+    });
+
+    let generated_variants_no_jump_to_decoded_count = variants_no_jump.iter().map(|variant| {
+        let ident = &variant.ident;
+        let args_ident = syn::Ident::new(&format!("{}Instruction", ident), ident.span());
+
+        quote! {
+            UnprocessedInstruction::#ident(args) =>{
+                byte_count += #args_ident::instr_size() as u64;
+            },
+        }
+    });
+
     let decode_match_arms = variants.iter().map(|variant| {
         let ident = &variant.ident;
         let args_ident = syn::Ident::new(&format!("{}Args", ident), ident.span());
 
         quote! {
             OpCode::#ident => DecodedInstruction::#ident(#args_ident::parse_args(bytes)),
+        }
+    });
+
+    let encode_match_arms = variants.iter().map(|variant| {
+        let ident = &variant.ident;
+        let instr_ident = syn::Ident::new(&format!("{}Instruction", ident), ident.span());
+
+        quote! {
+            DecodedInstruction::#ident(args) => #instr_ident::encode(*args),
         }
     });
 
@@ -122,6 +175,9 @@ pub fn derive_decoded_instruction_enum(input: TokenStream) -> TokenStream {
         }
     });
 
+    // TODO encode for Decoded (turn to bytecode)
+    // TODO auto generate Unprocessed to Decoded
+    // TODO .. better names?
     let expanded = quote! {
         impl #name {
             pub fn instr_size(self) -> usize {
@@ -156,10 +212,80 @@ pub fn derive_decoded_instruction_enum(input: TokenStream) -> TokenStream {
             #(#generated_variants,)*
         }
 
+        #[derive(Debug, Clone, PartialEq, PartialOrd)]
+        pub enum UnprocessedInstruction {
+            Label((String,)),
+            Jump((String,)),
+            JumpIf((String, RegisterType)),
+            JumpIfFalse((String, RegisterType)),
+            CallFunction((String)),
+            #(#generated_variants_no_jump,)*
+        }
+
+        impl UnprocessedInstruction {
+            pub fn process_instructions(instructions: &[Self]) -> Vec<DecodedInstruction> {
+                use std::collections::HashMap;
+                let mut byte_count: u64 = 0;
+                let mut label_to_byte_offset: HashMap<String, u64> = HashMap::new();
+                let mut final_instructions = Vec::new();
+                for instr in instructions {
+                    match instr {
+                        #(#generated_variants_no_jump_to_decoded_count)*
+                        UnprocessedInstruction::Label((label,)) => {
+                            label_to_byte_offset.insert(label.to_string(), byte_count);
+                        },
+                        UnprocessedInstruction::Jump((String,)) => {
+                            byte_count += JumpInstruction::instr_size() as u64;
+                        },
+                        UnprocessedInstruction::JumpIf((String, RegisterType)) => {
+                            byte_count += JumpIfInstruction::instr_size() as u64;
+                        },
+                        UnprocessedInstruction::JumpIfFalse((String, RegisterType)) => {
+                            byte_count += JumpIfFalseInstruction::instr_size() as u64;
+                        },
+                        UnprocessedInstruction::CallFunction((String)) => {
+                            byte_count += CallFunctionInstruction::instr_size() as u64;
+                        },
+                    }
+                }
+                for instr in instructions {
+                    match instr {
+                        #(#generated_variants_no_jump_to_decoded_collect)*
+                        UnprocessedInstruction::Label((label,)) => {
+                        },
+                        UnprocessedInstruction::Jump((label,)) => {
+                            let jump_offset = label_to_byte_offset[label];
+                            final_instructions.push(DecodedInstruction::Jump((jump_offset,)))
+                        },
+                        UnprocessedInstruction::JumpIf((label, reg)) => {
+                            let jump_offset = label_to_byte_offset[label];
+                            final_instructions.push(DecodedInstruction::JumpIf((jump_offset, *reg)))
+                        },
+                        UnprocessedInstruction::JumpIfFalse((label, reg)) => {
+                            let jump_offset = label_to_byte_offset[label];
+                            final_instructions.push(DecodedInstruction::JumpIfFalse((jump_offset, *reg)))
+                        },
+                        UnprocessedInstruction::CallFunction((label)) => {
+                            let jump_offset = label_to_byte_offset[label];
+                            final_instructions.push(DecodedInstruction::CallFunction((jump_offset,)))
+                        },
+                    }
+                }
+
+                final_instructions
+            }
+        }
+
         impl DecodedInstruction {
             pub fn decode(opcode: OpCode, bytes: &[u8]) -> Self {
                 match opcode {
                     #(#decode_match_arms)*
+                }
+            }
+
+            pub fn encode(&self) -> Vec<u8> {
+                match self {
+                    #(#encode_match_arms)*
                 }
             }
 

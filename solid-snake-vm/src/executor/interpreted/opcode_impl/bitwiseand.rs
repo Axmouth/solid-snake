@@ -51,7 +51,6 @@ impl_bitwise_and_instruction!(BitwiseAndI64, i64);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::executor::interpreted::opcode_impl::all::*;
     use crate::{R, define_vm_tests};
 
     // Unsigned types can use full binary masks

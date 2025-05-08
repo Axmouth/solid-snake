@@ -6,7 +6,6 @@ use executor::{
     interpreted::{
         implimentation::{RegisterFileExt, VmInterpretedExecutor},
         opcode_decoder::RegisterType,
-        opcode_impl::load::LoadFromImmediateF32Instruction,
     },
 };
 

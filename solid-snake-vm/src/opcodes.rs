@@ -2,7 +2,6 @@ use num_enum::TryFromPrimitive;
 use solid_snake_vm_macros::DecodedInstructionEnum;
 use strum_macros::EnumString;
 
-use crate::VmInterpretedExecutor;
 use crate::executor::ext::VmExecutionError;
 use crate::executor::interpreted::implimentation::{
     ExecutableInstruction, ExecutableInstructionFn,
@@ -13,9 +12,9 @@ use crate::executor::interpreted::{
     },
     opcode_impl::all::*,
 };
+use crate::{RegisterType, VmInterpretedExecutor};
 
-// TODO: Move instructions
-
+// TODO: autogenerate docs?
 #[derive(Debug, DecodedInstructionEnum, TryFromPrimitive, EnumString, PartialEq, Clone, Copy)]
 #[repr(u16)]
 pub enum OpCode {
@@ -498,11 +497,12 @@ pub enum OpCode {
     ShiftRightI64 = 957,
 
     // System
-    // Print takes a pointer register, and an offset, prints the contents as a string
-    // Print = 1000,
+    // Print takes a pointer register, an offset, and a length prints the contents as a string
+    Print = 1000,
 
     // Followed by u64 amount of bytes. Stores them to memory pointed to by target register
     // StoreArrayImmediate = 1020,
+    StoreConstantArray = 1030,
 
     // A way to check if errors happened with specific codes, versions for using register and constant
     // ErrorFlagEqualIndirect = 1100,
@@ -521,4 +521,7 @@ pub enum OpCode {
     DebugPrintF32 = 2008,
     DebugPrintF64 = 2009,
     DebugPrintRaw = 2010,
+    // TODO : import for bytecode modules
+    // TODO : import for ffi extensions
+    // TODO : threading (fork, join?)
 }

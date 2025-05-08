@@ -120,10 +120,11 @@ macro_rules! impl_load_indirect_with_offset {
             ) -> Result<(), VmExecutionError> {
                 let (reg_dest, reg_ptr, reg_offset) = args;
 
-                debug!("Load: Indirectly {} R{} <= From address {} with offset {}", stringify!($ty), reg_dest, reg_ptr, reg_offset);
 
                 let section_idx: u64 = executor.registers().get_register_value(reg_ptr)?;
                 let offset: u64 = executor.registers().get_register_value(reg_offset)?;
+
+                debug!("Load: Indirectly {} R{} <= From address R{} ({}) with offset R{} ({})", stringify!($ty), reg_dest, reg_ptr, section_idx, reg_offset, offset);
 
                 let mem_section = executor.heap().section(section_idx as usize)?;
                 let bytes = mem_section.bytes_n_with_offset(std::mem::size_of::<$ty>(), offset as usize)?;

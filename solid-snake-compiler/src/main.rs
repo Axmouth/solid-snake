@@ -1,135 +1,125 @@
-use ariadne::{Label, Report, ReportKind, Source};
+pub mod ast;
+pub mod bytecode_gen;
+pub mod error_reporting;
+pub mod intermediate_pass1;
+pub mod new_parser;
+pub mod parser;
+pub mod preprocessor;
+pub mod test_util;
+
+use std::{io::Read, process::exit};
+
+use bytecode_gen::lower_ir_to_bytecode_stage_one;
+use colored::Colorize;
+use error_reporting::report_error;
+use intermediate_pass1::analyze_ast;
+use parser::{Rule, SolidSnakeParser, build_ast};
+use preprocessor::{PreprocessResult, preprocess_indentation};
+
 use pest::Parser;
-use pest_derive::Parser;
-use std::collections::HashSet;
+use solid_snake_vm::{
+    executor::{ext::VmExecutorExt, interpreted::implimentation::VmInterpretedExecutor},
+    opcodes::{DecodedInstruction, UnprocessedInstruction},
+};
 
-#[derive(Parser)]
-#[grammar = "grammar.pest"]
-struct SolidSnakeParser;
-
-#[derive(Debug)]
-struct ASTNodeContainer {
-    node: ASTNode,
-    span: Span,
-}
-
-#[derive(Debug)]
-enum ASTNode {
-    VarDecl(String),
-    // TODO named
-    Assignment(String, String), // assignment = name = expr (we keep expr simple for now)
-}
-
-#[derive(Debug)]
-struct Span {
-    line: usize,
-    column: usize,
-    length: usize,
-}
-
-#[derive(Debug)]
-enum CompileError {
-    UndefinedVariable { name: String, span: Span },
-}
-
+// TODO unary op type checking?
 fn main() {
-    let source = r#"
-x = 5
-y = 10
-"#;
+    env_logger::init();
 
-    match SolidSnakeParser::parse(Rule::program, source) {
-        Ok(pairs) => {
-            let ast = build_ast(pairs);
+    let file_name = "./test_data/test.ss";
+    let mut source_file = std::fs::File::open(file_name).unwrap();
+    let mut source = String::new();
+    source_file.read_to_string(&mut source).unwrap();
 
-            match analyze_ast(&ast) {
-                Ok(()) => println!("Compilation succeeded! AST: {:#?}", ast),
-                Err(err) => report_error(err, source),
-            }
-        }
-        Err(e) => {
-            println!("Syntax Error: {}", e);
-        }
-    }
-}
+    // TODO add warnings list. Same as errors but not fatal. Maybe just add them to error list tbh
+    // TODO report pest errors in same way
+    match preprocess_indentation(&source) {
+        Ok(preprocessed) => {
+            // println!("{}", preprocessed.transformed);
+            match SolidSnakeParser::parse(Rule::Program, &preprocessed.transformed) {
+                Ok(pairs) => {
+                    // dbg!(&pairs);
+                    let (ast, errors_list, _) = build_ast(pairs, 0);
 
-fn build_ast(pairs: pest::iterators::Pairs<Rule>) -> Vec<ASTNode> {
-    let mut ast = Vec::new();
-    for pair in pairs {
-        let mut inner = pair.clone().into_inner();
-        if inner.len() < 1 {
-            continue;
-        }
-        match pair.as_rule() {
-            Rule::statement => match inner {
-                _ => {}
-            },
-            Rule::var_decl => {
-                let name = inner.next().unwrap().as_str().to_string();
-                ast.push(ASTNode::VarDecl(name));
-            }
-            Rule::assignment => {
-                let mut inner_rules = inner;
-                let name = inner_rules.next().unwrap().as_str().to_string();
-                let expr = inner_rules.next().unwrap().as_str().to_string();
-                ast.push(ASTNode::Assignment(name, expr));
-            }
-            Rule::program => {
-                let parse_iter = inner.flat_map(|pair| build_ast(pair.into_inner()));
-                ast.extend(parse_iter);
-            }
-            _ => {}
-        }
-    }
-    ast
-}
+                    // dbg!(&ast);
 
-fn analyze_ast(ast: &[ASTNode]) -> Result<(), CompileError> {
-    let mut initialized_vars = HashSet::new();
+                    let mut context = analyze_ast(&ast);
+                    context.errors_mut().extend(errors_list);
 
-    for node in ast {
-        match node {
-            ASTNode::VarDecl(name) => {
-                initialized_vars.insert(name.clone());
-            }
-            ASTNode::Assignment(name, _) => {
-                if !initialized_vars.contains(name) {
-                    return Err(CompileError::UndefinedVariable {
-                        name: name.clone(),
-                        span: Span {
-                            line: 3,
-                            column: 1,
-                            length: name.len(),
-                        },
-                    });
+                    // dbg!(context.ir());
+                    for ir in context.ir() {
+                        // println!("{ir}");
+                    }
+                    // dbg!(context.var_type_map());
+                    // dbg!(&scope_errors);
+
+                    // dbg!(use_map);
+
+                    let var_count = context.var_count();
+
+                    for ir in context.typed_ir() {
+                        println!("{ir}");
+                    }
+
+                    let (bc1, constants) =
+                        match lower_ir_to_bytecode_stage_one(context.typed_ir(), var_count) {
+                            Ok(v) => v,
+                            Err(error) => {
+                                context.errors_mut().push_error(error);
+                                (Vec::new(), Vec::new())
+                            }
+                        };
+                    for bc in &bc1 {
+                        println!("{bc:?}");
+                    }
+
+                    for error in context.errors().err_iter() {
+                        report_error(error, file_name, &preprocessed)
+                    }
+
+                    if context.errors().is_fatal() {
+                        let error_line = format!(
+                            "Could not continue due to the above {} errors.",
+                            context.errors().error_count()
+                        );
+                        eprintln!("\n{}\n", error_line.red().bold());
+                        exit(-1);
+                    }
+
+                    let final_bc = UnprocessedInstruction::process_instructions(&bc1)
+                        .iter()
+                        .flat_map(DecodedInstruction::encode)
+                        .collect::<Vec<u8>>();
+
+                    let mut vm = VmInterpretedExecutor::new();
+                    dbg!(&constants);
+                    vm.set_constants(constants);
+
+                    let processed_bytecode = vm.preprocess_bytecode(&final_bc).unwrap();
+                    let decoded = processed_bytecode
+                        .iter()
+                        .map(|(d, _)| *d)
+                        .collect::<Vec<_>>();
+                    // dbg!(&decoded);
+
+                    vm.execute_processeded_bytecode(&processed_bytecode)
+                        .unwrap();
+                }
+                Err(e) => {
+                    // TODO : Also use ariadne here
+                    eprintln!("Syntax Error: {}", e);
                 }
             }
         }
-    }
-
-    Ok(())
-}
-
-fn report_error(error: CompileError, source: &str) {
-    match error {
-        CompileError::UndefinedVariable { name, span } => {
-            let lines: Vec<&str> = source.lines().collect();
-            let source_file = "src/test.ss";
-
-            Report::build(
-                ReportKind::Error,
-                (source_file, (span.column - 1)..span.column),
-            )
-            .with_message(format!("Undefined variable '{}'", name))
-            .with_label(
-                Label::new((source_file, (span.line - 1)..span.line))
-                    .with_message("Variable used before being declared.")
-                    .with_color(ariadne::Color::Red),
-            )
-            .with_note("Declare the variable first with 'let'.")
-            .finish()
-            .print((source_file, Source::from(source)))
-            .unwrap();
+        Err(errors) => {
+            let preprocessed = PreprocessResult {
+                original: source.clone(),
+                transformed: source.clone(),
+                rev_offset_map: (0..source.len()).map(Some).collect(),
+            };
+            for err in errors.err_iter() {
+                report_error(err, file_name, &preprocessed);
+            }
         }
     }
 }

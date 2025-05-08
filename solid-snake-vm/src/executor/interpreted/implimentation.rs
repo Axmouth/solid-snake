@@ -287,6 +287,7 @@ pub struct VmInterpretedExecutor {
     program_counter: usize,
     heap: VmHeap,
     bytecode_pc_to_instr_index: Vec<usize>,
+    constants: Vec<Vec<u8>>,
 }
 
 impl VmInterpretedExecutor {
@@ -299,7 +300,16 @@ impl VmInterpretedExecutor {
             heap: VmHeap::new(),
             max_stack_depth: (u32::MAX / 2048) as usize,
             bytecode_pc_to_instr_index: Vec::new(),
+            constants: Vec::new(),
         }
+    }
+
+    pub fn get_constant(&self, id: usize) -> Option<&[u8]> {
+        self.constants.get(id).map(|v| v.as_slice())
+    }
+
+    pub fn set_constants(&mut self, constants: Vec<Vec<u8>>) {
+        self.constants = constants;
     }
 
     pub fn get_max_stack_depth(&self) -> usize {
@@ -365,19 +375,16 @@ impl VmExecutorExt for VmInterpretedExecutor {
             let opcode = u16::from_be_bytes(opcode_bytes);
             let opcode_enum =
                 OpCode::try_from(opcode).map_err(|_| VmExecutionError::InvalidOpCode)?;
-            bc_counter += 2;
+            bc_counter += size_of::<u16>();
             self.bytecode_pc_to_instr_index[jump_bc_counter] = processed_bytecode.len();
-            let decoded_opcode = OpCode::try_from(opcode).map_err(
+            let enum_opcode = OpCode::try_from(opcode).map_err(
                 |_: num_enum::TryFromPrimitiveError<OpCode>| VmExecutionError::InvalidOpCode,
             )?;
-            // TODO avoid dispatch table, use macros to get arg size
             let look_ahead_bytes = opcode_enum.args_size();
             let look_ahead = &forward_window[2..2 + look_ahead_bytes];
-            let decoded_instruction = DecodedInstruction::decode(decoded_opcode, look_ahead);
+            let decoded_instruction = DecodedInstruction::decode(enum_opcode, look_ahead);
             processed_bytecode.push(decoded_instruction);
             bc_counter += look_ahead_bytes;
-
-            // TODO preprocess jump/call addresses to avoid execution indirection?
         }
 
         // Preprocess jump address to the processed bytecode

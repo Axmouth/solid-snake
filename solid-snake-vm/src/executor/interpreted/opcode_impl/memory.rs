@@ -11,7 +11,13 @@ define_instruction!(Allocate, (RegisterType, RegisterType), allocate_handler);
 define_instruction!(Deallocate, (RegisterType), deallocate_handler);
 define_instruction!(
     Memcpy,
-    (RegisterType, RegisterType, RegisterType),
+    (
+        RegisterType,
+        RegisterType,
+        RegisterType,
+        RegisterType,
+        RegisterType
+    ),
     memcpy_handler
 );
 define_instruction!(
@@ -63,22 +69,36 @@ pub fn memcpy_handler(
     executor: &mut VmInterpretedExecutor,
     args: MemcpyArgs,
 ) -> Result<(), VmExecutionError> {
-    let (reg_dest, reg_src, reg_size) = args;
+    let (reg_dest, reg_dest_offset, reg_src, reg_src_offset, reg_size) = args;
 
     let dest_idx: u64 = executor.registers().get_register_value(reg_dest)?;
     let src_idx: u64 = executor.registers().get_register_value(reg_src)?;
+    let dest_offset: u64 = executor.registers().get_register_value(reg_dest_offset)?;
+    let src_offset: u64 = executor.registers().get_register_value(reg_src_offset)?;
     let size: u64 = executor.registers().get_register_value(reg_size)?;
 
     debug!(
-        "Memcpy: Copy {} bytes from section R{} ({}) to section R{} ({})",
-        size, reg_src, src_idx, reg_dest, dest_idx
+        "Memcpy: Copy {} bytes from section R{} ({}) with offset R{} ({}) to section R{} ({}) with offset R{} ({})",
+        size,
+        reg_src,
+        src_idx,
+        reg_src_offset,
+        src_offset,
+        reg_dest,
+        dest_idx,
+        reg_dest_offset,
+        dest_offset
     );
 
     let src = executor.heap().section(src_idx as usize)?;
-    let src_bytes = src.bytes_n(size as usize)?.to_vec();
+    println!("src len {}", src.len());
+    let src_bytes = src
+        .bytes_n_with_offset(size as usize, src_offset as usize)?
+        .to_vec();
     let dest = executor.heap_mut().section_mut(dest_idx as usize)?;
+    println!("dest len {}", dest.len());
 
-    let dest_bytes = dest.bytes_n_mut(size as usize)?;
+    let dest_bytes = dest.bytes_n_with_offset_mut(size as usize, dest_offset as usize)?;
 
     dest_bytes.copy_from_slice(&src_bytes);
 

@@ -1,7 +1,5 @@
 use std::str::FromStr;
 
-use paste::paste;
-
 use crate::executor::{
     ext::VmExecutionError,
     interpreted::implimentation::{MAX_REGISTERS, VmInterpretedExecutor},
@@ -177,6 +175,7 @@ macro_rules! impl_instruction_args_from_str {
         }
     };
     ($($T:ident),*) => {
+        #[allow(non_snake_case)]
         impl<$($T),*> InstructionArgsFromStr for ($($T,)*)
         where
             $($T: VmParse + FromBytes + ToBytes),*
@@ -300,22 +299,26 @@ macro_rules! define_instruction {
             impl [<$name Instruction>] {
                 pub const OPCODE: $crate::OpCode = $crate::OpCode::$name;
 
+                #[allow(dead_code)]
                 #[inline]
                 pub fn args_size() -> usize {
                     pub use $crate::executor::interpreted::opcode_decoder::InstructionArgs;
                     [<$name Args>]::args_size()
                 }
 
+                #[allow(dead_code)]
                 pub fn instr_size() -> usize {
                     size_of::<u16>() + Self::args_size()
                 }
 
+                #[allow(dead_code)]
                 #[inline]
                 pub fn parse_args(bytes: &[u8]) -> [<$name Args>] {
                     pub use $crate::executor::interpreted::opcode_decoder::InstructionArgs;
                     [<$name Args>]::parse_args(bytes)
                 }
 
+                #[allow(dead_code)]
                 #[inline]
                 pub fn encode(args: [<$name Args>]) -> Vec<u8> {
                     let mut result = Vec::with_capacity(2 + Self::args_size()); // 2 bytes for opcode
@@ -342,11 +345,13 @@ macro_rules! define_instruction {
                 }
             }
 
+            #[allow(dead_code)]
             #[derive(Debug, Copy, Clone, PartialEq, PartialOrd)]
             pub struct [<Executable $name>] {
                 args: [<$name Args>]
             }
 
+            #[allow(dead_code)]
             impl [<Executable $name>] {
                 pub fn new(args: [<$name Args>]) -> Self {
                     Self {
@@ -375,6 +380,7 @@ macro_rules! impl_instruction_args {
     };
     // Non-empty tuples
     ($($arg:ident),+) => {
+        #[allow(non_snake_case)]
         impl<$($arg: FromBytes + ToBytes),+> InstructionArgs for ($($arg),+,) {
             fn args_size() -> usize {
                 let mut total = 0;
@@ -384,6 +390,7 @@ macro_rules! impl_instruction_args {
                 total
             }
 
+            #[allow(unused_assignments)]
             fn parse_args(bytes: &[u8]) -> Self {
                 let mut cursor = 0;
                 (
@@ -425,6 +432,7 @@ macro_rules! define_vm_tests {
         paste::paste! {
             $(
                 #[test]
+                #[allow(dead_code)]
                 fn [<$instr:lower _ $name>]() {
                     use $crate::OpCode;
                     use $crate::asm_internal::VmTest;

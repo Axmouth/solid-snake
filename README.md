@@ -74,8 +74,16 @@ A **low-level bytecode virtual machine** with strong abstraction, designed to su
 - [x] Function call and return
 - [x] Branching and loops
 - [x] Error handling (overflow, invalid op, etc.)
+- [ ] Documentation per instruction, flags (HeapAccess, Pure, Commutative, etc.), shorter notation support, generate InstructionDoc per instruction, write generator for .md, .json, or both cargo doc maybe
+- [ ] Ability to fork, join threads
+- [ ] Shared memory pool and related instructions for syncronization and data passing
+- [ ] Builtin functions
+- [ ] File format (header, data, etc)
+- [ ] Fused instructions
+- [ ] Importing code files
+- [ ] Importing bytecode (or do we even?)
+- [ ] Native extensions
 - [ ] Symbolic assembler with label resolution
-- [ ] Language frontend (parser, typechecker, etc.)
 
 ---
 

@@ -5,10 +5,9 @@ use solid_snake_vm::{
 
 use paste::paste;
 
-use crate::ast::BinaryOp;
+use crate::ast::{BinaryOp, IntermediateType, ProcessedType};
 use crate::error_reporting::CompileError;
-use crate::intermediate_pass1::IntermediateType;
-use crate::intermediate_pass1::{ProcessedType, TypedIRExpr, TypedIRInstruction, TypedIRStmt};
+use crate::intermediate_pass1::{TypedIRExpr, TypedIRInstruction, TypedIRStmt};
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 
@@ -44,11 +43,13 @@ impl BCType {
             ProcessedType::Int => Self::I64,
             ProcessedType::UInt => Self::U64,
             ProcessedType::Float => Self::F64,
+            ProcessedType::Byte => Self::U8,
             ProcessedType::Array { inner } => todo!(),
             ProcessedType::List { inner } => todo!(),
             ProcessedType::Object { properties } => todo!(),
             ProcessedType::Tuple { inner } => todo!(),
             ProcessedType::Indirect { target } => todo!(),
+            ProcessedType::Enum { variants } => todo!(),
         }
     }
 }

@@ -106,7 +106,7 @@ Halt                          ; R10 = F(80)
 
     let (bc, _lined_code) = parse_byte_code_from_txt(&code);
 
-    let mut vm = VmInterpretedExecutor::new();
+    let mut vm = VmInterpretedExecutor::new(None);
 
     let mut total = 0u128;
     let bc = vm.preprocess_bytecode(&bc).unwrap();
@@ -172,7 +172,7 @@ fib_base_case:
     //     println!("{idx:0>3} : {line}",)
     // });
 
-    let mut vm = VmInterpretedExecutor::new();
+    let mut vm = VmInterpretedExecutor::new(None);
 
     let mut total1 = 0u128;
     for _ in 0..n_iter {
@@ -277,7 +277,7 @@ Halt
 
     let (bc, _lined_code) = parse_byte_code_from_txt(code);
 
-    let mut vm = VmInterpretedExecutor::new();
+    let mut vm = VmInterpretedExecutor::new(None);
 
     let bytecode = asm! {
         LoadImmediateI64, R1, (-123);

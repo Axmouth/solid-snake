@@ -2,7 +2,7 @@
 
 use std::fmt;
 
-use crate::ast::Span;
+use crate::{ast::Span, error_reporting::CompileError};
 
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct LexingError {
@@ -22,6 +22,10 @@ impl LexingError {
 
     pub fn span(&self) -> Span {
         self.span // expose it
+    }
+
+    pub fn to_compile_error(self) -> CompileError {
+        CompileError::syntax_error(self.kind.to_string(), self.span)
     }
 }
 

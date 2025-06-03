@@ -283,6 +283,7 @@ pub struct VmInterpretedExecutor {
     pub frame_stack: Vec<CallFrame>,
     pub stack_top: usize,
     pub error_code: i64,
+    pub prev_error_code: i64,
     max_stack_depth: usize,
     program_counter: usize,
     heap: VmHeap,
@@ -291,16 +292,17 @@ pub struct VmInterpretedExecutor {
 }
 
 impl VmInterpretedExecutor {
-    pub fn new() -> Self {
+    pub fn new(constants: Option<Vec<Vec<u8>>>) -> Self {
         Self {
             frame_stack: vec![CallFrame::new(); INITIAL_FRAMES_CAPACITY],
             stack_top: 0,
             error_code: 0,
+            prev_error_code: 0,
             program_counter: 0,
             heap: VmHeap::new(),
             max_stack_depth: (u32::MAX / 2048) as usize,
             bytecode_pc_to_instr_index: Vec::new(),
-            constants: Vec::new(),
+            constants: constants.unwrap_or_default(),
         }
     }
 
@@ -434,6 +436,7 @@ impl VmExecutorExt for VmInterpretedExecutor {
             if let DecodedInstruction::Halt(()) = decoded {
                 return Ok(());
             }
+            self.prev_error_code = self.error_code;
             self.error_code = 0; // TODO: examine if any instruction will need it kept set between multiple instructions.
             self.program_counter += 1;
             exec_instr_fn(self)?;

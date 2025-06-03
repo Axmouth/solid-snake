@@ -15,6 +15,7 @@ macro_rules! impl_shift_right_instruction {
             );
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],

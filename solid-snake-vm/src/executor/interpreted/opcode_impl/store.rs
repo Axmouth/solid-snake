@@ -14,6 +14,7 @@ macro_rules! impl_store_indirect_with_offset {
             $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],
@@ -56,6 +57,7 @@ macro_rules! impl_store_from_imm_with_offset {
             $crate::define_instruction!($opcode, (u64, RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],

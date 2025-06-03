@@ -4,6 +4,7 @@ use crate::{
 };
 use logos::{Lexer, Logos};
 
+#[inline(always)]
 fn newline_check<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) {
     if lex.extras.pending_line_inc {
         lex.extras.line += 1;
@@ -12,6 +13,7 @@ fn newline_check<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) {
 }
 
 /// Update the line count and the char index.
+#[inline(always)]
 fn newline_callback<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) {
     newline_check(lex);
 
@@ -26,6 +28,7 @@ fn newline_callback<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) {
 }
 
 /// Compute the line and column position for the current word.
+#[inline(always)]
 fn word_callback<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) {
     newline_check(lex);
 
@@ -34,6 +37,7 @@ fn word_callback<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) {
 }
 
 /// Compute the line and column position for the current word.
+#[inline(always)]
 fn word_callback_str<'a>(lex: &mut Lexer<'a, LogosToken<'a>>) -> &'a str {
     word_callback(lex);
 
@@ -101,16 +105,26 @@ pub enum LogosToken<'source> {
     Break,
     #[token("continue", word_callback)]
     Continue,
+    #[token("type", word_callback)]
+    TypeDef,
     #[token("Int", word_callback)]
     IntType,
+    #[token("UInt", word_callback)]
+    UIntType,
     #[token("Bool", word_callback)]
     BoolType,
     #[token("Float", word_callback)]
     FloatType,
+    #[token("String", word_callback)]
+    StringType,
+    #[token("Enum", word_callback)]
+    Enum,
     #[token("List", word_callback)]
     List,
     #[token("Array", word_callback)]
     Array,
+    #[token("Byte", word_callback)]
+    ByteType,
 
     // Operators
     #[token("==", word_callback)]
@@ -148,9 +162,9 @@ pub enum LogosToken<'source> {
     #[token(">>", word_callback)]
     RShift,
     #[token("&", word_callback)]
-    BitAnd,
+    Ampersand,
     #[token("|", word_callback)]
-    BitOr,
+    Pipe,
 
     // Symbols
     #[token("(", word_callback)]

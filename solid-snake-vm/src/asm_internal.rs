@@ -113,7 +113,7 @@ pub struct VmTest {
 impl VmTest {
     pub fn new() -> Self {
         Self {
-            vm: VmInterpretedExecutor::new(),
+            vm: VmInterpretedExecutor::new(None),
             expectations: Vec::new(),
             expects_error: false,
         }
@@ -173,7 +173,7 @@ pub struct VmProgramTest {
 impl VmProgramTest {
     pub fn new() -> Self {
         Self {
-            vm: VmInterpretedExecutor::new(),
+            vm: VmInterpretedExecutor::new(None),
             program: Vec::new(),
             expectations: Vec::new(),
         }

@@ -13,6 +13,7 @@ macro_rules! impl_load_immediate {
             $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             pub fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],
@@ -47,6 +48,7 @@ macro_rules! impl_load_indirect {
             $crate::define_instruction!($opcode, (RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             pub fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],
@@ -81,6 +83,7 @@ macro_rules! impl_load_from_imm_addr {
             $crate::define_instruction!($opcode, (RegisterType, u64), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             pub fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],
@@ -114,6 +117,7 @@ macro_rules! impl_load_indirect_with_offset {
             $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],

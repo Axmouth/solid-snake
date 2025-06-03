@@ -4,7 +4,7 @@ use std::{
 };
 
 use crate::{
-    ast::{ASTNode, ASTNodeContainer, BinaryOp, Expr, ExprKind, Span, UnaryOp},
+    ast::{ASTNode, ASTNodeContainer, BinaryOp, Expr, ExprKind, IntermediateType, ProcessedType, Span, UnaryOp},
     error_reporting::{CompileError, CompileErrorList},
 };
 
@@ -54,247 +54,6 @@ enum LabelKind {
     Else,
     Elif,
     End,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub enum IntermediateType {
-    Indeterminate,
-    Number,
-    Boolean,
-    String,
-    Int,
-    UInt,
-    Float,
-    Array {
-        inner: Box<IntermediateType>,
-    },
-    List {
-        inner: Box<IntermediateType>,
-    },
-    Object {
-        properties: BTreeMap<String, IntermediateType>,
-    },
-    Tuple {
-        inner: Vec<IntermediateType>,
-    },
-}
-
-impl std::fmt::Display for IntermediateType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            IntermediateType::Indeterminate => write!(f, "?"),
-            IntermediateType::Number => write!(f, "Num"),
-            IntermediateType::Boolean => write!(f, "Bool"),
-            IntermediateType::String => write!(f, "Str"),
-            IntermediateType::Int => write!(f, "Int"),
-            IntermediateType::UInt => write!(f, "UInt"),
-            IntermediateType::Float => write!(f, "Float"),
-            IntermediateType::Array { inner: _ } => write!(f, "[]"),
-            IntermediateType::List { inner: _ } => write!(f, "[,]"),
-            IntermediateType::Object { properties: _ } => write!(f, "{{}}"),
-            IntermediateType::Tuple { inner: _ } => write!(f, "()"),
-        }
-    }
-}
-
-impl Default for IntermediateType {
-    fn default() -> Self {
-        Self::Indeterminate
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub enum ProcessedType {
-    Boolean,
-    String,
-    Int,
-    UInt,
-    Float,
-    Array {
-        inner: Box<ProcessedType>,
-    },
-    List {
-        inner: Box<ProcessedType>,
-    },
-    Object {
-        properties: BTreeMap<String, ProcessedType>,
-    },
-    Tuple {
-        inner: Vec<ProcessedType>,
-    },
-    Indirect {
-        target: Box<ProcessedType>,
-    },
-}
-
-impl std::fmt::Display for ProcessedType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ProcessedType::Boolean => write!(f, "Bool"),
-            ProcessedType::String => write!(f, "Str"),
-            ProcessedType::Int => write!(f, "Int"),
-            ProcessedType::UInt => write!(f, "UInt"),
-            ProcessedType::Float => write!(f, "Float"),
-            ProcessedType::Array { inner: _ } => write!(f, "[]"),
-            ProcessedType::List { inner: _ } => write!(f, "[,]"),
-            ProcessedType::Object { properties: _ } => write!(f, "{{}}"),
-            ProcessedType::Tuple { inner: _ } => write!(f, "()"),
-            ProcessedType::Indirect { target } => write!(f, "->{}", target),
-        }
-    }
-}
-
-impl IntermediateType {
-    // TODO
-    pub fn try_to_processed(&self, span: Span) -> Result<ProcessedType, CompileError> {
-        match self {
-            IntermediateType::Indeterminate => Err(CompileError::internal_compiler_error(
-                "Expected typed to be resolved at this point",
-            )),
-            IntermediateType::Number => Ok(ProcessedType::Int),
-            IntermediateType::Boolean => Ok(ProcessedType::Boolean),
-            IntermediateType::String => Ok(ProcessedType::String),
-            IntermediateType::Int => Ok(ProcessedType::Int),
-            IntermediateType::UInt => Ok(ProcessedType::UInt),
-            IntermediateType::Float => Ok(ProcessedType::Float),
-            IntermediateType::Array { inner } => Ok(ProcessedType::Array {
-                inner: Box::new(inner.try_to_processed(span)?),
-            }),
-            IntermediateType::List { inner } => Ok(ProcessedType::List {
-                inner: Box::new(inner.try_to_processed(span)?),
-            }),
-            IntermediateType::Object { properties } => Ok(ProcessedType::Object {
-                properties: properties
-                    .iter()
-                    .map(|(k, v)| v.try_to_processed(span).map(|v| (k.clone(), v)))
-                    .collect::<Result<BTreeMap<String, ProcessedType>, CompileError>>()?,
-            }),
-            IntermediateType::Tuple { inner } => Ok(ProcessedType::Tuple {
-                inner: inner
-                    .iter()
-                    .map(|v| v.try_to_processed(span))
-                    .collect::<Result<Vec<ProcessedType>, CompileError>>()?,
-            }),
-        }
-    }
-
-    // TODO adjustments so errors reference the top level type
-    pub fn try_apply_type_hint(&self, other: &Self, span: Span) -> Result<Self, CompileError> {
-        const CONCRETE_NUMBERS: [IntermediateType; 3] = [
-            IntermediateType::Int,
-            IntermediateType::UInt,
-            IntermediateType::Float,
-        ];
-        if self == other
-            || &IntermediateType::Indeterminate == self
-            || self == &IntermediateType::Number && CONCRETE_NUMBERS.contains(other)
-            || other == &IntermediateType::Number && CONCRETE_NUMBERS.contains(self)
-        {
-            return Ok(other.clone());
-        }
-        if other == &IntermediateType::Indeterminate {
-            return Ok(self.clone());
-        }
-        // TODO specially handle objects if we apply type inference to create object types, merge if other superset of self
-        if let (
-            IntermediateType::Object { properties: p_self },
-            IntermediateType::Object {
-                properties: p_other,
-            },
-        ) = (self, other)
-        {
-            let keys_match = p_self.keys().zip(p_other.keys()).all(|(a, b)| a == b);
-            if !keys_match {
-                return Err(CompileError::type_mismatch(
-                    format!("{:?}", other),
-                    format!("{:?}", self),
-                    span,
-                ));
-            }
-
-            let new_props = p_self
-                .iter()
-                .zip(p_other.iter())
-                .map(|((key, type_self), (_, type_other))| {
-                    type_self
-                        .try_apply_type_hint(type_other, span)
-                        .map(|typ| (key.to_string(), typ))
-                })
-                .collect::<Result<BTreeMap<String, Self>, CompileError>>()?;
-
-            return Ok(IntermediateType::Object {
-                properties: new_props,
-            });
-        }
-        if let (
-            IntermediateType::Tuple { inner: inner_self },
-            IntermediateType::Tuple { inner: inner_other },
-        ) = (self, other)
-        {
-            let new_props = inner_self
-                .iter()
-                .zip(inner_other.iter())
-                .map(|(type_self, type_other)| type_self.try_apply_type_hint(type_other, span))
-                .collect::<Result<Vec<Self>, CompileError>>()?;
-
-            return Ok(IntermediateType::Tuple { inner: new_props });
-        }
-        if let (
-            IntermediateType::List { inner: inner_self },
-            IntermediateType::List { inner: inner_other },
-        ) = (self, other)
-        {
-            return Ok(IntermediateType::List {
-                inner: Box::new(inner_self.try_apply_type_hint(inner_other, span)?),
-            });
-        }
-        if let (
-            IntermediateType::Array { inner: inner_self },
-            IntermediateType::Array { inner: inner_other },
-        ) = (self, other)
-        {
-            return Ok(IntermediateType::Array {
-                inner: Box::new(inner_self.try_apply_type_hint(inner_other, span)?),
-            });
-        }
-
-        Err(CompileError::type_mismatch(
-            format!("{:?}", other),
-            format!("{:?}", self),
-            span,
-        ))
-    }
-
-    pub fn type_from_expr(expr: &Expr) -> Result<Self, CompileError> {
-        match &expr.kind {
-            ExprKind::Bool(_) => Ok(Self::Boolean),
-            ExprKind::Number(_) => Ok(Self::Number),
-            ExprKind::Float(_) => Ok(Self::Float),
-            ExprKind::Int(_) => Ok(Self::Int),
-            ExprKind::UInt(_) => Ok(Self::UInt),
-            ExprKind::String(_) => Ok(Self::String),
-            ExprKind::Variable(_) => Ok(Self::Indeterminate),
-            ExprKind::UnaryOp { op: _, expr } => Self::type_from_expr(expr),
-            ExprKind::BinaryOp { left, op, right } => {
-                // match op {
-                //     BinaryOp::Add => match (left.typ(), right.typ()) {
-                //         (IntermediateType::Int, IntermediateType::Int) => Ok(IntermediateType::Int),
-                //         (IntermediateType::Float, IntermediateType::Float) => Ok(IntermediateType::Float),
-                //         (IntermediateType::String, IntermediateType::String) => Ok(IntermediateType::String),
-                //         _ => Err(...),
-                //     },
-                //     ...
-                // }
-
-                if op.is_comparison() {
-                    return Ok(Self::Boolean);
-                }
-
-                Self::type_from_expr(left)?
-                    .try_apply_type_hint(&(Self::type_from_expr(right)?), left.span)
-            }
-        }
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -1942,6 +1701,7 @@ pub fn flatten_expr_to_var(
             }
             Ok((target, left_instrs))
         }
+        ExprKind::Invalid => Ok((target, vec![])),
     }
 }
 
@@ -1991,330 +1751,332 @@ pub fn create_scopes_map_ast(
     for node_c in ast {
         match &node_c.node {
             ASTNode::VarDecl(varname, expr) => {
-                if let Some(decl_expr) = expr {
-                    create_scopes_map_expr(decl_expr, ctx, node_c.statement_id);
-                }
-                let mut typ = IntermediateType::Indeterminate;
-                if let Some(assign_expr) = expr {
-                    match IntermediateType::type_from_expr(assign_expr) {
-                        Ok(t) => typ = t,
-                        Err(error) => {
-                            ctx.errors.push_error(error);
-                        }
-                    }
-                }
-                let vinfo = VariableInfo {
-                    name: varname.name().to_string(),
-                    id: ctx.var_counter,
-                    declared_span: node_c.span,
-                    declared_at: node_c.statement_id,
-                    is_init_scope: true,
-                    last_used: None,
-                    moved: false,
-                    last_mutated: expr.is_some().then_some(node_c.statement_id),
-                    scope_id: ctx.current_scope,
-                    shadowed: ctx
-                        .scopes
-                        .var_access_from_scope(varname.name(), ctx.current_scope)
-                        .is_some(),
-                };
-                ctx.set_type(vinfo.id, typ.clone(), node_c.span);
-                ctx.set_scope_id(vinfo.id, ctx.current_scope);
-                ctx.var_counter += 1;
-                if let Some(assign_expr) = expr {
-                    let ir = emit_assign_var(
-                        vinfo.metadata(typ, varname.span()),
-                        &assign_expr.normalized(),
-                        ctx,
-                        assign_expr.span,
-                        node_c.statement_id,
-                    );
-                    ctx.ir_output.extend_from_slice(&ir);
-                }
-                ctx.scopes.scopes[ctx.current_scope]
-                    .vars
-                    .insert(varname.name().to_string(), vinfo);
-            }
+                                if let Some(decl_expr) = expr {
+                                    create_scopes_map_expr(decl_expr, ctx, node_c.statement_id);
+                                }
+                                let mut typ = IntermediateType::Indeterminate;
+                                if let Some(assign_expr) = expr {
+                                    match IntermediateType::type_from_expr(assign_expr) {
+                                        Ok(t) => typ = t,
+                                        Err(error) => {
+                                            ctx.errors.push_error(error);
+                                        }
+                                    }
+                                }
+                                let vinfo = VariableInfo {
+                                    name: varname.name().to_string(),
+                                    id: ctx.var_counter,
+                                    declared_span: node_c.span,
+                                    declared_at: node_c.statement_id,
+                                    is_init_scope: true,
+                                    last_used: None,
+                                    moved: false,
+                                    last_mutated: expr.is_some().then_some(node_c.statement_id),
+                                    scope_id: ctx.current_scope,
+                                    shadowed: ctx
+                                        .scopes
+                                        .var_access_from_scope(varname.name(), ctx.current_scope)
+                                        .is_some(),
+                                };
+                                ctx.set_type(vinfo.id, typ.clone(), node_c.span);
+                                ctx.set_scope_id(vinfo.id, ctx.current_scope);
+                                ctx.var_counter += 1;
+                                if let Some(assign_expr) = expr {
+                                    let ir = emit_assign_var(
+                                        vinfo.metadata(typ, varname.span()),
+                                        &assign_expr.normalized(),
+                                        ctx,
+                                        assign_expr.span,
+                                        node_c.statement_id,
+                                    );
+                                    ctx.ir_output.extend_from_slice(&ir);
+                                }
+                                ctx.scopes.scopes[ctx.current_scope]
+                                    .vars
+                                    .insert(varname.name().to_string(), vinfo);
+                            }
             ASTNode::Assignment(varname, assign_expr) => {
-                create_scopes_map_expr(assign_expr, ctx, node_c.statement_id);
-                let scope_opt = ctx
-                    .scopes
-                    .var_access_from_scope(varname.name(), ctx.current_scope);
-                if let Some(scope_idx) = scope_opt {
-                    let scopes = &mut ctx.scopes;
-                    if let Some(mut vinfo) = scopes.scopes[scope_idx]
-                        .vars
-                        .get_mut(varname.name())
-                        .cloned()
-                    {
-                        let mut typ = IntermediateType::Indeterminate;
-                        match IntermediateType::type_from_expr(assign_expr) {
-                            Ok(t) => typ = t,
-                            Err(error) => {
-                                ctx.errors.push_error(error);
+                                create_scopes_map_expr(assign_expr, ctx, node_c.statement_id);
+                                let scope_opt = ctx
+                                    .scopes
+                                    .var_access_from_scope(varname.name(), ctx.current_scope);
+                                if let Some(scope_idx) = scope_opt {
+                                    let scopes = &mut ctx.scopes;
+                                    if let Some(mut vinfo) = scopes.scopes[scope_idx]
+                                        .vars
+                                        .get_mut(varname.name())
+                                        .cloned()
+                                    {
+                                        let mut typ = IntermediateType::Indeterminate;
+                                        match IntermediateType::type_from_expr(assign_expr) {
+                                            Ok(t) => typ = t,
+                                            Err(error) => {
+                                                ctx.errors.push_error(error);
+                                            }
+                                        }
+                                        ctx.set_type(vinfo.id, typ.clone(), node_c.span);
+                                        ctx.set_last_accessed(vinfo.id, node_c.statement_id);
+
+                                        if let Some(repeat_stmt) = repeated {
+                                            if ctx.current_scope != vinfo.scope_id
+                                                && ctx.get_repeat_entered_at(vinfo.id).is_none()
+                                                && ctx.get_repeat_write_at(vinfo.id).is_none()
+                                            {
+                                                ctx.set_repeat_entered_at(vinfo.id, repeat_stmt);
+                                                ctx.set_repeat_write_at(vinfo.id, repeat_stmt);
+                                            }
+                                        }
+
+                                        let ir = emit_assign_var(
+                                            vinfo.metadata(typ, varname.span()),
+                                            &assign_expr.normalized(),
+                                            ctx,
+                                            assign_expr.span,
+                                            node_c.statement_id,
+                                        );
+
+                                        ctx.ir_output.extend_from_slice(&ir);
+                                    } else {
+                                        ctx.errors
+                                            .push_error(CompileError::assign_undefined_variable(
+                                                varname.name().to_string(),
+                                                varname.span(),
+                                            ));
+                                    }
+                                } else {
+                                    ctx.errors
+                                        .push_error(CompileError::assign_undefined_variable(
+                                            varname.name().to_string(),
+                                            varname.span(),
+                                        ));
+                                }
                             }
-                        }
-                        ctx.set_type(vinfo.id, typ.clone(), node_c.span);
-                        ctx.set_last_accessed(vinfo.id, node_c.statement_id);
-
-                        if let Some(repeat_stmt) = repeated {
-                            if ctx.current_scope != vinfo.scope_id
-                                && ctx.get_repeat_entered_at(vinfo.id).is_none()
-                                && ctx.get_repeat_write_at(vinfo.id).is_none()
-                            {
-                                ctx.set_repeat_entered_at(vinfo.id, repeat_stmt);
-                                ctx.set_repeat_write_at(vinfo.id, repeat_stmt);
-                            }
-                        }
-
-                        let ir = emit_assign_var(
-                            vinfo.metadata(typ, varname.span()),
-                            &assign_expr.normalized(),
-                            ctx,
-                            assign_expr.span,
-                            node_c.statement_id,
-                        );
-
-                        ctx.ir_output.extend_from_slice(&ir);
-                    } else {
-                        ctx.errors
-                            .push_error(CompileError::assign_undefined_variable(
-                                varname.name().to_string(),
-                                varname.span(),
-                            ));
-                    }
-                } else {
-                    ctx.errors
-                        .push_error(CompileError::assign_undefined_variable(
-                            varname.name().to_string(),
-                            varname.span(),
-                        ));
-                }
-            }
             ASTNode::IfStmt {
-                if_block,
-                elif_blocks,
-                else_block,
-            } => {
-                let mut branches = Vec::new();
-                let exit_label = ctx.label_allocator.fresh_label(LabelKind::End);
-                let mut branch_id = 0;
+                                if_block,
+                                elif_blocks,
+                                else_block,
+                            } => {
+                                let mut branches = Vec::new();
+                                let exit_label = ctx.label_allocator.fresh_label(LabelKind::End);
+                                let mut branch_id = 0;
 
-                // Collect if and elif branches
-                branches.push(lower_conditional_branch(
-                    &if_block.condition,
-                    &if_block.body,
-                    ctx,
-                    LabelKind::If,
-                    branch_id,
-                    node_c.statement_id,
-                    repeated,
-                ));
-                branch_id += 1;
-                for elif in elif_blocks {
-                    branches.push(lower_conditional_branch(
-                        &elif.condition,
-                        &elif.body,
-                        ctx,
-                        LabelKind::Elif,
-                        branch_id,
-                        node_c.statement_id,
-                        repeated,
-                    ));
-                    branch_id += 1;
-                }
+                                // Collect if and elif branches
+                                branches.push(lower_conditional_branch(
+                                    &if_block.condition,
+                                    &if_block.body,
+                                    ctx,
+                                    LabelKind::If,
+                                    branch_id,
+                                    node_c.statement_id,
+                                    repeated,
+                                ));
+                                branch_id += 1;
+                                for elif in elif_blocks {
+                                    branches.push(lower_conditional_branch(
+                                        &elif.condition,
+                                        &elif.body,
+                                        ctx,
+                                        LabelKind::Elif,
+                                        branch_id,
+                                        node_c.statement_id,
+                                        repeated,
+                                    ));
+                                    branch_id += 1;
+                                }
 
-                // Emit condition checks
-                for b in &branches {
-                    ctx.ir_output.extend_from_slice(&b.cond_instrs);
-                    ctx.ir_output.push(b.jump_if_true.clone());
-                }
+                                // Emit condition checks
+                                for b in &branches {
+                                    ctx.ir_output.extend_from_slice(&b.cond_instrs);
+                                    ctx.ir_output.push(b.jump_if_true.clone());
+                                }
 
-                // If no condition matched, jump to else or end
-                let else_label = ctx.label_allocator.fresh_label(LabelKind::Else);
-                if else_block.is_none() {
-                    ctx.ir_output.push(IRInstruction::jump(
-                        exit_label.clone(),
-                        if_block.condition.span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
-                } else {
-                    // Ensure we jump into the else block
-                    ctx.ir_output.push(IRInstruction::jump(
-                        else_label.clone(),
-                        if_block.condition.span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
-                }
+                                // If no condition matched, jump to else or end
+                                let else_label = ctx.label_allocator.fresh_label(LabelKind::Else);
+                                if else_block.is_none() {
+                                    ctx.ir_output.push(IRInstruction::jump(
+                                        exit_label.clone(),
+                                        if_block.condition.span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
+                                } else {
+                                    // Ensure we jump into the else block
+                                    ctx.ir_output.push(IRInstruction::jump(
+                                        else_label.clone(),
+                                        if_block.condition.span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
+                                }
 
-                // Emit branch bodies
-                for b in branches {
-                    ctx.ir_output.push(IRInstruction::label(
-                        b.block_label.clone(),
-                        if_block.condition.span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
-                    ctx.ir_output.extend_from_slice(&b.block_instrs);
-                    ctx.ir_output.push(IRInstruction::jump(
-                        exit_label.clone(),
-                        if_block.condition.span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
-                }
+                                // Emit branch bodies
+                                for b in branches {
+                                    ctx.ir_output.push(IRInstruction::label(
+                                        b.block_label.clone(),
+                                        if_block.condition.span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
+                                    ctx.ir_output.extend_from_slice(&b.block_instrs);
+                                    ctx.ir_output.push(IRInstruction::jump(
+                                        exit_label.clone(),
+                                        if_block.condition.span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
+                                }
 
-                // Emit else block if any
-                if let Some(else_grp) = else_block {
-                    let else_scope = create_new_scope(ctx, repeated.is_some());
-                    ctx.current_scope = else_scope;
+                                // Emit else block if any
+                                if let Some(else_grp) = else_block {
+                                    let else_scope = create_new_scope(ctx, repeated.is_some());
+                                    ctx.current_scope = else_scope;
 
-                    ctx.ir_output.push(IRInstruction::label(
-                        else_label.clone(),
-                        else_grp.condition.span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
+                                    ctx.ir_output.push(IRInstruction::label(
+                                        else_label.clone(),
+                                        else_grp.condition.span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
 
-                    create_scopes_map_ast(&else_grp.body, ctx, repeated);
-                    // TODO handle error
-                    ctx.current_scope = match ctx.scopes.scopes[else_scope].parent_index {
-                        Some(v) => v,
-                        None => {
-                            ctx.errors.push_error(CompileError::internal_compiler_error(
-                                "Attempted to access invalid scope",
-                            ));
-                            continue;
-                        }
-                    };
-                }
+                                    create_scopes_map_ast(&else_grp.body, ctx, repeated);
+                                    // TODO handle error
+                                    ctx.current_scope = match ctx.scopes.scopes[else_scope].parent_index {
+                                        Some(v) => v,
+                                        None => {
+                                            ctx.errors.push_error(CompileError::internal_compiler_error(
+                                                "Attempted to access invalid scope",
+                                            ));
+                                            continue;
+                                        }
+                                    };
+                                }
 
-                // Finally, the end label
-                ctx.ir_output.push(IRInstruction::label(
-                    exit_label,
-                    if_block.condition.span,
-                    node_c.statement_id,
-                    ctx.current_scope,
-                ));
-            }
+                                // Finally, the end label
+                                ctx.ir_output.push(IRInstruction::label(
+                                    exit_label,
+                                    if_block.condition.span,
+                                    node_c.statement_id,
+                                    ctx.current_scope,
+                                ));
+                            }
             ASTNode::WhileStmt { condition, body } => {
-                let cond_span = condition.span;
-                let start_label = ctx.label_allocator.fresh_label(LabelKind::Loop);
-                let end_label = ctx.label_allocator.fresh_label(LabelKind::End);
+                                let cond_span = condition.span;
+                                let start_label = ctx.label_allocator.fresh_label(LabelKind::Loop);
+                                let end_label = ctx.label_allocator.fresh_label(LabelKind::End);
 
-                // Emit start label
-                ctx.ir_output.push(IRInstruction::label(
-                    start_label.clone(),
-                    cond_span,
-                    node_c.statement_id,
-                    ctx.current_scope,
-                ));
+                                // Emit start label
+                                ctx.ir_output.push(IRInstruction::label(
+                                    start_label.clone(),
+                                    cond_span,
+                                    node_c.statement_id,
+                                    ctx.current_scope,
+                                ));
 
-                // Evaluate condition
-                let (cond_temp, _) =
-                    fresh_temp_var(condition, ctx, Some(&IntermediateType::Boolean));
-                let (cond_var, cond_instrs) = match flatten_expr_to_var(
-                    condition,
-                    ctx,
-                    cond_temp.clone(),
-                    None,
-                    node_c.statement_id,
-                ) {
-                    Ok(res) => res,
-                    Err(err) => {
-                        ctx.errors.push_error(err);
-                        continue;
-                    }
-                };
-                let cond_var_id = cond_var.id();
+                                // Evaluate condition
+                                let (cond_temp, _) =
+                                    fresh_temp_var(condition, ctx, Some(&IntermediateType::Boolean));
+                                let (cond_var, cond_instrs) = match flatten_expr_to_var(
+                                    condition,
+                                    ctx,
+                                    cond_temp.clone(),
+                                    None,
+                                    node_c.statement_id,
+                                ) {
+                                    Ok(res) => res,
+                                    Err(err) => {
+                                        ctx.errors.push_error(err);
+                                        continue;
+                                    }
+                                };
+                                let cond_var_id = cond_var.id();
 
-                if cond_var.typ() != &IntermediateType::Boolean {
-                    ctx.errors.push_error(CompileError::type_mismatch(
-                        "Bool",
-                        format!("{:?}", cond_var.typ()),
-                        cond_span,
-                    ));
-                }
+                                if cond_var.typ() != &IntermediateType::Boolean {
+                                    ctx.errors.push_error(CompileError::type_mismatch(
+                                        "Bool",
+                                        format!("{:?}", cond_var.typ()),
+                                        cond_span,
+                                    ));
+                                }
 
-                // Add condition + jump-if-false to end
-                ctx.ir_output.extend(cond_instrs);
-                ctx.ir_output.push(IRInstruction::jump_if_not(
-                    end_label.clone(),
-                    cond_var,
-                    cond_span,
-                    node_c.statement_id,
-                    ctx.current_scope,
-                ));
+                                // Add condition + jump-if-false to end
+                                ctx.ir_output.extend(cond_instrs);
+                                ctx.ir_output.push(IRInstruction::jump_if_not(
+                                    end_label.clone(),
+                                    cond_var,
+                                    cond_span,
+                                    node_c.statement_id,
+                                    ctx.current_scope,
+                                ));
 
-                // Enter loop body
-                let loop_scope = create_new_scope(ctx, true);
-                let saved_scope = ctx.current_scope;
-                ctx.current_scope = loop_scope;
-                ctx.set_scope_id(cond_var_id, loop_scope);
-                ctx.set_scope_id(cond_temp.id(), loop_scope);
+                                // Enter loop body
+                                let loop_scope = create_new_scope(ctx, true);
+                                let saved_scope = ctx.current_scope;
+                                ctx.current_scope = loop_scope;
+                                ctx.set_scope_id(cond_var_id, loop_scope);
+                                ctx.set_scope_id(cond_temp.id(), loop_scope);
 
-                // Push labels
-                ctx.loop_break_labels.push(end_label.clone());
-                ctx.loop_continue_labels.push(start_label.clone());
+                                // Push labels
+                                ctx.loop_break_labels.push(end_label.clone());
+                                ctx.loop_continue_labels.push(start_label.clone());
 
-                // Lower loop body
-                create_scopes_map_ast(body, ctx, Some(repeated.unwrap_or(node_c.statement_id)));
+                                // Lower loop body
+                                create_scopes_map_ast(body, ctx, Some(repeated.unwrap_or(node_c.statement_id)));
 
-                // Pop labels
-                ctx.loop_break_labels.pop();
-                ctx.loop_continue_labels.pop();
-                ctx.current_scope = saved_scope;
+                                // Pop labels
+                                ctx.loop_break_labels.pop();
+                                ctx.loop_continue_labels.pop();
+                                ctx.current_scope = saved_scope;
 
-                // Unconditional jump back to start
-                ctx.ir_output.push(IRInstruction::jump(
-                    start_label,
-                    cond_span,
-                    node_c.statement_id,
-                    ctx.current_scope,
-                ));
+                                // Unconditional jump back to start
+                                ctx.ir_output.push(IRInstruction::jump(
+                                    start_label,
+                                    cond_span,
+                                    node_c.statement_id,
+                                    ctx.current_scope,
+                                ));
 
-                // Emit loop end label
-                ctx.ir_output.push(IRInstruction::label(
-                    end_label,
-                    cond_span,
-                    node_c.statement_id,
-                    ctx.current_scope,
-                ));
-            }
-
+                                // Emit loop end label
+                                ctx.ir_output.push(IRInstruction::label(
+                                    end_label,
+                                    cond_span,
+                                    node_c.statement_id,
+                                    ctx.current_scope,
+                                ));
+                            }
             ASTNode::Break => {
-                let span = node_c.span;
-                if let Some(label) = ctx.loop_break_labels.last() {
-                    ctx.ir_output.push(IRInstruction::jump(
-                        label.clone(),
-                        span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
-                } else {
-                    ctx.errors
-                        .push_error(CompileError::syntax_error("`break` outside of loop", span));
-                }
-            }
-
+                                let span = node_c.span;
+                                if let Some(label) = ctx.loop_break_labels.last() {
+                                    ctx.ir_output.push(IRInstruction::jump(
+                                        label.clone(),
+                                        span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
+                                } else {
+                                    ctx.errors
+                                        .push_error(CompileError::syntax_error("`break` outside of loop", span));
+                                }
+                            }
             ASTNode::Continue => {
-                let span = node_c.span;
-                if let Some(label) = ctx.loop_continue_labels.last() {
-                    ctx.ir_output.push(IRInstruction::jump(
-                        label.clone(),
-                        span,
-                        node_c.statement_id,
-                        ctx.current_scope,
-                    ));
-                } else {
-                    ctx.errors.push_error(CompileError::unexpected_error(
-                        "`continue` outside of loop",
-                        span,
-                    ));
-                }
-            }
+                                let span = node_c.span;
+                                if let Some(label) = ctx.loop_continue_labels.last() {
+                                    ctx.ir_output.push(IRInstruction::jump(
+                                        label.clone(),
+                                        span,
+                                        node_c.statement_id,
+                                        ctx.current_scope,
+                                    ));
+                                } else {
+                                    ctx.errors.push_error(CompileError::unexpected_error(
+                                        "`continue` outside of loop",
+                                        span,
+                                    ));
+                                }
+                            }
+            ASTNode::TypeDefinition { name, ty } => {
+                        // TODO
+                    },
+            ASTNode::Comment(_comment ) => (),
         }
     }
 
@@ -2391,6 +2153,7 @@ pub fn create_scopes_map_expr(expr: &Expr, ctx: &mut AnalysisContext, statement_
             create_scopes_map_expr(left, ctx, statement_id);
             create_scopes_map_expr(right, ctx, statement_id);
         }
+        ExprKind::Invalid => {}
     }
 }
 

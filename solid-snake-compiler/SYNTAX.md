@@ -1,12 +1,84 @@
 # 🐍 **Solid Snake Language Spec Draft (Focused on Syntax)**
 
-## 🛠 **General Principles**
+### 🛠 **General Principles**
 
-- **Indentation-based** (no `{}`, no `;`).
-- **Colon `:`** to open blocks (just like Python).
-- **Whitespace-sensitive**.
-- **Strongly typed** (types known at compile time, even with inference).
-- **Explicit is better than implicit**, unless it’s *obviously safe*.
+* **Indentation-based**: No `{}`, no `;`. Block structure is defined by whitespace, like Python and Haskell.
+* **Colon `:` introduces blocks**: Aligns with Python’s clean syntax model.
+* **Whitespace-sensitive**: Indentation must be consistent; promotes visual clarity and structural discipline.
+* **Strongly typed**: All types are known at compile time — even with inference. No implicit type coercion.
+* **Explicit over implicit**, unless **the behavior is provably unambiguous and safe**.
+* **No unexpected behavior**: The compiler should never do things behind the developer’s back. All behavior must be either declared or inferable with no side effects.
+* **Fail early and clearly**: Ambiguity, conflict, or unsafe behavior results in a compile-time error with helpful messaging.
+* **Readability first**: Syntax should reduce noise, but never at the cost of clarity or correctness.
+* **Zero-cost abstractions where possible**: High-level features should compile to minimal, predictable runtime code.
+* **Sensible defaults, override when needed**: Prefer defaults that are safe and ergonomic, but make overriding explicit and easy.
+
+---
+
+## ➕ **Recommended Additions**
+
+### 📚 **Type System & Behavior**
+
+* **Structural types by default**, **nominal types opt-in**:
+  Structural typing allows ergonomic data modeling; nominal typing enforces semantic boundaries where needed.
+
+* **Behavior (interfaces/traits) must be declared and implemented explicitly**:
+  No automatic implementation matching by shape for nominal types.
+
+* **Interfaces describe behavior, not data**:
+  Keeps interface semantics clear and distinct from type shape.
+
+* **Method resolution is explicit**:
+  No method is magically in scope — if it comes from an interface, it must be visible via implementation.
+
+---
+
+### 💬 **Error Handling & Semantics**
+
+* **No null**: Prefer sum types (`Option`, `Result`) for absence and errors.
+* **No exceptions**: Use return-based error types for control flow, following Rust’s lead.
+* **Match exhaustiveness required**: All enum matches must be exhaustive unless explicitly wildcarded (`_`).
+* **Pattern matching is a first-class citizen**: Encouraged for handling enums, destructuring, and data transformation.
+* **Function calls are predictable**: No overloads, no default arguments unless clearly defined.
+
+---
+
+### 🔍 **Clarity in Data and Code**
+
+* **Data shapes and types are transparent**: Compiler errors and documentation should always reveal full type shape where relevant.
+* **No hidden control flow**: No implicit async, no magic callbacks — concurrency and effects must be visible.
+* **Imports are explicit**: No magic prelude or invisible globals.
+  
+ ⚠️ **Design Exception — Safe Concurrency**
+ The only area where the language may perform work without syntactic indication is **concurrency** — but only when all the following apply:
+
+ * The result is provably deterministic
+ * The computation is isolated from shared state
+ * Execution order does not affect program meaning
+
+ In these cases, the compiler may run tasks in parallel — not as magic, but as a **verified optimization** that does not alter semantics.
+
+“You don’t *need* to ask for concurrency, unless the compiler can’t guarantee it for you.”
+
+---
+
+### 🧪 **Tooling & Safety**
+
+* **Linter required in standard toolchain**: Enforce formatting, naming, and hygiene rules out of the box.
+* **Fast feedback loops**: Compiler and tooling must emphasize short cycle times and clear diagnostics.
+* **Support for static analysis and generics must be consistent**: Type inference should work predictably across both.
+
+---
+
+## 🧭 Optional “Aesthetic” Rules
+
+These can guide design without being rigid:
+
+* **Minimal syntax, maximal meaning**: Every construct must pull its weight.
+* **Orthogonality over magic**: Few constructs, many combinations. Avoid one-off keywords or constructs.
+* **Avoid cleverness**: Favor straightforward constructs that scale with complexity, not against it.
+
+---
 
 Where uncertain:  
 👉 **"What would Python do, but stricter and stronger?"**

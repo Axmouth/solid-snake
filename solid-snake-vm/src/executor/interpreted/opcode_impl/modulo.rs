@@ -11,6 +11,7 @@ macro_rules! impl_mod_instruction {
             $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],
@@ -60,6 +61,7 @@ macro_rules! impl_mod_float_instruction {
             $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],

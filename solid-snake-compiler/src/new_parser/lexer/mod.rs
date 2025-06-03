@@ -10,6 +10,7 @@ use crate::new_parser::lexer::logos_token::LogosToken;
 use crate::new_parser::lexer::token::{Spanned, Token};
 
 /// Convert source into `Vec<Spanned<Token>>`, preserving span info.
+#[inline(always)]
 pub fn lex(source: &str) -> Vec<Result<Spanned<Token>, LexingError>> {
     let mut out = vec![];
     let mut lex = LogosToken::lexer(source);
@@ -32,7 +33,6 @@ pub fn lex(source: &str) -> Vec<Result<Spanned<Token>, LexingError>> {
                     LogosToken::False => Token::Bool(false),
                     LogosToken::Identifier(id) => Token::Identifier(id),
                     LogosToken::Comment(c) => Token::Comment(c),
-
                     LogosToken::Let => Token::Let,
                     LogosToken::If => Token::If,
                     LogosToken::Elif => Token::Elif,
@@ -40,13 +40,16 @@ pub fn lex(source: &str) -> Vec<Result<Spanned<Token>, LexingError>> {
                     LogosToken::While => Token::While,
                     LogosToken::Break => Token::Break,
                     LogosToken::Continue => Token::Continue,
-
+                    LogosToken::TypeDef => Token::TypeDef,
                     LogosToken::IntType => Token::IntType,
+                    LogosToken::UIntType => Token::UIntType,
                     LogosToken::BoolType => Token::BoolType,
                     LogosToken::FloatType => Token::FloatType,
+                    LogosToken::StringType => Token::StringType,
+                    LogosToken::Enum => Token::Enum,
                     LogosToken::List => Token::List,
                     LogosToken::Array => Token::Array,
-
+                    LogosToken::ByteType => Token::ByteType,
                     LogosToken::EqEq => Token::EqEq,
                     LogosToken::NotEq => Token::NotEq,
                     LogosToken::Gte => Token::Gte,
@@ -64,9 +67,8 @@ pub fn lex(source: &str) -> Vec<Result<Spanned<Token>, LexingError>> {
                     LogosToken::Or => Token::Or,
                     LogosToken::LShift => Token::LShift,
                     LogosToken::RShift => Token::RShift,
-                    LogosToken::BitAnd => Token::BitAnd,
-                    LogosToken::BitOr => Token::BitOr,
-
+                    LogosToken::Ampersand => Token::Ampersand,
+                    LogosToken::Pipe => Token::Pipe,
                     LogosToken::LParen => Token::LParen,
                     LogosToken::RParen => Token::RParen,
                     LogosToken::LBracket => Token::LBracket,
@@ -76,7 +78,6 @@ pub fn lex(source: &str) -> Vec<Result<Spanned<Token>, LexingError>> {
                     LogosToken::Colon => Token::Colon,
                     LogosToken::Comma => Token::Comma,
                     LogosToken::Dot => Token::Dot,
-
                     LogosToken::Indent => Token::Indent,
                     LogosToken::Dedent => Token::Dedent,
                     LogosToken::Newline => Token::Newline,
@@ -96,6 +97,7 @@ pub fn lex(source: &str) -> Vec<Result<Spanned<Token>, LexingError>> {
 mod tests {
     use super::logos_token::Extras;
     // TODO
+    // Add tests for any newly added tokens.
     // Hex / binary numbers	❌ Not supported yet	Add later if needed
     // Identifiers with Unicode	❌ Not supported yet	Might want to reject explicitly
     use super::*;
@@ -176,8 +178,8 @@ mod tests {
                 Token::Percent,
                 Token::LShift,
                 Token::RShift,
-                Token::BitAnd,
-                Token::BitOr,
+                Token::Ampersand,
+                Token::Pipe,
                 Token::LParen,
                 Token::RParen,
                 Token::LBracket,
@@ -507,6 +509,8 @@ x = x + 1
     #[test_case("while", Token::While)]
     #[test_case("break", Token::Break)]
     #[test_case("continue", Token::Continue)]
+    #[test_case("<<INDENT>>", Token::Indent)]
+    #[test_case("<<DEDENT>>", Token::Dedent)]
     fn test_keywords(input: &str, expected: Token) {
         let tokens = extract_kinds(lex(input));
         assert_eq!(tokens, vec![expected]);
@@ -539,8 +543,8 @@ x = x + 1
     #[test_case("not", Token::Not)]
     #[test_case("<<", Token::LShift)]
     #[test_case(">>", Token::RShift)]
-    #[test_case("&", Token::BitAnd)]
-    #[test_case("|", Token::BitOr)]
+    #[test_case("&", Token::Ampersand)]
+    #[test_case("|", Token::Pipe)]
     fn test_operators(input: &str, expected: Token) {
         let tokens = extract_kinds(lex(input));
         assert_eq!(tokens, vec![expected]);

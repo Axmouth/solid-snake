@@ -5,6 +5,7 @@ pub mod intermediate_pass1;
 pub mod new_parser;
 pub mod parser;
 pub mod preprocessor;
+#[cfg(test)]
 pub mod test_util;
 
 use std::{io::Read, process::exit};
@@ -91,7 +92,7 @@ fn main() {
                         .flat_map(DecodedInstruction::encode)
                         .collect::<Vec<u8>>();
 
-                    let mut vm = VmInterpretedExecutor::new();
+                    let mut vm = VmInterpretedExecutor::new(None);
                     dbg!(&constants);
                     vm.set_constants(constants);
 

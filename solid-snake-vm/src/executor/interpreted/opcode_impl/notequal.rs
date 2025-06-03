@@ -11,6 +11,7 @@ macro_rules! impl_notequal_instruction {
             $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             pub fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],

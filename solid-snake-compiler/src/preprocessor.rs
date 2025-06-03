@@ -3,13 +3,15 @@ use crate::{
     error_reporting::{CompileError, CompileErrorList},
 };
 
+pub const INDENT: &str = "<<INDENT>>";
+pub const DEDENT: &str = "<<DEDENT>>";
+
 #[derive(Debug)]
 pub struct PreprocessResult {
     pub original: String,
     pub transformed: String,
     pub rev_offset_map: Vec<Option<usize>>, // transformed → original
 }
-
 impl PreprocessResult {
     /// Map a span in the transformed code back to a span in the original source.
     pub fn map_span_back(
@@ -42,8 +44,8 @@ fn push_char_with_map(
 }
 
 pub fn preprocess_indentation(source: &str) -> Result<PreprocessResult, CompileErrorList> {
-    let mut transformed = String::new();
-    let mut rev_offset_map = Vec::new();
+    let mut transformed = String::with_capacity(source.len());
+    let mut rev_offset_map = Vec::with_capacity(source.len());
 
     let mut orig_index = 0;
     let mut indent_stack = vec![0];
@@ -54,13 +56,9 @@ pub fn preprocess_indentation(source: &str) -> Result<PreprocessResult, CompileE
         let line_num = i + 1;
         let line_start = orig_index;
         let line_len = line.len();
-        let raw_indent = line
-            .chars()
-            .take_while(|c| c.is_whitespace())
-            .collect::<String>();
         let trimmed = line.trim_start();
-
-        let current_indent = raw_indent.chars().map(|c| c.len_utf8()).sum::<usize>();
+        let current_indent = line.len() - trimmed.len();
+        let raw_indent = &line[..current_indent]; // slice only
 
         if trimmed.is_empty() || trimmed.starts_with('#') {
             for (i, c) in line.char_indices() {
@@ -100,24 +98,24 @@ pub fn preprocess_indentation(source: &str) -> Result<PreprocessResult, CompileE
 
         let last_indent = *indent_stack.last().unwrap();
 
-        if current_indent > last_indent {
-            indent_stack.push(current_indent);
-            for c in "<<INDENT>>\n".chars() {
-                transformed.push(c);
-                rev_offset_map.push(None); // synthetic
+        match current_indent.cmp(&last_indent) {
+            std::cmp::Ordering::Greater => {
+                indent_stack.push(current_indent);
+                transformed.push_str(INDENT);
+                rev_offset_map.extend(std::iter::repeat_n(None, INDENT.len())); // synthetic
             }
-        } else if current_indent < last_indent {
-            while let Some(&prev) = indent_stack.last() {
-                if prev > current_indent {
-                    indent_stack.pop();
-                    for c in "<<DEDENT>>\n".chars() {
-                        transformed.push(c);
-                        rev_offset_map.push(None); // synthetic
+            std::cmp::Ordering::Less => {
+                while let Some(&prev) = indent_stack.last() {
+                    if prev > current_indent {
+                        indent_stack.pop();
+                        transformed.push_str(DEDENT);
+                        rev_offset_map.extend(std::iter::repeat_n(None, DEDENT.len())); // synthetic
+                    } else {
+                        break;
                     }
-                } else {
-                    break;
                 }
             }
+            std::cmp::Ordering::Equal => {}
         }
 
         // Write trimmed part of line, map each character
@@ -134,14 +132,13 @@ pub fn preprocess_indentation(source: &str) -> Result<PreprocessResult, CompileE
 
     // Final dedents
     while indent_stack.len() > 1 {
+        debug_assert!(!indent_stack.is_empty(), "Indentation stack underflow");
         indent_stack.pop();
-        for c in "<<DEDENT>>\n".chars() {
-            transformed.push(c);
-            rev_offset_map.push(None); // synthetic
-        }
+        transformed.push_str(DEDENT);
+        rev_offset_map.extend(std::iter::repeat_n(None, DEDENT.len())); // synthetic
     }
 
-    if error_list.len() == 0 {
+    if error_list.is_empty() {
         Ok(PreprocessResult {
             original: source.to_string(),
             transformed,
@@ -154,12 +151,89 @@ pub fn preprocess_indentation(source: &str) -> Result<PreprocessResult, CompileE
 
 #[cfg(test)]
 mod tests {
-    use crate::error_reporting::CompileErrorKind;
+    use crate::{assert_text_eq, error_reporting::CompileErrorKind};
 
     use super::*;
 
     fn clean(input: &str) -> String {
         input.trim_matches('\n').to_string()
+    }
+
+    #[test]
+    fn test_no_indentation() {
+        let source = "a = 1\nb = 2\n";
+        let result = preprocess_indentation(source).unwrap();
+        assert!(!result.transformed.contains(INDENT));
+        assert!(!result.transformed.contains(DEDENT));
+        assert!(result.transformed.contains("a = 1"));
+        assert!(result.transformed.contains("b = 2"));
+    }
+
+    #[test]
+    fn test_multiple_dedents_in_row() {
+        let source = "\
+if x:
+  if y:
+    a = 1
+b = 2\n";
+
+        let result = preprocess_indentation(source).unwrap();
+        eprintln!("{}", result.transformed);
+        eprintln!("Rev map length: {}", result.rev_offset_map.len());
+        assert_text_eq!(result.transformed.matches(DEDENT).count(), 2);
+    }
+
+    #[test]
+    fn test_blank_line_inside_block() {
+        let source = "\
+if x:
+  a = 1
+  
+  b = 2";
+
+        let result = preprocess_indentation(source).unwrap();
+        eprintln!("{}", result.transformed);
+        eprintln!("Rev map length: {}", result.rev_offset_map.len());
+        assert!(result.transformed.contains("a = 1"));
+        assert!(result.transformed.contains("b = 2"));
+        // Ensure dedents are not inserted after blank lines
+        assert_text_eq!(result.transformed.matches(DEDENT).count(), 1);
+    }
+
+    #[test]
+    fn test_empty_blank_line_inside_block() {
+        let source = "\
+if x:
+  a = 1
+
+  b = 2";
+
+        let result = preprocess_indentation(source).unwrap();
+        eprintln!("{}", result.transformed);
+        eprintln!("Rev map length: {}", result.rev_offset_map.len());
+        assert!(result.transformed.contains("a = 1"));
+        assert!(result.transformed.contains("b = 2"));
+        // Ensure dedents are not inserted after blank lines
+        assert_text_eq!(result.transformed.matches(DEDENT).count(), 1);
+    }
+
+    #[test]
+    fn test_eof_inside_block() {
+        let source = "
+if x:
+  a = 1";
+
+        let result = preprocess_indentation(source).unwrap();
+        eprintln!("{}", result.transformed);
+        eprintln!("Rev map length: {}", result.rev_offset_map.len());
+        assert!(result.transformed.ends_with(DEDENT));
+    }
+
+    #[test]
+    fn test_unicode_indent_edge_case() {
+        let source = "if x:\n🚀🚀a = 1\n";
+        let result = preprocess_indentation(source).unwrap();
+        assert!(result.transformed.contains("a = 1"));
     }
 
     #[test]
@@ -174,20 +248,19 @@ if x:
 
         let result = preprocess_indentation(&source).unwrap();
 
-        assert!(result.transformed.contains("<<INDENT>>"));
-        assert!(result.transformed.contains("<<DEDENT>>"));
+        assert!(result.transformed.contains(INDENT));
+        assert!(result.transformed.contains(DEDENT));
 
         let expected = clean(
             r#"
 if x:
-<<INDENT>>
-y = 1
+<<INDENT>>y = 1
 z = 2
 <<DEDENT>>
 "#,
         );
 
-        assert_eq!(clean(&result.transformed), expected);
+        assert_text_eq!(clean(&result.transformed), expected);
     }
 
     #[test]
@@ -208,7 +281,7 @@ if x:
 
         let (orig_start, orig_end) = result.map_span_back(start, end).unwrap();
 
-        assert_eq!(&source[orig_start..orig_end], "42");
+        assert_text_eq!(&source[orig_start..orig_end], "42");
     }
 
     #[test]
@@ -241,24 +314,21 @@ if x:
         let expected = clean(
             r#"
 if x:
-<<INDENT>>
-if y:
-<<INDENT>>
-z = 1
-<<DEDENT>>
-<<DEDENT>>
+<<INDENT>>if y:
+<<INDENT>>z = 1
+<<DEDENT>><<DEDENT>>
 "#,
         );
 
-        assert_eq!(clean(&result.transformed), expected);
+        assert_text_eq!(clean(&result.transformed), expected);
     }
 
     #[test]
     fn test_simple_indent_and_dedent() {
         let source = "if x:\n  y = 1\nz = 2\n";
         let result = preprocess_indentation(source).unwrap();
-        assert!(result.transformed.contains("<<INDENT>>"));
-        assert!(result.transformed.contains("<<DEDENT>>"));
+        assert!(result.transformed.contains(INDENT));
+        assert!(result.transformed.contains(DEDENT));
         assert!(result.transformed.contains("y = 1"));
         assert!(result.transformed.contains("z = 2"));
     }
@@ -280,26 +350,27 @@ z = 1
         let source = "if x:\n  if y:\n    z = 1\n  w = 2\nu = 3\n";
         let result = preprocess_indentation(source).unwrap();
         let transformed = &result.transformed;
-        assert_eq!(transformed.matches("<<INDENT>>").count(), 2);
-        assert_eq!(transformed.matches("<<DEDENT>>").count(), 2);
+        assert_text_eq!(transformed.matches(INDENT).count(), 2);
+        assert_text_eq!(transformed.matches(DEDENT).count(), 2);
     }
 
     #[test]
     fn test_dedent_with_trailing_blank_lines() {
         let source = "if x:\n  y = 1\n\n\n";
         let result = preprocess_indentation(source).unwrap();
-        assert!(result.transformed.ends_with("<<DEDENT>>\n"));
+        assert!(result.transformed.ends_with(DEDENT));
     }
 
     #[test]
     fn test_artificial_token_not_mapped() {
         let source = "if x:\n  y = 1\n";
         let result = preprocess_indentation(source).unwrap();
-        let idx = result.transformed.find("<<INDENT>>").unwrap();
-        assert_eq!(
-            result.rev_offset_map.iter().position(|&v| v == Some(idx)),
-            None
-        );
+        let idx = result.transformed.find(INDENT).unwrap();
+        let actual_opt = result.rev_offset_map.iter().position(|&v| v == Some(idx));
+        if let Some(actual) = &actual_opt {
+            eprintln!("Expected None, got Some({})", actual);
+            assert!(actual_opt.is_none());
+        }
     }
 
     #[test]
@@ -309,22 +380,22 @@ z = 1
         let start = result.transformed.find("y = 1").unwrap();
         let end = start + "y = 1".len();
         let (orig_start, orig_end) = result.map_span_back(start, end).unwrap();
-        assert_eq!(&result.original[orig_start..orig_end], "y = 1");
+        assert_text_eq!(&result.original[orig_start..orig_end], "y = 1");
     }
 
     #[test]
     fn test_deep_indentation() {
         let source = "if x:\n  if y:\n    if z:\n      a = 1\n";
         let result = preprocess_indentation(source).unwrap();
-        assert_eq!(result.transformed.matches("<<INDENT>>").count(), 3);
-        assert_eq!(result.transformed.matches("<<DEDENT>>").count(), 3);
+        assert_text_eq!(result.transformed.matches(INDENT).count(), 3);
+        assert_text_eq!(result.transformed.matches(DEDENT).count(), 3);
     }
 
     #[test]
     fn test_comment_only_lines() {
         let source = "# comment\nif x:\n  # inner comment\n  y = 1\n";
         let result = preprocess_indentation(source).unwrap();
-        assert!(result.transformed.contains("<<INDENT>>"));
+        assert!(result.transformed.contains(INDENT));
         assert!(!result.transformed.contains("<<DEDENT>>\n#"));
     }
 
@@ -357,7 +428,7 @@ z = 1
         let start = result.transformed.find("1").unwrap();
         let end = start + 1;
         let (orig_start, orig_end) = result.map_span_back(start, end).unwrap();
-        assert_eq!(&result.original[orig_start..orig_end], "1");
+        assert_text_eq!(&result.original[orig_start..orig_end], "1");
     }
 
     #[test]
@@ -374,7 +445,7 @@ z = 1
             .map_span_back(start, end)
             .expect("span mapping should succeed");
 
-        assert_eq!(&result.original[orig_start..orig_end], "3");
+        assert_text_eq!(&result.original[orig_start..orig_end], "3");
     }
 
     #[test]
@@ -392,7 +463,7 @@ z = 1
             .map_span_back(span_start, span_end)
             .expect("span mapping should succeed");
 
-        assert_eq!(&result.original[orig_start..orig_end], "3");
+        assert_text_eq!(&result.original[orig_start..orig_end], "3");
 
         // 🔍 Extra check: no None mappings in the neighborhood of '3'
         for offset in span_start.saturating_sub(3)..=span_end + 3 {
@@ -407,8 +478,7 @@ z = 1
                 let synthetic_slice =
                     &transformed[offset..offset.saturating_add(10).min(transformed.len())];
                 assert!(
-                    synthetic_slice.starts_with("<<INDENT>>")
-                        || synthetic_slice.starts_with("<<DEDENT>>"),
+                    synthetic_slice.starts_with(INDENT) || synthetic_slice.starts_with(DEDENT),
                     "Unexpected None in offset map at {}: '{}'",
                     offset,
                     synthetic_slice
@@ -436,7 +506,7 @@ z = 1
         );
         eprintln!("Expected slice: 'x'");
 
-        assert_eq!(&result.original[orig_start..orig_start + 1], "x");
+        assert_text_eq!(&result.original[orig_start..orig_start + 1], "x");
     }
 
     #[test]
@@ -456,7 +526,7 @@ let a = 🧠 + x + ☃️  # x is undefined here
             .expect("span mapping should succeed");
 
         // Confirm the span maps to 'x' in the original source
-        assert_eq!(&result.original[orig_start..orig_end], "x");
+        assert_text_eq!(&result.original[orig_start..orig_end], "x");
 
         // Confirm that visual column count places caret correctly
         let line_start = result.original[..orig_start]
@@ -480,6 +550,6 @@ let a = 🧠 + x + ☃️  # x is undefined here
         println!("caret line : {}", caret_line);
 
         // Just ensure caret is under the 'x'
-        assert_eq!(line.chars().nth(visual_col).unwrap(), 'x');
+        assert_text_eq!(line.chars().nth(visual_col).unwrap(), 'x');
     }
 }

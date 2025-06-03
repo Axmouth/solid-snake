@@ -76,11 +76,17 @@ pub fn build_ast(
                 let initializer = match inner.next() {
                     Some(expr_or_eq) => {
                         if expr_or_eq.as_rule() == Rule::Expr {
-                            Some(handle_error_soft!(parse_expr(expr_or_eq), error_list))
+                            Some(handle_error_soft!(
+                                parse_expr(expr_or_eq, statement_id),
+                                error_list
+                            ))
                         } else {
                             // Probably matched "=" → skip it
                             let expr = inner.next().expect("Expected expression after '='");
-                            Some(handle_error_soft!(parse_expr(expr), error_list))
+                            Some(handle_error_soft!(
+                                parse_expr(expr, statement_id),
+                                error_list
+                            ))
                         }
                     }
                     None => None,
@@ -110,7 +116,7 @@ pub fn build_ast(
                     CompileError::unexpected_eof(Span::from_pair(&pair))
                 );
 
-                let expr = handle_error_soft!(parse_expr(expr_pair), error_list);
+                let expr = handle_error_soft!(parse_expr(expr_pair, statement_id), error_list);
                 let span = to_span(pair.as_span());
                 let name_span = to_span(next_pair.as_span());
                 statement_id += 1;
@@ -138,17 +144,24 @@ pub fn build_ast(
                                 error_list,
                                 CompileError::unexpected_eof(Span::from_pair(&part))
                             );
-                            let condition = handle_error_soft!(parse_expr(cond_pair), error_list);
+                            let condition =
+                                handle_error_soft!(parse_expr(cond_pair, statement_id), error_list);
                             let block_pair = expect_or_push!(
                                 part_inner.next(),
                                 error_list,
                                 CompileError::unexpected_eof(Span::from_pair(&part))
                             );
+                            statement_id += 1;
+                            let header_id = statement_id;
                             let (body, suberrors, new_statement_id) =
                                 build_ast(block_pair.into_inner(), statement_id);
                             statement_id = new_statement_id;
                             error_list.extend(suberrors);
-                            let group = IfGroup { condition, body };
+                            let group = IfGroup {
+                                condition,
+                                body,
+                                statement_id: header_id,
+                            };
 
                             if part.as_rule() == Rule::IfBlock {
                                 if_block = Some(group);
@@ -162,13 +175,16 @@ pub fn build_ast(
                                 error_list,
                                 CompileError::unexpected_eof(Span::from_pair(&part))
                             );
+                            statement_id += 1;
+                            let header_id = statement_id;
                             let (body, suberrors, new_statement_id) =
                                 build_ast(block_pair.into_inner(), statement_id);
                             statement_id = new_statement_id;
                             error_list.extend(suberrors);
                             else_block = Some(IfGroup {
-                                condition: Expr::bool(true, Span::from_pair(&part)), // dummy
+                                condition: Expr::bool(true, Span::from_pair(&part), statement_id), // dummy
                                 body,
+                                statement_id: header_id,
                             });
                         }
                         _ => {
@@ -199,7 +215,7 @@ pub fn build_ast(
                     error_list,
                     CompileError::unexpected_eof(Span::from_pair(&pair))
                 );
-                let condition = handle_error_soft!(parse_expr(cond_pair), error_list);
+                let condition = handle_error_soft!(parse_expr(cond_pair, statement_id), error_list);
                 statement_id += 1;
                 let while_statement_id = statement_id;
                 statement_id += 1;
@@ -278,7 +294,10 @@ pub fn build_ast(
     (ast, error_list, statement_id)
 }
 
-fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorList> {
+fn parse_expr(
+    pair: pest::iterators::Pair<Rule>,
+    statement_id: usize,
+) -> Result<Expr, CompileErrorList> {
     let span = Span::from_pair(&pair);
     match pair.as_rule() {
         Rule::Int => pair
@@ -290,7 +309,7 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
                     Span::from_pair(&pair),
                 ))
             })
-            .map(|val| Expr::number(val, span)),
+            .map(|val| Expr::number(val, span, statement_id)),
         Rule::Float => pair
             .as_str()
             .parse()
@@ -300,7 +319,7 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
                     Span::from_pair(&pair),
                 ))
             })
-            .map(|val| Expr::float(val, span)),
+            .map(|val| Expr::float(val, span, statement_id)),
         Rule::Number => pair
             .as_str()
             .parse()
@@ -310,7 +329,7 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
                     Span::from_pair(&pair),
                 ))
             })
-            .map(|val| Expr::number(val, span)),
+            .map(|val| Expr::number(val, span, statement_id)),
         Rule::BoolValue => pair
             .as_str()
             .parse()
@@ -320,9 +339,13 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
                     Span::from_pair(&pair),
                 ))
             })
-            .map(|val| Expr::bool(val, span)),
-        Rule::Identifier => Ok(Expr::variable(pair.as_str().to_string(), span)),
-        Rule::String => Ok(Expr::string(pair.as_str().to_string(), span)),
+            .map(|val| Expr::bool(val, span, statement_id)),
+        Rule::Identifier => Ok(Expr::variable(
+            pair.as_str().to_string(),
+            span,
+            statement_id,
+        )),
+        Rule::String => Ok(Expr::string(pair.as_str().to_string(), span, statement_id)),
         Rule::LogicalOr
         | Rule::LogicalAnd
         | Rule::Equality
@@ -332,7 +355,7 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
             let mut inner = pair.into_inner();
             // TODO less early fail?
             let inner_next = handle_missing!(inner.next(), span)?;
-            let mut left = parse_expr(inner_next)?;
+            let mut left = parse_expr(inner_next, statement_id)?;
 
             fn next_non_comment<'a>(
                 iter: &mut pest::iterators::Pairs<'a, Rule>,
@@ -342,9 +365,15 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
             while let Some(op) = next_non_comment(&mut inner) {
                 // TODO less early fail?
                 let right_pair = handle_missing!(next_non_comment(&mut inner), span)?;
-                let right = parse_expr(right_pair)?;
+                let right = parse_expr(right_pair, statement_id)?;
                 let op_span = Span::from_pair(&op);
-                left = Expr::bin_op(left, right, parse_bin_op(op.as_str(), op_span)?, span);
+                left = Expr::bin_op(
+                    left,
+                    right,
+                    parse_bin_op(op.as_str(), op_span)?,
+                    span,
+                    statement_id,
+                );
             }
 
             Ok(left)
@@ -364,17 +393,23 @@ fn parse_expr(pair: pest::iterators::Pair<Rule>) -> Result<Expr, CompileErrorLis
                 }
             }
 
-            let mut expr = parse_expr(handle_missing!(inner.next(), span)?)?;
+            let mut expr = parse_expr(handle_missing!(inner.next(), span)?, statement_id)?;
             for (op, un_span) in unary_ops.into_iter().rev() {
                 let expr_span = expr.span;
-                expr = Expr::un_op(expr, parse_un_op(&op, un_span)?, expr_span);
+                expr = Expr::un_op(expr, parse_un_op(&op, un_span)?, expr_span, statement_id);
             }
             Ok(expr)
         }
-        Rule::Primary => parse_expr(handle_missing!(pair.into_inner().next(), span)?),
+        Rule::Primary => parse_expr(
+            handle_missing!(pair.into_inner().next(), span)?,
+            statement_id,
+        ),
         Rule::Expr => {
             // Just forward the call to its only child
-            parse_expr(handle_missing!(pair.into_inner().next(), span)?)
+            parse_expr(
+                handle_missing!(pair.into_inner().next(), span)?,
+                statement_id,
+            )
         }
         _ => panic!("Unhandled expr rule: {:?}", pair.as_rule()),
     }

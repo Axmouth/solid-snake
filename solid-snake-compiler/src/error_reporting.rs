@@ -138,6 +138,14 @@ pub struct CompileErrorList {
     errors: Vec<CompileError>,
 }
 
+impl FromIterator<CompileError> for CompileErrorList {
+    fn from_iter<I: IntoIterator<Item = CompileError>>(iter: I) -> Self {
+        CompileErrorList {
+            errors: iter.into_iter().collect(),
+        }
+    }
+}
+
 impl CompileErrorList {
     pub fn new() -> Self {
         Self { errors: Vec::new() }

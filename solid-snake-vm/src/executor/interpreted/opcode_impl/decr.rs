@@ -12,6 +12,7 @@ macro_rules! impl_incr_instruction {
             $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
 
             #[inline(always)]
+            #[allow(non_snake_case)]
             fn [<$opcode handler>](
                 executor: &mut VmInterpretedExecutor,
                 args: [<$opcode Args>],
@@ -56,6 +57,7 @@ macro_rules! impl_incr_float_instruction {
             $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
 
         #[inline(always)]
+        #[allow(non_snake_case)]
         fn [<$opcode handler>](
             executor: &mut VmInterpretedExecutor,
             args: [<$opcode Args>],

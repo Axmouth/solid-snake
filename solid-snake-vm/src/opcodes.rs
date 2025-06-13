@@ -13,6 +13,7 @@ use crate::executor::interpreted::{
     opcode_impl::all::*,
 };
 use crate::{RegisterType, VmInterpretedExecutor};
+use crate::docs::InstructionDocsEntry;
 
 // TODO: autogenerate docs?
 #[derive(Debug, DecodedInstructionEnum, TryFromPrimitive, EnumString, PartialEq, Clone, Copy)]
@@ -524,4 +525,10 @@ pub enum OpCode {
     // TODO : import for bytecode modules
     // TODO : import for ffi extensions
     // TODO : threading (fork, join?)
+}
+
+impl OpCode {
+    pub fn get_docs() -> Vec<crate::docs::InstructionDocsEntry> {
+        Self::variant_iter().map(Self::get_doc).collect::<Vec<_>>()
+    }
 }

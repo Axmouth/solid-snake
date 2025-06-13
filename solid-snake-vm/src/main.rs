@@ -1,4 +1,4 @@
-use std::{error::Error, time::Instant};
+use std::{error::Error, fs::File, io::Write, time::Instant};
 
 use bytecode_parser::parse_byte_code_from_txt;
 use executor::{
@@ -13,13 +13,23 @@ use opcodes::OpCode;
 use rustc_version_runtime::version;
 use sysinfo::{System, get_current_pid};
 
+use crate::docs::Docs;
+
 mod asm_internal;
 mod bytecode_parser;
+mod docs;
 mod executor;
 mod opcodes;
 
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
+
+    let docs = Docs {
+        instructions: OpCode::get_docs(),
+    };
+
+    let mut file = File::create("INSTRUCTIONS.md")?;
+    file.write_all(docs.to_markdown().as_bytes())?;
 
     println!("🐍 Solid Snake starting..");
 

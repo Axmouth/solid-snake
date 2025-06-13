@@ -287,17 +287,47 @@ pub trait InstructionArgs: Sized {
 
 #[macro_export]
 macro_rules! define_instruction {
+    // --- Rich form with doc metadata and flags ---
     (
         $name:ident,
-        ($($arg:ty),*),
+        [ $( ($arg_name:ident : $arg_ty:ty, $arg_desc:expr) ),* ],
+        $commutative:expr,
         $handler:expr
     ) => {
         paste::paste! {
             pub struct [<$name Instruction>];
-            pub type [<$name Args>] = ($($arg,)*);
+            pub type [<$name Args>] = ($($arg_ty,)*);
 
             impl [<$name Instruction>] {
                 pub const OPCODE: $crate::OpCode = $crate::OpCode::$name;
+
+                #[allow(dead_code)]
+                pub fn docs() -> $crate::docs::InstructionDocsEntry {
+                    pub use $crate::docs::{
+                        ArgDocsEntry,
+                        Docs,
+                        GetArgType,
+                        InstructionDocsEntry,
+                    };
+
+                    let args: Vec<ArgDocsEntry> = vec![
+                        $(
+                            ArgDocsEntry {
+                                name: stringify!($arg_name).to_string(),
+                                description: $arg_desc.to_string(),
+                                typ: <$arg_ty as GetArgType>::arg_type(),
+                            }
+                        ),*
+                    ];
+
+                    InstructionDocsEntry {
+                        name: stringify!($name).to_string(),
+                        description: format!("Instruction for {}", stringify!($name)),
+                        args,
+                        opcode: Self::OPCODE as u16,
+                        commutative: $commutative,
+                    }
+                }
 
                 #[allow(dead_code)]
                 #[inline]
@@ -365,6 +395,22 @@ macro_rules! define_instruction {
                     [<$name Instruction>]::decoded_handler(executor, self.args)
                 }
             }
+        }
+    };
+    
+    // --- Basic form with just types (no names/descriptions) ---
+    (
+        $name:ident,
+        ( $( $arg_ty:ty ),* ),
+        $handler:expr
+    ) => {
+        paste::paste! {
+            $crate::define_instruction!(
+                $name,
+                [ $( ([<$arg_ty>] : $arg_ty, concat!("Argument of type ", stringify!($arg_ty))) ),* ],
+                false,
+                $handler
+            );
         }
     };
 }

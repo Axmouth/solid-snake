@@ -62,9 +62,9 @@ struct ExecutableInstruction {
 
 ### 🧠 **Design Benefits**
 
-* No need for new opcodes or enum variants
-* Fully safe in Rust
-* Fusion logic isolated in preprocessing; VM stays minimal
+* No need for new opcodes or enum variants (Would bloat the instruction set extremely due to huge number of variants)
+* Fully safe in Rust, compared to native JIT
+* Fusion logic isolated in preprocessing, VM stays minimal
 * Allows performance tuning without altering base instruction set
 
 ---

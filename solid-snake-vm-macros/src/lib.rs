@@ -175,6 +175,15 @@ pub fn derive_decoded_instruction_enum(input: TokenStream) -> TokenStream {
         }
     });
 
+    let get_doc_arms = variants.iter().map(|variant| {
+        let ident = &variant.ident;
+        let instr_ident = syn::Ident::new(&format!("{}Instruction", ident), ident.span());
+
+        quote! {
+            OpCode::#ident => #instr_ident::docs(),
+        }
+    });
+
     // TODO encode for Decoded (turn to bytecode)
     // TODO auto generate Unprocessed to Decoded
     // TODO .. better names?
@@ -203,6 +212,12 @@ pub fn derive_decoded_instruction_enum(input: TokenStream) -> TokenStream {
             pub fn exec_fn(self, executor: &mut VmInterpretedExecutor, bytes: &[u8]) -> Result<(), VmExecutionError> {
                 match self {
                     #(#op_code_handler_arms)*
+                }
+            }
+
+            pub fn get_doc(self) -> InstructionDocsEntry {
+                match self {
+                    #(#get_doc_arms)*
                 }
             }
         }

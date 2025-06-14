@@ -173,7 +173,7 @@ mod tests {
     fn instructions_docs_are_up_to_date() {
         use std::fs;
 
-        let expected = fs::read_to_string("../INSTRUCTIONS.md").expect("Missing INSTRUCTIONS.md");
+        let expected = fs::read_to_string("INSTRUCTIONS.md").expect("Missing INSTRUCTIONS.md");
         let current = {
             let docs = Docs {
                 instructions: OpCode::get_docs(),
@@ -190,7 +190,7 @@ mod tests {
     fn instruction_docs_json() {
         use std::fs;
 
-        let expected = fs::read_to_string("../docs.json").expect("Missing docs.json");
+        let expected = fs::read_to_string("docs.json").expect("Missing docs.json");
         let current = {
             let docs = Docs {
                 instructions: OpCode::get_docs(),

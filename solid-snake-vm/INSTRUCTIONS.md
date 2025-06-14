@@ -14,8 +14,8 @@ Jumps to the target address if the register is zero (false).
 
 ### Arguments
 
-- **target**: Bytecode address(byte offset) to jump to (Type: `U64`)
-- **reg**: Register to check (Type: `Register`)
+- **target**: Bytecode address(byte offset) to jump to (Type: `U64`, Bytes: `8`)
+- **reg**: Register to check (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -34,8 +34,8 @@ Jumps to the target address if the register is non-zero (true).
 
 ### Arguments
 
-- **target**: Bytecode address(byte offset) to jump to (Type: `U64`)
-- **reg**: Register to check (Type: `Register`)
+- **target**: Bytecode address(byte offset) to jump to (Type: `U64`, Bytes: `8`)
+- **reg**: Register to check (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -54,7 +54,7 @@ Unconditionally jumps to the specified bytecode address.
 
 ### Arguments
 
-- **target**: Bytecode address(byte offset) to jump to (Type: `U64`)
+- **target**: Bytecode address(byte offset) to jump to (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -73,8 +73,8 @@ Loads a u8 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -93,8 +93,8 @@ Loads a u16 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -113,8 +113,8 @@ Loads a u32 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -133,8 +133,8 @@ Loads a u64 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -153,8 +153,8 @@ Loads a i8 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -173,8 +173,8 @@ Loads a i16 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -193,8 +193,8 @@ Loads a i32 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -213,8 +213,8 @@ Loads a i64 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -233,8 +233,8 @@ Loads a f32 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -253,8 +253,8 @@ Loads a f64 value from memory at address stored in a register.
 
 ### Arguments
 
-- **reg_ptr**: Register holding memory address (Type: `Register`)
-- **dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`, Bytes: `1`)
+- **dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -273,9 +273,9 @@ Loads a u8 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -294,9 +294,9 @@ Loads a u16 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -315,9 +315,9 @@ Loads a u32 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -336,9 +336,9 @@ Loads a u64 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -357,9 +357,9 @@ Loads a i8 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -378,9 +378,9 @@ Loads a i16 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -399,9 +399,9 @@ Loads a i32 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -420,9 +420,9 @@ Loads a i64 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -441,9 +441,9 @@ Loads a f32 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -462,9 +462,9 @@ Loads a f64 value from a memory section with a runtime-computed offset.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **reg_ptr**: Register holding section index (Type: `Register`)
-- **reg_offset**: Register holding byte offset within section (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **reg_ptr**: Register holding section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -483,8 +483,8 @@ Loads an immediate u8 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `U8`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `U8`, Bytes: `1`)
 
 ### Tags
 
@@ -503,8 +503,8 @@ Loads an immediate u16 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `U16`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `U16`, Bytes: `2`)
 
 ### Tags
 
@@ -523,8 +523,8 @@ Loads an immediate u32 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `U32`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `U32`, Bytes: `4`)
 
 ### Tags
 
@@ -543,8 +543,8 @@ Loads an immediate u64 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `U64`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -563,8 +563,8 @@ Loads an immediate i8 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `I8`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `I8`, Bytes: `1`)
 
 ### Tags
 
@@ -583,8 +583,8 @@ Loads an immediate i16 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `I16`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `I16`, Bytes: `2`)
 
 ### Tags
 
@@ -603,8 +603,8 @@ Loads an immediate i32 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `I32`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `I32`, Bytes: `4`)
 
 ### Tags
 
@@ -623,8 +623,8 @@ Loads an immediate i64 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `I64`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `I64`, Bytes: `8`)
 
 ### Tags
 
@@ -643,8 +643,8 @@ Loads an immediate f32 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `F32`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `F32`, Bytes: `4`)
 
 ### Tags
 
@@ -663,8 +663,8 @@ Loads an immediate f64 value into the given register.
 
 ### Arguments
 
-- **reg**: Target register to store the value (Type: `Register`)
-- **val**: Immediate value to load (Type: `F64`)
+- **reg**: Target register to store the value (Type: `Register`, Bytes: `1`)
+- **val**: Immediate value to load (Type: `F64`, Bytes: `8`)
 
 ### Tags
 
@@ -683,8 +683,8 @@ Loads a u8 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -703,8 +703,8 @@ Loads a u16 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -723,8 +723,8 @@ Loads a u32 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -743,8 +743,8 @@ Loads a u64 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -763,8 +763,8 @@ Loads a i8 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -783,8 +783,8 @@ Loads a i16 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -803,8 +803,8 @@ Loads a i32 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -823,8 +823,8 @@ Loads a i64 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -843,8 +843,8 @@ Loads a f32 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -863,8 +863,8 @@ Loads a f64 value from the specified immediate memory address.
 
 ### Arguments
 
-- **reg_dest**: Target register to store the loaded value (Type: `Register`)
-- **addr**: Immediate memory address to read from (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`, Bytes: `1`)
+- **addr**: Immediate memory address to read from (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -883,9 +883,9 @@ Stores a u8 value from `reg_value` into the heap section at the index in `reg_pt
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -903,9 +903,9 @@ Stores a u16 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -923,9 +923,9 @@ Stores a u32 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -943,9 +943,9 @@ Stores a u64 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -963,9 +963,9 @@ Stores a i8 value from `reg_value` into the heap section at the index in `reg_pt
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -983,9 +983,9 @@ Stores a i16 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1003,9 +1003,9 @@ Stores a i32 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1023,9 +1023,9 @@ Stores a i64 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1043,9 +1043,9 @@ Stores a f32 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1063,9 +1063,9 @@ Stores a f64 value from `reg_value` into the heap section at the index in `reg_p
 
 ### Arguments
 
-- **reg_ptr**: Register containing the target section index (Type: `Register`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1083,9 +1083,9 @@ Stores a u8 value from `reg_value` into the heap section at immediate index `sec
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1103,9 +1103,9 @@ Stores a u16 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1123,9 +1123,9 @@ Stores a u32 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1143,9 +1143,9 @@ Stores a u64 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1163,9 +1163,9 @@ Stores a i8 value from `reg_value` into the heap section at immediate index `sec
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1183,9 +1183,9 @@ Stores a i16 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1203,9 +1203,9 @@ Stores a i32 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1223,9 +1223,9 @@ Stores a i64 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1243,9 +1243,9 @@ Stores a f32 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1263,9 +1263,9 @@ Stores a f64 value from `reg_value` into the heap section at immediate index `se
 
 ### Arguments
 
-- **section_idx**: Immediate index of the heap section (Type: `U64`)
-- **reg_value**: Register containing the value to store (Type: `Register`)
-- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`, Bytes: `8`)
+- **reg_value**: Register containing the value to store (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1283,9 +1283,9 @@ Performs logical && on the truthiness of two registers.
 
 ### Arguments
 
-- **dest**: Register to store the result (0 or 1) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Register to store the result (0 or 1) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1304,9 +1304,9 @@ Performs logical || on the truthiness of two registers.
 
 ### Arguments
 
-- **dest**: Register to store the result (0 or 1) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Register to store the result (0 or 1) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1325,8 +1325,8 @@ Performs logical negation (!), storing 1 if the input is zero, else 0.
 
 ### Arguments
 
-- **dest**: Target register to store result (0 or 1) (Type: `Register`)
-- **source**: Register containing value to logically negate (Type: `Register`)
+- **dest**: Target register to store result (0 or 1) (Type: `Register`, Bytes: `1`)
+- **source**: Register containing value to logically negate (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1345,9 +1345,9 @@ Performs logical ^ on the truthiness of two registers.
 
 ### Arguments
 
-- **dest**: Register to store the result (0 or 1) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Register to store the result (0 or 1) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1366,9 +1366,9 @@ Adds two u8 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1388,9 +1388,9 @@ Adds two u16 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1410,9 +1410,9 @@ Adds two u32 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1432,9 +1432,9 @@ Adds two u64 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1454,9 +1454,9 @@ Adds two i8 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1476,9 +1476,9 @@ Adds two i16 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1498,9 +1498,9 @@ Adds two i32 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1520,9 +1520,9 @@ Adds two i64 registers and stores the result in the destination register.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1542,9 +1542,9 @@ Adds two f32 floating-point registers and stores the result in the destination r
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1564,9 +1564,9 @@ Adds two f64 floating-point registers and stores the result in the destination r
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: First operand (Type: `Register`)
-- **reg2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1586,9 +1586,9 @@ Subtracts two u8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1606,9 +1606,9 @@ Subtracts two u16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1626,9 +1626,9 @@ Subtracts two u32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1646,9 +1646,9 @@ Subtracts two u64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1666,9 +1666,9 @@ Subtracts two i8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1686,9 +1686,9 @@ Subtracts two i16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1706,9 +1706,9 @@ Subtracts two i32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1726,9 +1726,9 @@ Subtracts two i64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1746,9 +1746,9 @@ Subtracts two f32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1766,9 +1766,9 @@ Subtracts two f64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (minuend) (Type: `Register`)
-- **reg2**: Second operand register (subtrahend) (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (minuend) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1786,9 +1786,9 @@ Multiplies two u8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1806,9 +1806,9 @@ Multiplies two u16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1826,9 +1826,9 @@ Multiplies two u32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1846,9 +1846,9 @@ Multiplies two u64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1866,9 +1866,9 @@ Multiplies two i8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1886,9 +1886,9 @@ Multiplies two i16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1906,9 +1906,9 @@ Multiplies two i32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1926,9 +1926,9 @@ Multiplies two i64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1946,9 +1946,9 @@ Multiplies two f32 floating-point values from `reg1` and `reg2`, storing the res
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1966,9 +1966,9 @@ Multiplies two f64 floating-point values from `reg1` and `reg2`, storing the res
 
 ### Arguments
 
-- **dest**: Destination register to store the result (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -1986,9 +1986,9 @@ Divides one u8 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2007,9 +2007,9 @@ Divides one u16 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2028,9 +2028,9 @@ Divides one u32 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2049,9 +2049,9 @@ Divides one u64 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2070,9 +2070,9 @@ Divides one i8 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2091,9 +2091,9 @@ Divides one i16 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2112,9 +2112,9 @@ Divides one i32 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2133,9 +2133,9 @@ Divides one i64 register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2154,9 +2154,9 @@ Divides one f32 floating-point register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2175,9 +2175,9 @@ Divides one f64 floating-point register by another and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Numerator register (Type: `Register`)
-- **reg2**: Denominator register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Numerator register (Type: `Register`, Bytes: `1`)
+- **reg2**: Denominator register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2196,9 +2196,9 @@ Computes the remainder of a u8 division. `dest = reg1 % reg2`. Sets error on div
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2216,9 +2216,9 @@ Computes the remainder of a u16 division. `dest = reg1 % reg2`. Sets error on di
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2236,9 +2236,9 @@ Computes the remainder of a u32 division. `dest = reg1 % reg2`. Sets error on di
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2256,9 +2256,9 @@ Computes the remainder of a u64 division. `dest = reg1 % reg2`. Sets error on di
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2276,9 +2276,9 @@ Computes the remainder of a i8 division. `dest = reg1 % reg2`. Sets error on div
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2296,9 +2296,9 @@ Computes the remainder of a i16 division. `dest = reg1 % reg2`. Sets error on di
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2316,9 +2316,9 @@ Computes the remainder of a i32 division. `dest = reg1 % reg2`. Sets error on di
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2336,9 +2336,9 @@ Computes the remainder of a i64 division. `dest = reg1 % reg2`. Sets error on di
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2356,9 +2356,9 @@ Computes the remainder of a f32 division using `%`. Result is undefined if input
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2376,9 +2376,9 @@ Computes the remainder of a f64 division using `%`. Result is undefined if input
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **reg1**: Dividend register (Type: `Register`)
-- **reg2**: Divisor register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **reg1**: Dividend register (Type: `Register`, Bytes: `1`)
+- **reg2**: Divisor register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2396,9 +2396,9 @@ Checks equality between two u8 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2418,9 +2418,9 @@ Checks equality between two u16 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2440,9 +2440,9 @@ Checks equality between two u32 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2462,9 +2462,9 @@ Checks equality between two u64 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2484,9 +2484,9 @@ Checks equality between two i8 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2506,9 +2506,9 @@ Checks equality between two i16 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2528,9 +2528,9 @@ Checks equality between two i32 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2550,9 +2550,9 @@ Checks equality between two i64 registers. Sets 1 if equal, 0 otherwise.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2572,9 +2572,9 @@ Checks equality between two f32 floating-point registers. Sets 1 if equal, 0 oth
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2594,9 +2594,9 @@ Checks equality between two f64 floating-point registers. Sets 1 if equal, 0 oth
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2616,9 +2616,9 @@ Compares two u8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwis
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2636,9 +2636,9 @@ Compares two u16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwi
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2656,9 +2656,9 @@ Compares two u32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwi
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2676,9 +2676,9 @@ Compares two u64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwi
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2696,9 +2696,9 @@ Compares two i8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwis
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2716,9 +2716,9 @@ Compares two i16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwi
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2736,9 +2736,9 @@ Compares two i32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwi
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2756,9 +2756,9 @@ Compares two i64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwi
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2776,9 +2776,9 @@ Compares two f32 floating-point values for inequality. Sets `dest` to 1 if not e
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2796,9 +2796,9 @@ Compares two f64 floating-point values for inequality. Sets `dest` to 1 if not e
 
 ### Arguments
 
-- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
-- **reg1**: First operand register (Type: `Register`)
-- **reg2**: Second operand register (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand register (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2816,9 +2816,9 @@ Compares two u8 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2837,9 +2837,9 @@ Compares two u16 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2858,9 +2858,9 @@ Compares two u32 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2879,9 +2879,9 @@ Compares two u64 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2900,9 +2900,9 @@ Compares two i8 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2921,9 +2921,9 @@ Compares two i16 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2942,9 +2942,9 @@ Compares two i32 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2963,9 +2963,9 @@ Compares two i64 registers. Sets 1 if the first is less than the second, else 0.
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -2984,9 +2984,9 @@ Compares two f32 floating-point registers. Sets 1 if the first is less than the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3005,9 +3005,9 @@ Compares two f64 floating-point registers. Sets 1 if the first is less than the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3026,9 +3026,9 @@ Compares two u8 registers. Sets 1 if the first is less than or equal to the seco
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3047,9 +3047,9 @@ Compares two u16 registers. Sets 1 if the first is less than or equal to the sec
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3068,9 +3068,9 @@ Compares two u32 registers. Sets 1 if the first is less than or equal to the sec
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3089,9 +3089,9 @@ Compares two u64 registers. Sets 1 if the first is less than or equal to the sec
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3110,9 +3110,9 @@ Compares two i8 registers. Sets 1 if the first is less than or equal to the seco
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3131,9 +3131,9 @@ Compares two i16 registers. Sets 1 if the first is less than or equal to the sec
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3152,9 +3152,9 @@ Compares two i32 registers. Sets 1 if the first is less than or equal to the sec
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3173,9 +3173,9 @@ Compares two i64 registers. Sets 1 if the first is less than or equal to the sec
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3194,9 +3194,9 @@ Compares two f32 floating-point registers. Sets 1 if the first is less than or e
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3215,9 +3215,9 @@ Compares two f64 floating-point registers. Sets 1 if the first is less than or e
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3236,9 +3236,9 @@ Compares two u8 registers. Sets 1 if the first is greater than the second, else 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3257,9 +3257,9 @@ Compares two u16 registers. Sets 1 if the first is greater than the second, else
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3278,9 +3278,9 @@ Compares two u32 registers. Sets 1 if the first is greater than the second, else
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3299,9 +3299,9 @@ Compares two u64 registers. Sets 1 if the first is greater than the second, else
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3320,9 +3320,9 @@ Compares two i8 registers. Sets 1 if the first is greater than the second, else 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3341,9 +3341,9 @@ Compares two i16 registers. Sets 1 if the first is greater than the second, else
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3362,9 +3362,9 @@ Compares two i32 registers. Sets 1 if the first is greater than the second, else
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3383,9 +3383,9 @@ Compares two i64 registers. Sets 1 if the first is greater than the second, else
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3404,9 +3404,9 @@ Compares two f32 floating-point registers. Sets 1 if the first is greater than t
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3425,9 +3425,9 @@ Compares two f64 floating-point registers. Sets 1 if the first is greater than t
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3446,9 +3446,9 @@ Compares two u8 registers. Sets 1 if the first is greater than or equal to the s
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3467,9 +3467,9 @@ Compares two u16 registers. Sets 1 if the first is greater than or equal to the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3488,9 +3488,9 @@ Compares two u32 registers. Sets 1 if the first is greater than or equal to the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3509,9 +3509,9 @@ Compares two u64 registers. Sets 1 if the first is greater than or equal to the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3530,9 +3530,9 @@ Compares two i8 registers. Sets 1 if the first is greater than or equal to the s
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3551,9 +3551,9 @@ Compares two i16 registers. Sets 1 if the first is greater than or equal to the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3572,9 +3572,9 @@ Compares two i32 registers. Sets 1 if the first is greater than or equal to the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3593,9 +3593,9 @@ Compares two i64 registers. Sets 1 if the first is greater than or equal to the 
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3614,9 +3614,9 @@ Compares two f32 floating-point registers. Sets 1 if the first is greater than o
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3635,9 +3635,9 @@ Compares two f64 floating-point registers. Sets 1 if the first is greater than o
 
 ### Arguments
 
-- **dest**: Destination register for result (1 or 0) (Type: `Register`)
-- **reg1**: First operand (left-hand side) (Type: `Register`)
-- **reg2**: Second operand (right-hand side) (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`, Bytes: `1`)
+- **reg1**: First operand (left-hand side) (Type: `Register`, Bytes: `1`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3656,7 +3656,7 @@ Calls a function at the specified bytecode address. Saves the return address and
 
 ### Arguments
 
-- **target**: Bytecode address (offset) to jump to for the function (Type: `U64`)
+- **target**: Bytecode address (offset) to jump to for the function (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -3690,8 +3690,8 @@ Allocates a heap section of size from `reg_size` and stores the section index in
 
 ### Arguments
 
-- **reg_target**: Register to store the section index (Type: `Register`)
-- **reg_size**: Register containing the allocation size in bytes (Type: `Register`)
+- **reg_target**: Register to store the section index (Type: `Register`, Bytes: `1`)
+- **reg_size**: Register containing the allocation size in bytes (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3709,7 +3709,7 @@ Frees the heap section at the index given in `reg_target`.
 
 ### Arguments
 
-- **reg_target**: Register containing the section index to free (Type: `Register`)
+- **reg_target**: Register containing the section index to free (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3727,11 +3727,11 @@ Copies memory from a source heap section to a destination heap section.
 
 ### Arguments
 
-- **reg_dest**: Register with destination section index (Type: `Register`)
-- **reg_dest_offset**: Offset in destination section (Type: `Register`)
-- **reg_src**: Register with source section index (Type: `Register`)
-- **reg_src_offset**: Offset in source section (Type: `Register`)
-- **reg_size**: Number of bytes to copy (Type: `Register`)
+- **reg_dest**: Register with destination section index (Type: `Register`, Bytes: `1`)
+- **reg_dest_offset**: Offset in destination section (Type: `Register`, Bytes: `1`)
+- **reg_src**: Register with source section index (Type: `Register`, Bytes: `1`)
+- **reg_src_offset**: Offset in source section (Type: `Register`, Bytes: `1`)
+- **reg_size**: Number of bytes to copy (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3749,9 +3749,9 @@ Fills a heap section with a repeated byte value.
 
 ### Arguments
 
-- **reg_ptr**: Register with section index to fill (Type: `Register`)
-- **reg_value**: Register with byte value to fill (only lowest 8 bits used) (Type: `Register`)
-- **reg_size**: Register with number of bytes to fill (Type: `Register`)
+- **reg_ptr**: Register with section index to fill (Type: `Register`, Bytes: `1`)
+- **reg_value**: Register with byte value to fill (only lowest 8 bits used) (Type: `Register`, Bytes: `1`)
+- **reg_size**: Register with number of bytes to fill (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3769,7 +3769,7 @@ Halts execution of the virtual machine immediately.
 
 ### Arguments
 
-- **exit_code**: Exit code for the VM (default is 0) (Type: `I64`)
+- **exit_code**: Exit code for the VM (default is 0) (Type: `I64`, Bytes: `8`)
 
 ### Tags
 
@@ -3788,8 +3788,8 @@ Moves a u8 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3807,8 +3807,8 @@ Moves a u16 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3826,8 +3826,8 @@ Moves a u32 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3845,8 +3845,8 @@ Moves a u64 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3864,8 +3864,8 @@ Moves a i8 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3883,8 +3883,8 @@ Moves a i16 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3902,8 +3902,8 @@ Moves a i32 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3921,8 +3921,8 @@ Moves a i64 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3940,8 +3940,8 @@ Moves a f32 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3959,8 +3959,8 @@ Moves a f64 value from one register to another. `dest = source`.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **source**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **source**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -3978,8 +3978,8 @@ Adds an immediate u8 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `U8`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `U8`, Bytes: `1`)
 
 ### Tags
 
@@ -3997,8 +3997,8 @@ Adds an immediate u16 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `U16`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `U16`, Bytes: `2`)
 
 ### Tags
 
@@ -4016,8 +4016,8 @@ Adds an immediate u32 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `U32`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `U32`, Bytes: `4`)
 
 ### Tags
 
@@ -4035,8 +4035,8 @@ Adds an immediate u64 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `U64`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -4054,8 +4054,8 @@ Adds an immediate i8 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `I8`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `I8`, Bytes: `1`)
 
 ### Tags
 
@@ -4073,8 +4073,8 @@ Adds an immediate i16 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `I16`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `I16`, Bytes: `2`)
 
 ### Tags
 
@@ -4092,8 +4092,8 @@ Adds an immediate i32 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `I32`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `I32`, Bytes: `4`)
 
 ### Tags
 
@@ -4111,8 +4111,8 @@ Adds an immediate i64 value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `I64`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `I64`, Bytes: `8`)
 
 ### Tags
 
@@ -4130,8 +4130,8 @@ Adds an immediate f32 floating-point value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `F32`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `F32`, Bytes: `4`)
 
 ### Tags
 
@@ -4149,8 +4149,8 @@ Adds an immediate f64 floating-point value to the destination register.
 
 ### Arguments
 
-- **dest**: Target register to be incremented (Type: `Register`)
-- **incr_val**: Immediate value to add to the register (Type: `F64`)
+- **dest**: Target register to be incremented (Type: `Register`, Bytes: `1`)
+- **incr_val**: Immediate value to add to the register (Type: `F64`, Bytes: `8`)
 
 ### Tags
 
@@ -4168,8 +4168,8 @@ Decrements a u8 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `U8`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `U8`, Bytes: `1`)
 
 ### Tags
 
@@ -4188,8 +4188,8 @@ Decrements a u16 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `U16`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `U16`, Bytes: `2`)
 
 ### Tags
 
@@ -4208,8 +4208,8 @@ Decrements a u32 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `U32`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `U32`, Bytes: `4`)
 
 ### Tags
 
@@ -4228,8 +4228,8 @@ Decrements a u64 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `U64`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -4248,8 +4248,8 @@ Decrements a i8 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `I8`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `I8`, Bytes: `1`)
 
 ### Tags
 
@@ -4268,8 +4268,8 @@ Decrements a i16 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `I16`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `I16`, Bytes: `2`)
 
 ### Tags
 
@@ -4288,8 +4288,8 @@ Decrements a i32 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `I32`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `I32`, Bytes: `4`)
 
 ### Tags
 
@@ -4308,8 +4308,8 @@ Decrements a i64 register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **decr_val**: Constant value to subtract (Type: `I64`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **decr_val**: Constant value to subtract (Type: `I64`, Bytes: `8`)
 
 ### Tags
 
@@ -4328,8 +4328,8 @@ Decrements a f32 floating-point register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **incr_val**: Constant value to subtract (Type: `F32`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **incr_val**: Constant value to subtract (Type: `F32`, Bytes: `4`)
 
 ### Tags
 
@@ -4348,8 +4348,8 @@ Decrements a f64 floating-point register by a constant value.
 
 ### Arguments
 
-- **dest**: Register to decrement (Type: `Register`)
-- **incr_val**: Constant value to subtract (Type: `F64`)
+- **dest**: Register to decrement (Type: `Register`, Bytes: `1`)
+- **incr_val**: Constant value to subtract (Type: `F64`, Bytes: `8`)
 
 ### Tags
 
@@ -4368,9 +4368,9 @@ Performs a bitwise AND between two u8 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4391,9 +4391,9 @@ Performs a bitwise AND between two u16 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4414,9 +4414,9 @@ Performs a bitwise AND between two u32 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4437,9 +4437,9 @@ Performs a bitwise AND between two u64 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4460,9 +4460,9 @@ Performs a bitwise AND between two i8 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4483,9 +4483,9 @@ Performs a bitwise AND between two i16 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4506,9 +4506,9 @@ Performs a bitwise AND between two i32 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4529,9 +4529,9 @@ Performs a bitwise AND between two i64 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4552,9 +4552,9 @@ Performs a bitwise OR between two u8 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4575,9 +4575,9 @@ Performs a bitwise OR between two u16 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4598,9 +4598,9 @@ Performs a bitwise OR between two u32 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4621,9 +4621,9 @@ Performs a bitwise OR between two u64 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4644,9 +4644,9 @@ Performs a bitwise OR between two i8 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4667,9 +4667,9 @@ Performs a bitwise OR between two i16 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4690,9 +4690,9 @@ Performs a bitwise OR between two i32 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4713,9 +4713,9 @@ Performs a bitwise OR between two i64 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4736,9 +4736,9 @@ Performs a bitwise XOR between two u8 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4759,9 +4759,9 @@ Performs a bitwise XOR between two u16 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4782,9 +4782,9 @@ Performs a bitwise XOR between two u32 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4805,9 +4805,9 @@ Performs a bitwise XOR between two u64 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4828,9 +4828,9 @@ Performs a bitwise XOR between two i8 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4851,9 +4851,9 @@ Performs a bitwise XOR between two i16 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4874,9 +4874,9 @@ Performs a bitwise XOR between two i32 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4897,9 +4897,9 @@ Performs a bitwise XOR between two i64 registers and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **r1**: First operand (Type: `Register`)
-- **r2**: Second operand (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **r1**: First operand (Type: `Register`, Bytes: `1`)
+- **r2**: Second operand (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4920,8 +4920,8 @@ Performs a bitwise NOT on a u8 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4941,8 +4941,8 @@ Performs a bitwise NOT on a u16 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4962,8 +4962,8 @@ Performs a bitwise NOT on a u32 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -4983,8 +4983,8 @@ Performs a bitwise NOT on a u64 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5004,8 +5004,8 @@ Performs a bitwise NOT on a i8 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5025,8 +5025,8 @@ Performs a bitwise NOT on a i16 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5046,8 +5046,8 @@ Performs a bitwise NOT on a i32 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5067,8 +5067,8 @@ Performs a bitwise NOT on a i64 register and stores the result.
 
 ### Arguments
 
-- **dest**: Destination register (Type: `Register`)
-- **src**: Source register (Type: `Register`)
+- **dest**: Destination register (Type: `Register`, Bytes: `1`)
+- **src**: Source register (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5088,9 +5088,9 @@ Performs left bit shift on a u8 value from `val_reg` by amount in `shift_reg`, s
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5108,9 +5108,9 @@ Performs left bit shift on a u16 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5128,9 +5128,9 @@ Performs left bit shift on a u32 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5148,9 +5148,9 @@ Performs left bit shift on a u64 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5168,9 +5168,9 @@ Performs left bit shift on a i8 value from `val_reg` by amount in `shift_reg`, s
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5188,9 +5188,9 @@ Performs left bit shift on a i16 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5208,9 +5208,9 @@ Performs left bit shift on a i32 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5228,9 +5228,9 @@ Performs left bit shift on a i64 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5248,9 +5248,9 @@ Performs right bit shift on a u8 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5268,9 +5268,9 @@ Performs right bit shift on a u16 value from `val_reg` by amount in `shift_reg`,
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5288,9 +5288,9 @@ Performs right bit shift on a u32 value from `val_reg` by amount in `shift_reg`,
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5308,9 +5308,9 @@ Performs right bit shift on a u64 value from `val_reg` by amount in `shift_reg`,
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5328,9 +5328,9 @@ Performs right bit shift on a i8 value from `val_reg` by amount in `shift_reg`, 
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5348,9 +5348,9 @@ Performs right bit shift on a i16 value from `val_reg` by amount in `shift_reg`,
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5368,9 +5368,9 @@ Performs right bit shift on a i32 value from `val_reg` by amount in `shift_reg`,
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5388,9 +5388,9 @@ Performs right bit shift on a i64 value from `val_reg` by amount in `shift_reg`,
 
 ### Arguments
 
-- **dest**: Destination register for the shifted result (Type: `Register`)
-- **val_reg**: Register containing the value to shift (Type: `Register`)
-- **shift_reg**: Register containing the shift amount (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`, Bytes: `1`)
+- **val_reg**: Register containing the value to shift (Type: `Register`, Bytes: `1`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5408,9 +5408,9 @@ Prints a UTF-8 string from memory to standard output. Reads `length` bytes from 
 
 ### Arguments
 
-- **reg_section_id**: Register containing the heap section index (Type: `Register`)
-- **reg_offset**: Register containing the byte offset into the section (Type: `Register`)
-- **reg_length**: Register containing the number of bytes to read (Type: `Register`)
+- **reg_section_id**: Register containing the heap section index (Type: `Register`, Bytes: `1`)
+- **reg_offset**: Register containing the byte offset into the section (Type: `Register`, Bytes: `1`)
+- **reg_length**: Register containing the number of bytes to read (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5428,8 +5428,8 @@ Copies a constant array (identified by `const_id`) into a newly allocated heap s
 
 ### Arguments
 
-- **reg_ptr**: Register to store the resulting section index (Type: `Register`)
-- **const_id**: Identifier of the constant array to store (Type: `U64`)
+- **reg_ptr**: Register to store the resulting section index (Type: `Register`, Bytes: `1`)
+- **const_id**: Identifier of the constant array to store (Type: `U64`, Bytes: `8`)
 
 ### Tags
 
@@ -5448,7 +5448,7 @@ Prints the value of a u8 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5466,7 +5466,7 @@ Prints the value of a u16 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5484,7 +5484,7 @@ Prints the value of a u32 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5502,7 +5502,7 @@ Prints the value of a u64 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5520,7 +5520,7 @@ Prints the value of a i8 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5538,7 +5538,7 @@ Prints the value of a i16 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5556,7 +5556,7 @@ Prints the value of a i32 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5574,7 +5574,7 @@ Prints the value of a i64 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5592,7 +5592,7 @@ Prints the value of a f32 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5610,7 +5610,7 @@ Prints the value of a f64 register to stdout for debugging.
 
 ### Arguments
 
-- **source**: Register to print (Type: `Register`)
+- **source**: Register to print (Type: `Register`, Bytes: `1`)
 
 ### Tags
 
@@ -5628,7 +5628,7 @@ Prints the raw 64-bit value of a register in hexadecimal for debugging.
 
 ### Arguments
 
-- **reg**: Register to inspect as raw bits (Type: `Register`)
+- **reg**: Register to inspect as raw bits (Type: `Register`, Bytes: `1`)
 
 ### Tags
 

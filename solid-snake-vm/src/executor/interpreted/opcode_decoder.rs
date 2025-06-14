@@ -317,6 +317,7 @@ macro_rules! define_instruction {
                                 name: stringify!($arg_name).to_string(),
                                 description: $arg_desc.to_string(),
                                 typ: <$arg_ty as GetArgType>::arg_type(),
+                                bytes: size_of::<$arg_ty>(),
                             }
                         ),*
                     ];

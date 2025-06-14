@@ -60,6 +60,7 @@ pub struct ArgDocsEntry {
     pub name: String,
     pub description: String,
     pub typ: ArgType,
+    pub bytes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -140,8 +141,8 @@ impl Docs {
                 markdown.push_str("### Arguments\n\n");
                 for arg in &instruction.args {
                     markdown.push_str(&format!(
-                        "- **{}**: {} (Type: `{}`)\n",
-                        arg.name, arg.description, arg.typ
+                        "- **{}**: {} (Type: `{}`, Bytes: `{}`)\n",
+                        arg.name, arg.description, arg.typ, arg.bytes
                     ));
                 }
                 markdown.push('\n');

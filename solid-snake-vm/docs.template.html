@@ -258,6 +258,7 @@
             <h3 class="card-title">${instr.name}</h3>
             <div class="description">${marked.parse(instr.description)}</div>
             <p><strong>Opcode:</strong> 0x${instr.opcode.toString(16).padStart(4, '0')}</p>
+            <p><strong>Arguments Bytes:</strong> ${instr.arg_bytes}</p>
             ${instr.args.length ? `
               <details class="clr-accordion">
                 <summary class="clr-accordion-header">
@@ -265,7 +266,7 @@
                 </summary>
                 <table class="arg-table">
                   <thead>
-                    <tr><th>Argument</th><th>Description</th><th>Type</th></tr>
+                    <tr><th>Argument</th><th>Description</th><th>Type</th><th>Bytes</th></tr>
                   </thead>
                   <tbody>
                     ${instr.args.map(arg => `
@@ -273,6 +274,7 @@
                         <td>${arg.name}</td>
                         <td>${arg.description}</td>
                         <td><span class="arg-type">${arg.typ}</span></td>
+                        <td>${arg.bytes}</td>
                       </tr>`).join('')}
                   </tbody>
                 </table>

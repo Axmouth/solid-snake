@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/global.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/styles/theme.dark.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/@clr/ui@17.0.0/clr-ui.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
   body[cds-theme="dark"] {
@@ -159,6 +160,15 @@
     margin-bottom: 1.5rem;
     overflow-x: auto;
   }
+
+  .description code {
+    background-color: rgba(128, 128, 128, 0.1);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.95em;
+  }
+
   </style>
 </head>
 
@@ -6837,7 +6847,7 @@
         article.innerHTML = `
           <div class="card-block">
             <h3 class="card-title">${instr.name}</h3>
-            <p>${instr.description}</p>
+            <div class="description">${marked.parse(instr.description)}</div>
             <p><strong>Opcode:</strong> 0x${instr.opcode.toString(16).padStart(4, '0')}</p>
             ${instr.args.length ? `
               <details class="clr-accordion">

@@ -48,6 +48,6 @@ pub trait VmExecutorExt {
             DecodedInstruction,
             Box<dyn Fn(&mut VmInterpretedExecutor) -> Result<(), VmExecutionError>>,
         )],
-    ) -> Result<(), VmExecutionError>;
+    ) -> Result<i64, VmExecutionError>;
     fn set_error(&mut self, error_code: i64);
 }

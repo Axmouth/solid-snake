@@ -110,7 +110,7 @@ MoveI64 R10 R14               ; a = tmp
 IncrementI64 R12 1            ; i++
 LessThanI64 R15 R12 R13       ; i < n
 JumpIf loop R15
-Halt                          ; R10 = F(80)
+Halt 0                        ; R10 = F(80)
 ",
     );
 
@@ -143,7 +143,7 @@ fn bench_vm_fib_recursive(fib_n: i64, n_iter: usize) {
 ; Entry Point (Main)
 LoadImmediateI64 R1 {fib_n}      ; R1 = n
 CallFunction fib
-Halt
+Halt 0
 
 ; Function fib(n) -- expects n in R1, returns in R0
 fib:
@@ -282,7 +282,7 @@ DebugPrintU64 R6
 
 Deallocate R2
 Deallocate R3
-Halt
+Halt 0
     ";
 
     let (bc, _lined_code) = parse_byte_code_from_txt(code);
@@ -294,7 +294,7 @@ Halt
         LoadImmediateI64, R2, 456;
         AddI64, R3, R1, R2;
         DebugPrintI64, R3;
-        Halt;
+        Halt, 0;
     };
 
     let bc = vm.preprocess_bytecode(&bytecode).unwrap();
@@ -305,7 +305,7 @@ Halt
         LoadImmediateI64, R2, 100;
         AddI64, R3, R1, R2;
         DebugPrintI64, R3;
-        Halt;
+        Halt, 0;
     );
     let bc = vm.preprocess_bytecode(&bytecode).unwrap();
     vm.execute_processeded_bytecode(&bc).unwrap();
@@ -315,7 +315,7 @@ Halt
         LoadImmediateI64, R2, 999;
         AddI64, R3, R1, R2;
         DebugPrintI64, R3;
-        Halt;
+        Halt, 0;
     );
 
     let bc = vm.preprocess_bytecode(&bytecode).unwrap();

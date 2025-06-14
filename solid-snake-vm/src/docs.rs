@@ -67,6 +67,7 @@ pub struct InstructionDocsEntry {
     pub name: String,
     pub description: String,
     pub opcode: u16,
+    pub arg_bytes: usize,
     pub args: Vec<ArgDocsEntry>,
     pub tags: Box<[InstructionTag]>,
 }
@@ -132,6 +133,7 @@ impl Docs {
             markdown.push_str(&format!("## {}\n\n", instruction.name));
             markdown.push_str(&format!("{}\n\n", instruction.description));
             markdown.push_str(&format!("**Opcode**: `0x{:04X}`\n\n", instruction.opcode));
+            markdown.push_str(&format!("**Arg Bytes**: {}\n\n", instruction.arg_bytes));
             markdown.push_str("### Instruction Details\n\n");
 
             if !instruction.args.is_empty() {

@@ -96,7 +96,7 @@ mod tests {
             .with_program(vec![
                 JumpInstruction::encode((14u64,)), // Jump forward to Halt
                 IncrementU8Instruction::encode((R!(0), 1u8)), // <-- skipped
-                HaltInstruction::encode(()),
+                HaltInstruction::encode((0,)),
             ])
             .expect_pc(2)
             .expect_register(R!(0), 0u8)
@@ -114,7 +114,7 @@ mod tests {
             .with_program(vec![
                 JumpIfInstruction::encode((0u64, R!(0))),     // No jump
                 IncrementU8Instruction::encode((R!(1), 1u8)), // executed
-                HaltInstruction::encode(()),
+                HaltInstruction::encode((0,)),
             ])
             .expect_pc(2) // JumpIf + Incr
             .expect_register(R!(1), 1u8)
@@ -132,7 +132,7 @@ mod tests {
             .with_program(vec![
                 JumpIfInstruction::encode((15u64, R!(0))),    // No jump
                 IncrementU8Instruction::encode((R!(1), 1u8)), // skipped
-                HaltInstruction::encode(()),
+                HaltInstruction::encode((0,)),
             ])
             .expect_pc(2) // JumpIf + Incr
             .expect_register(R!(1), 0u8)
@@ -150,7 +150,7 @@ mod tests {
             .with_program(vec![
                 JumpIfFalseInstruction::encode((0u64, R!(0))), // No jump
                 IncrementU8Instruction::encode((R!(1), 1u8)),  // executed
-                HaltInstruction::encode(()),
+                HaltInstruction::encode((0,)),
             ])
             .expect_pc(2) // JumpIf + Incr
             .expect_register(R!(1), 1u8)
@@ -168,7 +168,7 @@ mod tests {
             .with_program(vec![
                 JumpIfFalseInstruction::encode((15u64, R!(0))), // No jump
                 IncrementU8Instruction::encode((R!(1), 1u8)),   // skipped
-                HaltInstruction::encode(()),
+                HaltInstruction::encode((0,)),
             ])
             .expect_pc(2) // JumpIf + Incr
             .expect_register(R!(1), 0u8)

@@ -427,14 +427,14 @@ impl VmExecutorExt for VmInterpretedExecutor {
             DecodedInstruction,
             Box<dyn Fn(&mut VmInterpretedExecutor) -> Result<(), VmExecutionError>>,
         )],
-    ) -> Result<(), VmExecutionError> {
+    ) -> Result<i64, VmExecutionError> {
         self.program_counter = 0;
 
         loop {
             let (decoded, exec_instr_fn) = &processed_bytecode[self.program_counter];
 
-            if let DecodedInstruction::Halt(()) = decoded {
-                return Ok(());
+            if let DecodedInstruction::Halt((exit_code,)) = decoded {
+                return Ok(*exit_code);
             }
             self.prev_error_code = self.error_code;
             self.error_code = 0; // TODO: examine if any instruction will need it kept set between multiple instructions.

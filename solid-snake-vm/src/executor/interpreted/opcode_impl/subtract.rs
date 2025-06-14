@@ -330,7 +330,7 @@ mod tests {
             .setup_register(10, R!(1))
             .with_program(vec![
                 SubtractU16Instruction::encode((R!(2), R!(0), R!(1))),
-                HaltInstruction::encode(()),
+                HaltInstruction::encode((0,)),
             ])
             .expect_register(R!(2), 20)
             .expect_pc(1)

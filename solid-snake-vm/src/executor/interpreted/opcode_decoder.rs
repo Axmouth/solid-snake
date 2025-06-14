@@ -326,6 +326,7 @@ macro_rules! define_instruction {
                         description: $description.to_string(),
                         args,
                         opcode: Self::OPCODE as u16,
+                        arg_bytes: Self::args_size(),
                         tags: Box::new([
                                 $( $crate::docs::InstructionTag::$tag ),*
                             ]),
@@ -480,6 +481,7 @@ macro_rules! define_vm_tests {
                     type T = $ty;
                     let mut bc = [<$instr Instruction>]::encode($args);
                     bc.extend_from_slice(&mut (OpCode::Halt as u16).to_be_bytes());
+                    bc.extend_from_slice(&mut (0 as i64).to_be_bytes());
                     $body.run(bc)
                 }
             )+

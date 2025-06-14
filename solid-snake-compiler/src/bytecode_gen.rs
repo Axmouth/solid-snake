@@ -508,7 +508,7 @@ pub fn lower_ir_to_bytecode_stage_one(
         }
     }
 
-    instructions.push(UnprocessedInstruction::Halt(()));
+    instructions.push(UnprocessedInstruction::Halt((0,)));
 
     Ok((instructions, constants))
 }

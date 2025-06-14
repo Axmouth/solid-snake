@@ -38,6 +38,14 @@ macro_rules! asm_line {
         }
     }};
 
+    // Halt
+    (Halt, $exit_code:literal) => {{
+        paste::paste! {
+            use $crate::executor::interpreted::opcode_impl::all::*;
+            HaltInstruction::encode(($exit_code,))
+        }
+    }};
+
     ($instr:ident, $reg:ident, $val:tt) => {{
         paste::paste! {
             {

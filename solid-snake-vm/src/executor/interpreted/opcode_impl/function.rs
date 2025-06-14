@@ -29,7 +29,7 @@ define_instruction!(
 define_instruction!(
     Halt,
     "Halts execution of the virtual machine immediately.",
-    [],
+    [(exit_code: i64, "Exit code for the VM (default is 0)")],
     [ControlFlow, SideEffects],
     halt
 );
@@ -119,8 +119,9 @@ pub fn funcreturn(
 #[inline(always)]
 pub fn halt(
     _executor: &mut VmInterpretedExecutor,
-    _args: HaltArgs,
+    args: HaltArgs,
 ) -> Result<(), VmExecutionError> {
+    let (_exit_code,) = args;
     debug!("Halt");
 
     Ok(())
@@ -137,9 +138,9 @@ mod tests {
         crate::asm_internal::VmProgramTest::new()
             .with_program(vec![
                 LoadImmediateI64Instruction::encode((R!(1), 5i64)), // R1 = 5
-                CallFunctionInstruction::encode((23u64,)),          // Call function at offset 23
-                HaltInstruction::encode(()),
-                // function "func" at offset 23
+                CallFunctionInstruction::encode((31u64,)),          // Call function at offset 31
+                HaltInstruction::encode((0,)),
+                // function "func" at offset 31
                 IncrementU8Instruction::encode((R!(1), 1u8)), // R1 += 1 --> 6
                 MoveI64Instruction::encode((R!(0), R!(1))),   // R0 = R1
                 ReturnInstruction::encode(()),

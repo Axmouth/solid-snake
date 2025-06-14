@@ -224,6 +224,7 @@
       "name": "JumpIfFalse",
       "description": "Jumps to the target address if the register is zero (false).",
       "opcode": 1,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "target",
@@ -245,6 +246,7 @@
       "name": "JumpIf",
       "description": "Jumps to the target address if the register is non-zero (true).",
       "opcode": 2,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "target",
@@ -266,6 +268,7 @@
       "name": "Jump",
       "description": "Unconditionally jumps to the specified bytecode address.",
       "opcode": 3,
+      "arg_bytes": 8,
       "args": [
         {
           "name": "target",
@@ -282,6 +285,7 @@
       "name": "LoadIndirectU8",
       "description": "Loads a u8 value from memory at address stored in a register.",
       "opcode": 20,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -303,6 +307,7 @@
       "name": "LoadIndirectU16",
       "description": "Loads a u16 value from memory at address stored in a register.",
       "opcode": 21,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -324,6 +329,7 @@
       "name": "LoadIndirectU32",
       "description": "Loads a u32 value from memory at address stored in a register.",
       "opcode": 22,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -345,6 +351,7 @@
       "name": "LoadIndirectU64",
       "description": "Loads a u64 value from memory at address stored in a register.",
       "opcode": 23,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -366,6 +373,7 @@
       "name": "LoadIndirectI8",
       "description": "Loads a i8 value from memory at address stored in a register.",
       "opcode": 24,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -387,6 +395,7 @@
       "name": "LoadIndirectI16",
       "description": "Loads a i16 value from memory at address stored in a register.",
       "opcode": 25,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -408,6 +417,7 @@
       "name": "LoadIndirectI32",
       "description": "Loads a i32 value from memory at address stored in a register.",
       "opcode": 26,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -429,6 +439,7 @@
       "name": "LoadIndirectI64",
       "description": "Loads a i64 value from memory at address stored in a register.",
       "opcode": 27,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -450,6 +461,7 @@
       "name": "LoadIndirectF32",
       "description": "Loads a f32 value from memory at address stored in a register.",
       "opcode": 28,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -471,6 +483,7 @@
       "name": "LoadIndirectF64",
       "description": "Loads a f64 value from memory at address stored in a register.",
       "opcode": 29,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_ptr",
@@ -492,6 +505,7 @@
       "name": "LoadIndirectWithOffsetU8",
       "description": "Loads a u8 value from a memory section with a runtime-computed offset.",
       "opcode": 30,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -518,6 +532,7 @@
       "name": "LoadIndirectWithOffsetU16",
       "description": "Loads a u16 value from a memory section with a runtime-computed offset.",
       "opcode": 31,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -544,6 +559,7 @@
       "name": "LoadIndirectWithOffsetU32",
       "description": "Loads a u32 value from a memory section with a runtime-computed offset.",
       "opcode": 32,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -570,6 +586,7 @@
       "name": "LoadIndirectWithOffsetU64",
       "description": "Loads a u64 value from a memory section with a runtime-computed offset.",
       "opcode": 33,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -596,6 +613,7 @@
       "name": "LoadIndirectWithOffsetI8",
       "description": "Loads a i8 value from a memory section with a runtime-computed offset.",
       "opcode": 34,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -622,6 +640,7 @@
       "name": "LoadIndirectWithOffsetI16",
       "description": "Loads a i16 value from a memory section with a runtime-computed offset.",
       "opcode": 35,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -648,6 +667,7 @@
       "name": "LoadIndirectWithOffsetI32",
       "description": "Loads a i32 value from a memory section with a runtime-computed offset.",
       "opcode": 36,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -674,6 +694,7 @@
       "name": "LoadIndirectWithOffsetI64",
       "description": "Loads a i64 value from a memory section with a runtime-computed offset.",
       "opcode": 37,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -700,6 +721,7 @@
       "name": "LoadIndirectWithOffsetF32",
       "description": "Loads a f32 value from a memory section with a runtime-computed offset.",
       "opcode": 38,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -726,6 +748,7 @@
       "name": "LoadIndirectWithOffsetF64",
       "description": "Loads a f64 value from a memory section with a runtime-computed offset.",
       "opcode": 39,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_dest",
@@ -752,6 +775,7 @@
       "name": "LoadImmediateU8",
       "description": "Loads an immediate u8 value into the given register.",
       "opcode": 40,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg",
@@ -773,6 +797,7 @@
       "name": "LoadImmediateU16",
       "description": "Loads an immediate u16 value into the given register.",
       "opcode": 41,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg",
@@ -794,6 +819,7 @@
       "name": "LoadImmediateU32",
       "description": "Loads an immediate u32 value into the given register.",
       "opcode": 42,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "reg",
@@ -815,6 +841,7 @@
       "name": "LoadImmediateU64",
       "description": "Loads an immediate u64 value into the given register.",
       "opcode": 43,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg",
@@ -836,6 +863,7 @@
       "name": "LoadImmediateI8",
       "description": "Loads an immediate i8 value into the given register.",
       "opcode": 44,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg",
@@ -857,6 +885,7 @@
       "name": "LoadImmediateI16",
       "description": "Loads an immediate i16 value into the given register.",
       "opcode": 45,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg",
@@ -878,6 +907,7 @@
       "name": "LoadImmediateI32",
       "description": "Loads an immediate i32 value into the given register.",
       "opcode": 46,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "reg",
@@ -899,6 +929,7 @@
       "name": "LoadImmediateI64",
       "description": "Loads an immediate i64 value into the given register.",
       "opcode": 47,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg",
@@ -920,6 +951,7 @@
       "name": "LoadImmediateF32",
       "description": "Loads an immediate f32 value into the given register.",
       "opcode": 48,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "reg",
@@ -941,6 +973,7 @@
       "name": "LoadImmediateF64",
       "description": "Loads an immediate f64 value into the given register.",
       "opcode": 49,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg",
@@ -962,6 +995,7 @@
       "name": "LoadFromImmediateU8",
       "description": "Loads a u8 value from the specified immediate memory address.",
       "opcode": 60,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -983,6 +1017,7 @@
       "name": "LoadFromImmediateU16",
       "description": "Loads a u16 value from the specified immediate memory address.",
       "opcode": 61,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1004,6 +1039,7 @@
       "name": "LoadFromImmediateU32",
       "description": "Loads a u32 value from the specified immediate memory address.",
       "opcode": 62,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1025,6 +1061,7 @@
       "name": "LoadFromImmediateU64",
       "description": "Loads a u64 value from the specified immediate memory address.",
       "opcode": 63,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1046,6 +1083,7 @@
       "name": "LoadFromImmediateI8",
       "description": "Loads a i8 value from the specified immediate memory address.",
       "opcode": 64,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1067,6 +1105,7 @@
       "name": "LoadFromImmediateI16",
       "description": "Loads a i16 value from the specified immediate memory address.",
       "opcode": 65,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1088,6 +1127,7 @@
       "name": "LoadFromImmediateI32",
       "description": "Loads a i32 value from the specified immediate memory address.",
       "opcode": 66,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1109,6 +1149,7 @@
       "name": "LoadFromImmediateI64",
       "description": "Loads a i64 value from the specified immediate memory address.",
       "opcode": 67,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1130,6 +1171,7 @@
       "name": "LoadFromImmediateF32",
       "description": "Loads a f32 value from the specified immediate memory address.",
       "opcode": 68,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1151,6 +1193,7 @@
       "name": "LoadFromImmediateF64",
       "description": "Loads a f64 value from the specified immediate memory address.",
       "opcode": 69,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_dest",
@@ -1172,6 +1215,7 @@
       "name": "StoreIndirectWithOffsetU8",
       "description": "Stores a u8 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 90,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1197,6 +1241,7 @@
       "name": "StoreIndirectWithOffsetU16",
       "description": "Stores a u16 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 91,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1222,6 +1267,7 @@
       "name": "StoreIndirectWithOffsetU32",
       "description": "Stores a u32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 92,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1247,6 +1293,7 @@
       "name": "StoreIndirectWithOffsetU64",
       "description": "Stores a u64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 93,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1272,6 +1319,7 @@
       "name": "StoreIndirectWithOffsetI8",
       "description": "Stores a i8 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 94,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1297,6 +1345,7 @@
       "name": "StoreIndirectWithOffsetI16",
       "description": "Stores a i16 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 95,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1322,6 +1371,7 @@
       "name": "StoreIndirectWithOffsetI32",
       "description": "Stores a i32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 96,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1347,6 +1397,7 @@
       "name": "StoreIndirectWithOffsetI64",
       "description": "Stores a i64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 97,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1372,6 +1423,7 @@
       "name": "StoreIndirectWithOffsetF32",
       "description": "Stores a f32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 98,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1397,6 +1449,7 @@
       "name": "StoreIndirectWithOffsetF64",
       "description": "Stores a f64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
       "opcode": 99,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -1422,6 +1475,7 @@
       "name": "StoreFromImmediateWithOffsetU8",
       "description": "Stores a u8 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 130,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1447,6 +1501,7 @@
       "name": "StoreFromImmediateWithOffsetU16",
       "description": "Stores a u16 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 131,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1472,6 +1527,7 @@
       "name": "StoreFromImmediateWithOffsetU32",
       "description": "Stores a u32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 132,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1497,6 +1553,7 @@
       "name": "StoreFromImmediateWithOffsetU64",
       "description": "Stores a u64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 133,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1522,6 +1579,7 @@
       "name": "StoreFromImmediateWithOffsetI8",
       "description": "Stores a i8 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 134,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1547,6 +1605,7 @@
       "name": "StoreFromImmediateWithOffsetI16",
       "description": "Stores a i16 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 135,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1572,6 +1631,7 @@
       "name": "StoreFromImmediateWithOffsetI32",
       "description": "Stores a i32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 136,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1597,6 +1657,7 @@
       "name": "StoreFromImmediateWithOffsetI64",
       "description": "Stores a i64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 137,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1622,6 +1683,7 @@
       "name": "StoreFromImmediateWithOffsetF32",
       "description": "Stores a f32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 138,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1647,6 +1709,7 @@
       "name": "StoreFromImmediateWithOffsetF64",
       "description": "Stores a f64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
       "opcode": 139,
+      "arg_bytes": 10,
       "args": [
         {
           "name": "section_idx",
@@ -1672,6 +1735,7 @@
       "name": "LogicalAnd",
       "description": "Performs logical && on the truthiness of two registers.",
       "opcode": 150,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1698,6 +1762,7 @@
       "name": "LogicalOr",
       "description": "Performs logical || on the truthiness of two registers.",
       "opcode": 151,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1724,6 +1789,7 @@
       "name": "LogicalNot",
       "description": "Performs logical negation (!), storing 1 if the input is zero, else 0.",
       "opcode": 152,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -1745,6 +1811,7 @@
       "name": "LogicalXor",
       "description": "Performs logical ^ on the truthiness of two registers.",
       "opcode": 153,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1771,6 +1838,7 @@
       "name": "AddU8",
       "description": "Adds two u8 registers and stores the result in the destination register.",
       "opcode": 170,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1798,6 +1866,7 @@
       "name": "AddU16",
       "description": "Adds two u16 registers and stores the result in the destination register.",
       "opcode": 171,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1825,6 +1894,7 @@
       "name": "AddU32",
       "description": "Adds two u32 registers and stores the result in the destination register.",
       "opcode": 172,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1852,6 +1922,7 @@
       "name": "AddU64",
       "description": "Adds two u64 registers and stores the result in the destination register.",
       "opcode": 173,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1879,6 +1950,7 @@
       "name": "AddI8",
       "description": "Adds two i8 registers and stores the result in the destination register.",
       "opcode": 174,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1906,6 +1978,7 @@
       "name": "AddI16",
       "description": "Adds two i16 registers and stores the result in the destination register.",
       "opcode": 175,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1933,6 +2006,7 @@
       "name": "AddI32",
       "description": "Adds two i32 registers and stores the result in the destination register.",
       "opcode": 176,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1960,6 +2034,7 @@
       "name": "AddI64",
       "description": "Adds two i64 registers and stores the result in the destination register.",
       "opcode": 177,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -1987,6 +2062,7 @@
       "name": "AddF32",
       "description": "Adds two f32 floating-point registers and stores the result in the destination register.",
       "opcode": 178,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2014,6 +2090,7 @@
       "name": "AddF64",
       "description": "Adds two f64 floating-point registers and stores the result in the destination register.",
       "opcode": 179,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2041,6 +2118,7 @@
       "name": "SubtractU8",
       "description": "Subtracts two u8 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 200,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2066,6 +2144,7 @@
       "name": "SubtractU16",
       "description": "Subtracts two u16 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 201,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2091,6 +2170,7 @@
       "name": "SubtractU32",
       "description": "Subtracts two u32 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 202,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2116,6 +2196,7 @@
       "name": "SubtractU64",
       "description": "Subtracts two u64 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 203,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2141,6 +2222,7 @@
       "name": "SubtractI8",
       "description": "Subtracts two i8 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 204,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2166,6 +2248,7 @@
       "name": "SubtractI16",
       "description": "Subtracts two i16 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 205,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2191,6 +2274,7 @@
       "name": "SubtractI32",
       "description": "Subtracts two i32 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 206,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2216,6 +2300,7 @@
       "name": "SubtractI64",
       "description": "Subtracts two i64 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 207,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2241,6 +2326,7 @@
       "name": "SubtractF32",
       "description": "Subtracts two f32 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 208,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2266,6 +2352,7 @@
       "name": "SubtractF64",
       "description": "Subtracts two f64 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 209,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2291,6 +2378,7 @@
       "name": "MultiplyU8",
       "description": "Multiplies two u8 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 230,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2316,6 +2404,7 @@
       "name": "MultiplyU16",
       "description": "Multiplies two u16 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 231,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2341,6 +2430,7 @@
       "name": "MultiplyU32",
       "description": "Multiplies two u32 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 232,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2366,6 +2456,7 @@
       "name": "MultiplyU64",
       "description": "Multiplies two u64 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 233,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2391,6 +2482,7 @@
       "name": "MultiplyI8",
       "description": "Multiplies two i8 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 234,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2416,6 +2508,7 @@
       "name": "MultiplyI16",
       "description": "Multiplies two i16 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 235,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2441,6 +2534,7 @@
       "name": "MultiplyI32",
       "description": "Multiplies two i32 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 236,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2466,6 +2560,7 @@
       "name": "MultiplyI64",
       "description": "Multiplies two i64 values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 237,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2491,6 +2586,7 @@
       "name": "MultiplyF32",
       "description": "Multiplies two f32 floating-point values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 238,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2516,6 +2612,7 @@
       "name": "MultiplyF64",
       "description": "Multiplies two f64 floating-point values from `reg1` and `reg2`, storing the result in `dest`.",
       "opcode": 239,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2541,6 +2638,7 @@
       "name": "DivideU8",
       "description": "Divides one u8 register by another and stores the result.",
       "opcode": 260,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2567,6 +2665,7 @@
       "name": "DivideU16",
       "description": "Divides one u16 register by another and stores the result.",
       "opcode": 261,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2593,6 +2692,7 @@
       "name": "DivideU32",
       "description": "Divides one u32 register by another and stores the result.",
       "opcode": 262,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2619,6 +2719,7 @@
       "name": "DivideU64",
       "description": "Divides one u64 register by another and stores the result.",
       "opcode": 263,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2645,6 +2746,7 @@
       "name": "DivideI8",
       "description": "Divides one i8 register by another and stores the result.",
       "opcode": 264,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2671,6 +2773,7 @@
       "name": "DivideI16",
       "description": "Divides one i16 register by another and stores the result.",
       "opcode": 265,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2697,6 +2800,7 @@
       "name": "DivideI32",
       "description": "Divides one i32 register by another and stores the result.",
       "opcode": 266,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2723,6 +2827,7 @@
       "name": "DivideI64",
       "description": "Divides one i64 register by another and stores the result.",
       "opcode": 267,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2749,6 +2854,7 @@
       "name": "DivideF32",
       "description": "Divides one f32 floating-point register by another and stores the result.",
       "opcode": 268,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2775,6 +2881,7 @@
       "name": "DivideF64",
       "description": "Divides one f64 floating-point register by another and stores the result.",
       "opcode": 269,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2801,6 +2908,7 @@
       "name": "ModuloU8",
       "description": "Computes the remainder of a u8 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 290,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2826,6 +2934,7 @@
       "name": "ModuloU16",
       "description": "Computes the remainder of a u16 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 291,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2851,6 +2960,7 @@
       "name": "ModuloU32",
       "description": "Computes the remainder of a u32 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 292,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2876,6 +2986,7 @@
       "name": "ModuloU64",
       "description": "Computes the remainder of a u64 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 293,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2901,6 +3012,7 @@
       "name": "ModuloI8",
       "description": "Computes the remainder of a i8 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 294,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2926,6 +3038,7 @@
       "name": "ModuloI16",
       "description": "Computes the remainder of a i16 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 295,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2951,6 +3064,7 @@
       "name": "ModuloI32",
       "description": "Computes the remainder of a i32 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 296,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -2976,6 +3090,7 @@
       "name": "ModuloI64",
       "description": "Computes the remainder of a i64 division. `dest = reg1 % reg2`. Sets error on division by zero.",
       "opcode": 297,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3001,6 +3116,7 @@
       "name": "ModuloF32",
       "description": "Computes the remainder of a f32 division using `%`. Result is undefined if inputs are NaN or infinite.",
       "opcode": 298,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3026,6 +3142,7 @@
       "name": "ModuloF64",
       "description": "Computes the remainder of a f64 division using `%`. Result is undefined if inputs are NaN or infinite.",
       "opcode": 299,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3051,6 +3168,7 @@
       "name": "EqualU8",
       "description": "Checks equality between two u8 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 350,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3078,6 +3196,7 @@
       "name": "EqualU16",
       "description": "Checks equality between two u16 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 351,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3105,6 +3224,7 @@
       "name": "EqualU32",
       "description": "Checks equality between two u32 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 352,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3132,6 +3252,7 @@
       "name": "EqualU64",
       "description": "Checks equality between two u64 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 353,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3159,6 +3280,7 @@
       "name": "EqualI8",
       "description": "Checks equality between two i8 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 354,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3186,6 +3308,7 @@
       "name": "EqualI16",
       "description": "Checks equality between two i16 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 355,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3213,6 +3336,7 @@
       "name": "EqualI32",
       "description": "Checks equality between two i32 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 356,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3240,6 +3364,7 @@
       "name": "EqualI64",
       "description": "Checks equality between two i64 registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 357,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3267,6 +3392,7 @@
       "name": "EqualF32",
       "description": "Checks equality between two f32 floating-point registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 358,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3294,6 +3420,7 @@
       "name": "EqualF64",
       "description": "Checks equality between two f64 floating-point registers. Sets 1 if equal, 0 otherwise.",
       "opcode": 359,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3321,6 +3448,7 @@
       "name": "NotEqualU8",
       "description": "Compares two u8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 380,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3346,6 +3474,7 @@
       "name": "NotEqualU16",
       "description": "Compares two u16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 381,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3371,6 +3500,7 @@
       "name": "NotEqualU32",
       "description": "Compares two u32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 382,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3396,6 +3526,7 @@
       "name": "NotEqualU64",
       "description": "Compares two u64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 383,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3421,6 +3552,7 @@
       "name": "NotEqualI8",
       "description": "Compares two i8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 384,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3446,6 +3578,7 @@
       "name": "NotEqualI16",
       "description": "Compares two i16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 385,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3471,6 +3604,7 @@
       "name": "NotEqualI32",
       "description": "Compares two i32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 386,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3496,6 +3630,7 @@
       "name": "NotEqualI64",
       "description": "Compares two i64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 387,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3521,6 +3656,7 @@
       "name": "NotEqualF32",
       "description": "Compares two f32 floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 388,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3546,6 +3682,7 @@
       "name": "NotEqualF64",
       "description": "Compares two f64 floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
       "opcode": 389,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3571,6 +3708,7 @@
       "name": "LessThanU8",
       "description": "Compares two u8 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 410,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3597,6 +3735,7 @@
       "name": "LessThanU16",
       "description": "Compares two u16 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 411,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3623,6 +3762,7 @@
       "name": "LessThanU32",
       "description": "Compares two u32 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 412,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3649,6 +3789,7 @@
       "name": "LessThanU64",
       "description": "Compares two u64 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 413,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3675,6 +3816,7 @@
       "name": "LessThanI8",
       "description": "Compares two i8 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 414,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3701,6 +3843,7 @@
       "name": "LessThanI16",
       "description": "Compares two i16 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 415,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3727,6 +3870,7 @@
       "name": "LessThanI32",
       "description": "Compares two i32 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 416,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3753,6 +3897,7 @@
       "name": "LessThanI64",
       "description": "Compares two i64 registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 417,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3779,6 +3924,7 @@
       "name": "LessThanF32",
       "description": "Compares two f32 floating-point registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 418,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3805,6 +3951,7 @@
       "name": "LessThanF64",
       "description": "Compares two f64 floating-point registers. Sets 1 if the first is less than the second, else 0.",
       "opcode": 419,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3831,6 +3978,7 @@
       "name": "LessThanOrEqualU8",
       "description": "Compares two u8 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 440,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3857,6 +4005,7 @@
       "name": "LessThanOrEqualU16",
       "description": "Compares two u16 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 441,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3883,6 +4032,7 @@
       "name": "LessThanOrEqualU32",
       "description": "Compares two u32 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 442,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3909,6 +4059,7 @@
       "name": "LessThanOrEqualU64",
       "description": "Compares two u64 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 443,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3935,6 +4086,7 @@
       "name": "LessThanOrEqualI8",
       "description": "Compares two i8 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 444,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3961,6 +4113,7 @@
       "name": "LessThanOrEqualI16",
       "description": "Compares two i16 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 445,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -3987,6 +4140,7 @@
       "name": "LessThanOrEqualI32",
       "description": "Compares two i32 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 446,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4013,6 +4167,7 @@
       "name": "LessThanOrEqualI64",
       "description": "Compares two i64 registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 447,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4039,6 +4194,7 @@
       "name": "LessThanOrEqualF32",
       "description": "Compares two f32 floating-point registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 448,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4065,6 +4221,7 @@
       "name": "LessThanOrEqualF64",
       "description": "Compares two f64 floating-point registers. Sets 1 if the first is less than or equal to the second, else 0.",
       "opcode": 449,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4091,6 +4248,7 @@
       "name": "GreaterThanU8",
       "description": "Compares two u8 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 470,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4117,6 +4275,7 @@
       "name": "GreaterThanU16",
       "description": "Compares two u16 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 471,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4143,6 +4302,7 @@
       "name": "GreaterThanU32",
       "description": "Compares two u32 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 472,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4169,6 +4329,7 @@
       "name": "GreaterThanU64",
       "description": "Compares two u64 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 473,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4195,6 +4356,7 @@
       "name": "GreaterThanI8",
       "description": "Compares two i8 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 474,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4221,6 +4383,7 @@
       "name": "GreaterThanI16",
       "description": "Compares two i16 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 475,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4247,6 +4410,7 @@
       "name": "GreaterThanI32",
       "description": "Compares two i32 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 476,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4273,6 +4437,7 @@
       "name": "GreaterThanI64",
       "description": "Compares two i64 registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 477,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4299,6 +4464,7 @@
       "name": "GreaterThanF32",
       "description": "Compares two f32 floating-point registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 478,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4325,6 +4491,7 @@
       "name": "GreaterThanF64",
       "description": "Compares two f64 floating-point registers. Sets 1 if the first is greater than the second, else 0.",
       "opcode": 479,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4351,6 +4518,7 @@
       "name": "GreaterThanOrEqualU8",
       "description": "Compares two u8 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 500,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4377,6 +4545,7 @@
       "name": "GreaterThanOrEqualU16",
       "description": "Compares two u16 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 501,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4403,6 +4572,7 @@
       "name": "GreaterThanOrEqualU32",
       "description": "Compares two u32 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 502,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4429,6 +4599,7 @@
       "name": "GreaterThanOrEqualU64",
       "description": "Compares two u64 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 503,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4455,6 +4626,7 @@
       "name": "GreaterThanOrEqualI8",
       "description": "Compares two i8 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 504,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4481,6 +4653,7 @@
       "name": "GreaterThanOrEqualI16",
       "description": "Compares two i16 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 505,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4507,6 +4680,7 @@
       "name": "GreaterThanOrEqualI32",
       "description": "Compares two i32 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 506,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4533,6 +4707,7 @@
       "name": "GreaterThanOrEqualI64",
       "description": "Compares two i64 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 507,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4559,6 +4734,7 @@
       "name": "GreaterThanOrEqualF32",
       "description": "Compares two f32 floating-point registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 508,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4585,6 +4761,7 @@
       "name": "GreaterThanOrEqualF64",
       "description": "Compares two f64 floating-point registers. Sets 1 if the first is greater than or equal to the second, else 0.",
       "opcode": 509,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4611,6 +4788,7 @@
       "name": "CallFunction",
       "description": "Calls a function at the specified bytecode address. Saves the return address and switches stack frame.",
       "opcode": 600,
+      "arg_bytes": 8,
       "args": [
         {
           "name": "target",
@@ -4627,6 +4805,7 @@
       "name": "Return",
       "description": "Returns from the current function by restoring the previous frame and program counter.",
       "opcode": 601,
+      "arg_bytes": 0,
       "args": [],
       "tags": [
         "ControlFlow",
@@ -4637,6 +4816,7 @@
       "name": "Allocate",
       "description": "Allocates a heap section of size from `reg_size` and stores the section index in `reg_target`.",
       "opcode": 602,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "reg_target",
@@ -4657,6 +4837,7 @@
       "name": "Deallocate",
       "description": "Frees the heap section at the index given in `reg_target`.",
       "opcode": 603,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "reg_target",
@@ -4672,6 +4853,7 @@
       "name": "Memcpy",
       "description": "Copies memory from a source heap section to a destination heap section.",
       "opcode": 604,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "reg_dest",
@@ -4707,6 +4889,7 @@
       "name": "MemSet",
       "description": "Fills a heap section with a repeated byte value.",
       "opcode": 605,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_ptr",
@@ -4732,7 +4915,14 @@
       "name": "Halt",
       "description": "Halts execution of the virtual machine immediately.",
       "opcode": 606,
-      "args": [],
+      "arg_bytes": 8,
+      "args": [
+        {
+          "name": "exit_code",
+          "description": "Exit code for the VM (default is 0)",
+          "typ": "I64"
+        }
+      ],
       "tags": [
         "ControlFlow",
         "SideEffects"
@@ -4742,6 +4932,7 @@
       "name": "MoveU8",
       "description": "Moves a u8 value from one register to another. `dest = source`.",
       "opcode": 821,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4762,6 +4953,7 @@
       "name": "MoveU16",
       "description": "Moves a u16 value from one register to another. `dest = source`.",
       "opcode": 822,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4782,6 +4974,7 @@
       "name": "MoveU32",
       "description": "Moves a u32 value from one register to another. `dest = source`.",
       "opcode": 823,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4802,6 +4995,7 @@
       "name": "MoveU64",
       "description": "Moves a u64 value from one register to another. `dest = source`.",
       "opcode": 824,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4822,6 +5016,7 @@
       "name": "MoveI8",
       "description": "Moves a i8 value from one register to another. `dest = source`.",
       "opcode": 825,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4842,6 +5037,7 @@
       "name": "MoveI16",
       "description": "Moves a i16 value from one register to another. `dest = source`.",
       "opcode": 826,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4862,6 +5058,7 @@
       "name": "MoveI32",
       "description": "Moves a i32 value from one register to another. `dest = source`.",
       "opcode": 827,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4882,6 +5079,7 @@
       "name": "MoveI64",
       "description": "Moves a i64 value from one register to another. `dest = source`.",
       "opcode": 828,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4902,6 +5100,7 @@
       "name": "MoveF32",
       "description": "Moves a f32 value from one register to another. `dest = source`.",
       "opcode": 829,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4922,6 +5121,7 @@
       "name": "MoveF64",
       "description": "Moves a f64 value from one register to another. `dest = source`.",
       "opcode": 830,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4942,6 +5142,7 @@
       "name": "IncrementU8",
       "description": "Adds an immediate u8 value to the destination register.",
       "opcode": 841,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -4962,6 +5163,7 @@
       "name": "IncrementU16",
       "description": "Adds an immediate u16 value to the destination register.",
       "opcode": 842,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -4982,6 +5184,7 @@
       "name": "IncrementU32",
       "description": "Adds an immediate u32 value to the destination register.",
       "opcode": 843,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "dest",
@@ -5002,6 +5205,7 @@
       "name": "IncrementU64",
       "description": "Adds an immediate u64 value to the destination register.",
       "opcode": 844,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "dest",
@@ -5022,6 +5226,7 @@
       "name": "IncrementI8",
       "description": "Adds an immediate i8 value to the destination register.",
       "opcode": 845,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -5042,6 +5247,7 @@
       "name": "IncrementI16",
       "description": "Adds an immediate i16 value to the destination register.",
       "opcode": 846,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5062,6 +5268,7 @@
       "name": "IncrementI32",
       "description": "Adds an immediate i32 value to the destination register.",
       "opcode": 847,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "dest",
@@ -5082,6 +5289,7 @@
       "name": "IncrementI64",
       "description": "Adds an immediate i64 value to the destination register.",
       "opcode": 848,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "dest",
@@ -5102,6 +5310,7 @@
       "name": "IncrementF32",
       "description": "Adds an immediate f32 floating-point value to the destination register.",
       "opcode": 849,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "dest",
@@ -5122,6 +5331,7 @@
       "name": "IncrementF64",
       "description": "Adds an immediate f64 floating-point value to the destination register.",
       "opcode": 850,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "dest",
@@ -5142,6 +5352,7 @@
       "name": "DecrementU8",
       "description": "Decrements a u8 register by a constant value.",
       "opcode": 861,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -5163,6 +5374,7 @@
       "name": "DecrementU16",
       "description": "Decrements a u16 register by a constant value.",
       "opcode": 862,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5184,6 +5396,7 @@
       "name": "DecrementU32",
       "description": "Decrements a u32 register by a constant value.",
       "opcode": 863,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "dest",
@@ -5205,6 +5418,7 @@
       "name": "DecrementU64",
       "description": "Decrements a u64 register by a constant value.",
       "opcode": 864,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "dest",
@@ -5226,6 +5440,7 @@
       "name": "DecrementI8",
       "description": "Decrements a i8 register by a constant value.",
       "opcode": 865,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -5247,6 +5462,7 @@
       "name": "DecrementI16",
       "description": "Decrements a i16 register by a constant value.",
       "opcode": 866,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5268,6 +5484,7 @@
       "name": "DecrementI32",
       "description": "Decrements a i32 register by a constant value.",
       "opcode": 867,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "dest",
@@ -5289,6 +5506,7 @@
       "name": "DecrementI64",
       "description": "Decrements a i64 register by a constant value.",
       "opcode": 868,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "dest",
@@ -5310,6 +5528,7 @@
       "name": "DecrementF32",
       "description": "Decrements a f32 floating-point register by a constant value.",
       "opcode": 869,
+      "arg_bytes": 5,
       "args": [
         {
           "name": "dest",
@@ -5331,6 +5550,7 @@
       "name": "DecrementF64",
       "description": "Decrements a f64 floating-point register by a constant value.",
       "opcode": 870,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "dest",
@@ -5352,6 +5572,7 @@
       "name": "BitwiseAndU8",
       "description": "Performs a bitwise AND between two u8 registers and stores the result.",
       "opcode": 900,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5380,6 +5601,7 @@
       "name": "BitwiseAndU16",
       "description": "Performs a bitwise AND between two u16 registers and stores the result.",
       "opcode": 901,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5408,6 +5630,7 @@
       "name": "BitwiseAndU32",
       "description": "Performs a bitwise AND between two u32 registers and stores the result.",
       "opcode": 902,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5436,6 +5659,7 @@
       "name": "BitwiseAndU64",
       "description": "Performs a bitwise AND between two u64 registers and stores the result.",
       "opcode": 903,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5464,6 +5688,7 @@
       "name": "BitwiseAndI8",
       "description": "Performs a bitwise AND between two i8 registers and stores the result.",
       "opcode": 904,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5492,6 +5717,7 @@
       "name": "BitwiseAndI16",
       "description": "Performs a bitwise AND between two i16 registers and stores the result.",
       "opcode": 905,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5520,6 +5746,7 @@
       "name": "BitwiseAndI32",
       "description": "Performs a bitwise AND between two i32 registers and stores the result.",
       "opcode": 906,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5548,6 +5775,7 @@
       "name": "BitwiseAndI64",
       "description": "Performs a bitwise AND between two i64 registers and stores the result.",
       "opcode": 907,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5576,6 +5804,7 @@
       "name": "BitwiseOrU8",
       "description": "Performs a bitwise OR between two u8 registers and stores the result.",
       "opcode": 910,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5604,6 +5833,7 @@
       "name": "BitwiseOrU16",
       "description": "Performs a bitwise OR between two u16 registers and stores the result.",
       "opcode": 911,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5632,6 +5862,7 @@
       "name": "BitwiseOrU32",
       "description": "Performs a bitwise OR between two u32 registers and stores the result.",
       "opcode": 912,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5660,6 +5891,7 @@
       "name": "BitwiseOrU64",
       "description": "Performs a bitwise OR between two u64 registers and stores the result.",
       "opcode": 913,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5688,6 +5920,7 @@
       "name": "BitwiseOrI8",
       "description": "Performs a bitwise OR between two i8 registers and stores the result.",
       "opcode": 914,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5716,6 +5949,7 @@
       "name": "BitwiseOrI16",
       "description": "Performs a bitwise OR between two i16 registers and stores the result.",
       "opcode": 915,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5744,6 +5978,7 @@
       "name": "BitwiseOrI32",
       "description": "Performs a bitwise OR between two i32 registers and stores the result.",
       "opcode": 916,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5772,6 +6007,7 @@
       "name": "BitwiseOrI64",
       "description": "Performs a bitwise OR between two i64 registers and stores the result.",
       "opcode": 917,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5800,6 +6036,7 @@
       "name": "BitwiseXorU8",
       "description": "Performs a bitwise XOR between two u8 registers and stores the result.",
       "opcode": 920,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5828,6 +6065,7 @@
       "name": "BitwiseXorU16",
       "description": "Performs a bitwise XOR between two u16 registers and stores the result.",
       "opcode": 921,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5856,6 +6094,7 @@
       "name": "BitwiseXorU32",
       "description": "Performs a bitwise XOR between two u32 registers and stores the result.",
       "opcode": 922,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5884,6 +6123,7 @@
       "name": "BitwiseXorU64",
       "description": "Performs a bitwise XOR between two u64 registers and stores the result.",
       "opcode": 923,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5912,6 +6152,7 @@
       "name": "BitwiseXorI8",
       "description": "Performs a bitwise XOR between two i8 registers and stores the result.",
       "opcode": 924,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5940,6 +6181,7 @@
       "name": "BitwiseXorI16",
       "description": "Performs a bitwise XOR between two i16 registers and stores the result.",
       "opcode": 925,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5968,6 +6210,7 @@
       "name": "BitwiseXorI32",
       "description": "Performs a bitwise XOR between two i32 registers and stores the result.",
       "opcode": 926,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -5996,6 +6239,7 @@
       "name": "BitwiseXorI64",
       "description": "Performs a bitwise XOR between two i64 registers and stores the result.",
       "opcode": 927,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6024,6 +6268,7 @@
       "name": "BitwiseNotU8",
       "description": "Performs a bitwise NOT on a u8 register and stores the result.",
       "opcode": 930,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6046,6 +6291,7 @@
       "name": "BitwiseNotU16",
       "description": "Performs a bitwise NOT on a u16 register and stores the result.",
       "opcode": 931,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6068,6 +6314,7 @@
       "name": "BitwiseNotU32",
       "description": "Performs a bitwise NOT on a u32 register and stores the result.",
       "opcode": 932,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6090,6 +6337,7 @@
       "name": "BitwiseNotU64",
       "description": "Performs a bitwise NOT on a u64 register and stores the result.",
       "opcode": 933,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6112,6 +6360,7 @@
       "name": "BitwiseNotI8",
       "description": "Performs a bitwise NOT on a i8 register and stores the result.",
       "opcode": 934,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6134,6 +6383,7 @@
       "name": "BitwiseNotI16",
       "description": "Performs a bitwise NOT on a i16 register and stores the result.",
       "opcode": 935,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6156,6 +6406,7 @@
       "name": "BitwiseNotI32",
       "description": "Performs a bitwise NOT on a i32 register and stores the result.",
       "opcode": 936,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6178,6 +6429,7 @@
       "name": "BitwiseNotI64",
       "description": "Performs a bitwise NOT on a i64 register and stores the result.",
       "opcode": 937,
+      "arg_bytes": 2,
       "args": [
         {
           "name": "dest",
@@ -6200,6 +6452,7 @@
       "name": "ShiftLeftU8",
       "description": "Performs left bit shift on a u8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 940,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6225,6 +6478,7 @@
       "name": "ShiftLeftU16",
       "description": "Performs left bit shift on a u16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 941,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6250,6 +6504,7 @@
       "name": "ShiftLeftU32",
       "description": "Performs left bit shift on a u32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 942,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6275,6 +6530,7 @@
       "name": "ShiftLeftU64",
       "description": "Performs left bit shift on a u64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 943,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6300,6 +6556,7 @@
       "name": "ShiftLeftI8",
       "description": "Performs left bit shift on a i8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 944,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6325,6 +6582,7 @@
       "name": "ShiftLeftI16",
       "description": "Performs left bit shift on a i16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 945,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6350,6 +6608,7 @@
       "name": "ShiftLeftI32",
       "description": "Performs left bit shift on a i32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 946,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6375,6 +6634,7 @@
       "name": "ShiftLeftI64",
       "description": "Performs left bit shift on a i64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 947,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6400,6 +6660,7 @@
       "name": "ShiftRightU8",
       "description": "Performs right bit shift on a u8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 950,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6425,6 +6686,7 @@
       "name": "ShiftRightU16",
       "description": "Performs right bit shift on a u16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 951,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6450,6 +6712,7 @@
       "name": "ShiftRightU32",
       "description": "Performs right bit shift on a u32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 952,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6475,6 +6738,7 @@
       "name": "ShiftRightU64",
       "description": "Performs right bit shift on a u64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 953,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6500,6 +6764,7 @@
       "name": "ShiftRightI8",
       "description": "Performs right bit shift on a i8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 954,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6525,6 +6790,7 @@
       "name": "ShiftRightI16",
       "description": "Performs right bit shift on a i16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 955,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6550,6 +6816,7 @@
       "name": "ShiftRightI32",
       "description": "Performs right bit shift on a i32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 956,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6575,6 +6842,7 @@
       "name": "ShiftRightI64",
       "description": "Performs right bit shift on a i64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
       "opcode": 957,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "dest",
@@ -6600,6 +6868,7 @@
       "name": "Print",
       "description": "Prints a UTF-8 string from memory to standard output. Reads `length` bytes from `section_id` starting at `offset`, decodes as UTF-8, and prints the resulting string.",
       "opcode": 1000,
+      "arg_bytes": 3,
       "args": [
         {
           "name": "reg_section_id",
@@ -6625,6 +6894,7 @@
       "name": "StoreConstantArray",
       "description": "Copies a constant array (identified by `const_id`) into a newly allocated heap section, storing the section index in `reg_ptr`.",
       "opcode": 1030,
+      "arg_bytes": 9,
       "args": [
         {
           "name": "reg_ptr",
@@ -6646,6 +6916,7 @@
       "name": "DebugPrintU8",
       "description": "Prints the value of a u8 register to stdout for debugging.",
       "opcode": 2000,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6661,6 +6932,7 @@
       "name": "DebugPrintU16",
       "description": "Prints the value of a u16 register to stdout for debugging.",
       "opcode": 2001,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6676,6 +6948,7 @@
       "name": "DebugPrintU32",
       "description": "Prints the value of a u32 register to stdout for debugging.",
       "opcode": 2002,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6691,6 +6964,7 @@
       "name": "DebugPrintU64",
       "description": "Prints the value of a u64 register to stdout for debugging.",
       "opcode": 2003,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6706,6 +6980,7 @@
       "name": "DebugPrintI8",
       "description": "Prints the value of a i8 register to stdout for debugging.",
       "opcode": 20004,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6721,6 +6996,7 @@
       "name": "DebugPrintI16",
       "description": "Prints the value of a i16 register to stdout for debugging.",
       "opcode": 2005,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6736,6 +7012,7 @@
       "name": "DebugPrintI32",
       "description": "Prints the value of a i32 register to stdout for debugging.",
       "opcode": 2006,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6751,6 +7028,7 @@
       "name": "DebugPrintI64",
       "description": "Prints the value of a i64 register to stdout for debugging.",
       "opcode": 2007,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6766,6 +7044,7 @@
       "name": "DebugPrintF32",
       "description": "Prints the value of a f32 register to stdout for debugging.",
       "opcode": 2008,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6781,6 +7060,7 @@
       "name": "DebugPrintF64",
       "description": "Prints the value of a f64 register to stdout for debugging.",
       "opcode": 2009,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "source",
@@ -6796,6 +7076,7 @@
       "name": "DebugPrintRaw",
       "description": "Prints the raw 64-bit value of a register in hexadecimal for debugging.",
       "opcode": 2010,
+      "arg_bytes": 1,
       "args": [
         {
           "name": "reg",

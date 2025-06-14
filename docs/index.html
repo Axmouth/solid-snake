@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solid Snake VM</title>
+
+  <!-- Clarity Design -->
+  <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/global.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/styles/theme.dark.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    body[cds-theme="dark"] {
+      --cds-alias-background: #121212;
+      --cds-alias-background-hover: #1e1e1e;
+      --cds-alias-object-text: #f0f0f0;
+      --cds-alias-border: #333;
+      --cds-alias-status-info-text: #4ea1f3;
+    }
+
+    body {
+      margin: 2rem;
+      font-family: system-ui, sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1, h2, h3 {
+      margin-top: 1.5rem;
+    }
+
+    .theme-toggle {
+      float: right;
+      margin-top: -3rem;
+    }
+
+    .links {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .link-card {
+      border: 1px solid var(--cds-alias-border);
+      border-radius: 6px;
+      padding: 1.2em 1.5em;
+      background-color: var(--cds-alias-background-hover);
+      text-decoration: none;
+      color: inherit;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .link-card:hover {
+      background-color: var(--cds-alias-border);
+    }
+
+    .tagline {
+      color: var(--cds-alias-status-info-text);
+      font-size: 1.2em;
+      margin-top: 0.25rem;
+    }
+
+    .section {
+      max-width: 700px;
+    }
+  </style>
+</head>
+<body cds-theme="dark">
+  <h1>Solid Snake VM</h1>
+  <div class="theme-toggle">
+    <label>
+      <input type="checkbox" id="themeToggle"> Light Theme
+    </label>
+  </div>
+
+  <p class="tagline">
+    A hardened, bytecode virtual machine with Python-like ergonomics and Rust-like semantics.
+  </p>
+
+  <section class="section">
+    <h2>✨ Vision</h2>
+    <p>
+      Solid Snake VM is a low-level, memory-safe, bytecode interpreter designed as the foundation
+      for a future language that blends Python-style syntax with Rust-style guarantees.
+    </p>
+
+    <h3>📉 Current Focus</h3>
+    <ul>
+      <li>Clean, modular instruction set</li>
+      <li>Sliding stack with function calls</li>
+      <li>Typed, bounds-checked memory</li>
+      <li>Debuggable execution tracing</li>
+    </ul>
+
+    <h3>🌐 Designed For</h3>
+    <ul>
+      <li>Language-agnostic backend targeting</li>
+      <li>Safe embedded scripting</li>
+      <li>Eventually: WASM compilation and FFI support</li>
+    </ul>
+  </section>
+
+  <section class="links">
+    <a href="instructions/" class="link-card">
+      🔍 View Bytecode Instructions
+    </a>
+    <a href="#" class="link-card" style="opacity: 0.6; cursor: not-allowed;">
+      🗋 File Format (Coming Soon)
+    </a>
+    <a href="#" class="link-card" style="opacity: 0.6; cursor: not-allowed;">
+      🧰 WASM Demo (Coming Soon)
+    </a>
+    <a href="https://github.com/axmnouth/solid-snake" class="link-card" target="_blank">
+      💻 View on GitHub
+    </a>
+  </section>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme() {
+      const theme = localStorage.getItem('theme') || 'dark';
+      body.setAttribute('cds-theme', theme);
+      themeToggle.checked = theme === 'light';
+    }
+
+    themeToggle.addEventListener('change', () => {
+      const theme = themeToggle.checked ? 'light' : 'dark';
+      body.setAttribute('cds-theme', theme);
+      localStorage.setItem('theme', theme);
+    });
+
+    applyTheme();
+  </script>
+</body>
+</html>

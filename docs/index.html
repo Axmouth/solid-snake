@@ -8,6 +8,7 @@
   <!-- Clarity Design -->
   <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/global.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/styles/theme.dark.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@clr/ui@17.0.0/clr-ui.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
@@ -23,10 +24,39 @@
       margin: 2rem;
       font-family: system-ui, sans-serif;
       transition: background 0.3s, color 0.3s;
+      line-height: 1.6;
+      /* Limit max-width of content */
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    h1, h2, h3 {
-      margin-top: 1.5rem;
+    /* Make ul/ol more readable */
+    ul, ol {
+      margin: 0 0 1.25rem 1.25rem;
+      padding-left: 1.25rem;
+    }
+    
+    /* Space out list items */
+    ul li, ol li {
+      margin-bottom: 0.4rem;
+      margin-left: 1.5rem;
+    }
+    
+    /* Slight padding above sections with icons/titles */
+    section > h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 1.2rem;
+    }
+    
+    /* Optional: darken bullet color slightly in dark theme */
+    body[cds-theme="dark"] ul li::marker {
+      color: #aaa;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
     }
 
     .theme-toggle {
@@ -62,8 +92,46 @@
       margin-top: 0.25rem;
     }
 
-    .section {
-      max-width: 700px;
+    /* Section spacing */
+    section {
+      margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Headings spacing */
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Tweak general paragraph spacing */
+    p, ul {
+      margin-bottom: 1rem;
+    }
+
+    /* Tweak link card style */
+    a.card {
+      display: block;
+      padding: 1rem 1.5rem;
+      margin: 0.75rem 0;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid var(--cds-alias-border);
+      background-color: var(--cds-alias-background-hover);
+      transition: background-color 0.2s ease;
+    }
+
+    a.card:hover {
+      background-color: var(--cds-alias-background, #111);
+    }
+
+    a.card .icon {
+      margin-right: 0.5em;
+    }
+
+    a.card.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -87,6 +155,7 @@
     </p>
 
     <h3>📉 Current Focus</h3>
+    <br/>
     <ul>
       <li>Clean, modular instruction set</li>
       <li>Sliding stack with function calls</li>
@@ -95,6 +164,7 @@
     </ul>
 
     <h3>🌐 Designed For</h3>
+    <br/>
     <ul>
       <li>Language-agnostic backend targeting</li>
       <li>Safe embedded scripting</li>
@@ -102,20 +172,22 @@
     </ul>
   </section>
 
-  <section class="links">
-    <a href="instructions/" class="link-card">
-      🔍 View Bytecode Instructions
+  <section>
+    <h2>Navigation</h2>
+    <a href="instructions/index.html" class="card">
+        <span class="icon">📘</span> View Bytecode Instructions
     </a>
-    <a href="#" class="link-card" style="opacity: 0.6; cursor: not-allowed;">
-      🗋 File Format (Coming Soon)
+    <a class="card disabled">
+        <span class="icon">📄</span> File Format (Coming Soon)
     </a>
-    <a href="#" class="link-card" style="opacity: 0.6; cursor: not-allowed;">
-      🧰 WASM Demo (Coming Soon)
+    <a class="card disabled">
+        <span class="icon">🧪</span> WASM Demo (Coming Soon)
     </a>
-    <a href="https://github.com/axmnouth/solid-snake" class="link-card" target="_blank">
-      💻 View on GitHub
+    <a href="https://github.com/axmouth/solid-snake" class="card" target="_blank">
+        <span class="icon">🔗</span> View on GitHub
     </a>
   </section>
+
 
   <script>
     const themeToggle = document.getElementById('themeToggle');

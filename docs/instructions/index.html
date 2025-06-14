@@ -28,6 +28,17 @@
     font-family: system-ui, sans-serif;
   }
 
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--cds-alias-status-info-text, #0078d4);
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
   .instruction.card {
     margin-bottom: 1.5rem;
   }
@@ -45,8 +56,8 @@
   }
 
   .theme-toggle {
-    float: right;
-    margin-top: -3.5rem;
+      float: right;
+      margin-top: -3rem;
   }
 
   input[type="search"] {
@@ -182,6 +193,7 @@
       <input type="checkbox" id="themeToggle"> Light Theme
     </label>
   </div>
+  <a href="/solid-snake/" class="back-link">← Back to Home</a>
 
   <div class="clr-form clr-form-horizontal" style="margin-top: 2rem;">
     <div style="position: relative; max-width: 500px;">

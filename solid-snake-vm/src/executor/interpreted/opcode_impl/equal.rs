@@ -8,7 +8,17 @@ use crate::executor::interpreted::opcode_decoder::RegisterType;
 macro_rules! impl_equal_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Checks equality between two ", stringify!($ty), " registers. Sets 1 if equal, 0 otherwise."),
+                [
+                    (dest: RegisterType, "Destination register for result (1 or 0)"),
+                    (reg1: RegisterType, "First operand register"),
+                    (reg2: RegisterType, "Second operand register")
+                ],
+                [Logical, Pure, Commutative],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -55,7 +65,17 @@ impl_equal_instruction!(EqualU64, u64);
 macro_rules! impl_equal_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode:snake handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Checks equality between two ", stringify!($ty), " floating-point registers. Sets 1 if equal, 0 otherwise."),
+                [
+                    (dest: RegisterType, "Destination register for result (1 or 0)"),
+                    (reg1: RegisterType, "First operand register"),
+                    (reg2: RegisterType, "Second operand register")
+                ],
+                [Logical, Pure, Commutative],
+                [<$opcode:snake handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]

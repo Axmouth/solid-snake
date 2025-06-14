@@ -10,7 +10,16 @@ macro_rules! impl_shift_right_instruction {
         paste! {
             $crate::define_instruction!(
                 $opcode,
-                (RegisterType, RegisterType, RegisterType),
+                concat!(
+                    "Performs right bit shift on a ", stringify!($ty),
+                    " value from `val_reg` by amount in `shift_reg`, storing result in `dest`."
+                ),
+                [
+                    (dest: RegisterType, "Destination register for the shifted result"),
+                    (val_reg: RegisterType, "Register containing the value to shift"),
+                    (shift_reg: RegisterType, "Register containing the shift amount")
+                ],
+                [Arithmetic],
                 [<$opcode handler>]
             );
 

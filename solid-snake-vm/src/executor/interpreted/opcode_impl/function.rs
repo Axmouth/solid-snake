@@ -8,9 +8,32 @@ use crate::{
     },
 };
 
-define_instruction!(CallFunction, (u64), callfunction);
-define_instruction!(Return, (), funcreturn);
-define_instruction!(Halt, (), halt);
+define_instruction!(
+    CallFunction,
+    "Calls a function at the specified bytecode address. Saves the return address and switches stack frame.",
+    [
+        (target: u64, "Bytecode address (offset) to jump to for the function")
+    ],
+    [ControlFlow, SideEffects],
+    callfunction
+);
+
+define_instruction!(
+    Return,
+    "Returns from the current function by restoring the previous frame and program counter.",
+    [],
+    [ControlFlow, SideEffects],
+    funcreturn
+);
+
+define_instruction!(
+    Halt,
+    "Halts execution of the virtual machine immediately.",
+    [],
+    [ControlFlow, SideEffects],
+    halt
+);
+
 
 pub const FRAME_ALLOCATION_CHUNK: usize = usize::pow(2, 16);
 

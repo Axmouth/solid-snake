@@ -968,6 +968,8 @@ dependencies = [
  "num_enum",
  "paste",
  "rustc_version_runtime",
+ "serde",
+ "serde_json",
  "solid-snake-vm-macros",
  "strum",
  "strum_macros",

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solid Snake Bytecode Instructions</title>
+
+  <!-- Clarity Design CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/global.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/styles/theme.dark.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@clr/ui@17.0.0/clr-ui.min.css" />
+
+  <style>
+  body[cds-theme="dark"] {
+    --cds-alias-background: #121212;
+    --cds-alias-background-hover: #1e1e1e;
+    --cds-alias-object-text: #f0f0f0;
+    --cds-alias-border: #333;
+  }
+
+  body[cds-theme="dark"] {
+    --cds-alias-status-info-text: #4ea1f3;
+  }
+
+  body {
+    margin: 2rem;
+    font-family: system-ui, sans-serif;
+  }
+
+  .instruction.card {
+    margin-bottom: 1.5rem;
+  }
+
+  .tags {
+    margin-top: 1rem;
+  }
+
+  .tags .badge {
+    background-color: var(--cds-alias-status-info-text, #4ea1f3);
+    color: white;
+    border-radius: 2em;
+    padding: 0.3em 0.75em;
+    font-size: 0.8em;
+  }
+
+  .theme-toggle {
+    float: right;
+    margin-top: -3.5rem;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .clr-control-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  #clearSearch {
+    display: none;
+  }
+
+  details.clr-accordion {
+    border: 1px solid var(--clr-accordion-text-color);
+    border-radius: 4px;
+    margin-top: 1rem;
+    padding: 0; /* reset browser default */
+    display: block;
+    width: auto; /* fix overflow issue */
+    margin: 1rem 0;
+  }
+
+  details.clr-accordion > summary {
+    padding: 0.6em 1em;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+    width: auto; /* fix overflow issue */
+  }
+
+  details.clr-accordion > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .clr-accordion-header {
+    padding: 0.6em 1em;
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .clr-accordion-button::before {
+    content: "▶";
+    display: inline-block;
+    margin-right: 0.5em;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .clr-accordion-button::before {
+    transform: rotate(90deg);
+  }
+
+  .clr-accordion-panel {
+    padding: 0.5em 1em;
+  }
+
+  .arg-table {
+    margin-top: 0.5em;
+    font-size: 0.95em;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  /* Shared styling for all themes */
+  .arg-table th,
+  .arg-table td {
+    padding: 0.5em 0.75em;
+    text-align: left;
+    border: 1px solid var(--cds-alias-border, #ccc);
+    word-wrap: break-word;
+    box-sizing: border-box;
+  }
+
+  .arg-table td:last-child {
+    text-align: right;
+    font-style: italic;
+    color: var(--cds-alias-status-info-text, #0078d4);
+  }
+
+  /* Light Theme Defaults */
+  body[cds-theme="light"] .arg-table th {
+    background-color: var(--cds-alias-background-hover, #f5f5f5);
+    color: var(--cds-alias-object-text, #111);
+  }
+
+  body[cds-theme="light"] .arg-table td {
+    background-color: var(--cds-alias-background, #fff);
+    color: var(--cds-alias-object-text, #111);
+  }
+
+  /* Dark Theme Overrides */
+  body[cds-theme="dark"] .arg-table th {
+    background-color: var(--cds-alias-background-hover, #2a2f36);
+    color: var(--cds-alias-object-text, #f0f0f0);
+    border: 1px solid var(--cds-alias-border, #333);
+  }
+
+  body[cds-theme="dark"] .arg-table td {
+    color: var(--cds-alias-object-text, #f0f0f0);
+  }
+
+  .instruction.card {
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+  }
+  </style>
+</head>
+
+<body cds-theme="dark">
+  <h1>Solid Snake Bytecode Instructions</h1>
+  <div class="theme-toggle">
+    <label>
+      <input type="checkbox" id="themeToggle"> Light Theme
+    </label>
+  </div>
+
+  <div class="clr-form clr-form-horizontal" style="margin-top: 2rem;">
+    <div style="position: relative; max-width: 500px;">
+      <input type="search" 
+        id="search"
+        class="clr-input"
+        placeholder="Search instructions..."
+        style="width: 100%; padding: 1rem; font-size: 1.1rem; border: 2px solid #444; border-radius: 6px;"
+      />
+
+      <button
+        id="clearSearch"
+        type="button"
+        style="
+          position: absolute;
+          right: 0.4em;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          font-size: 1.2em;
+          cursor: pointer;
+          color: #ccc;
+        "
+        aria-label="Clear search"
+      >
+    &times;
+  </button>
+</div>
+
+  </div>
+
+  <h2 style="margin-top: 2rem;">Filter by Tag</h2>
+  <section class="clr-form clr-form-horizontal">
+    <div id="tag-filters" class="clr-control-container"></div>
+  </section>
+
+  <section id="instructions"></section>
+
+  <!-- Embedded docs data -->
+  <script id="docs-data" type="application/json">__DOCS_PLACEHOLDER__</script>
+
+  <script>
+    let instructions = [];
+    let selectedTags = new Set();
+
+    function loadDocs() {
+      const json = document.getElementById('docs-data').textContent;
+      const data = JSON.parse(json);
+      instructions = data.instructions;
+      renderTagFilters(instructions);
+      renderInstructions(instructions);
+    }
+
+    function renderTagFilters(instructions) {
+      const allTags = [...new Set(instructions.flatMap(i => i.tags))].sort();
+      const container = document.getElementById('tag-filters');
+      container.innerHTML = '';
+      allTags.forEach(tag => {
+        const id = `tag-${tag}`;
+        container.innerHTML += `
+          <label class="clr-checkbox" for="${id}">
+            <input type="checkbox" id="${id}" value="${tag}" onchange="onTagChange()" />
+            <span>${tag}</span>
+          </label>`;
+      });
+    }
+
+    function renderInstructions(list) {
+      const section = document.getElementById('instructions');
+      const fragment = document.createDocumentFragment();
+
+      list.forEach(instr => {
+        const article = document.createElement('div');
+        article.className = 'card instruction';
+        article.innerHTML = `
+          <div class="card-block">
+            <h3 class="card-title">${instr.name}</h3>
+            <p>${instr.description}</p>
+            <p><strong>Opcode:</strong> 0x${instr.opcode.toString(16).padStart(4, '0')}</p>
+            ${instr.args.length ? `
+              <details class="clr-accordion">
+                <summary class="clr-accordion-header">
+                  <span class="clr-accordion-button">Arguments</span>
+                </summary>
+                <table class="arg-table">
+                  <thead>
+                    <tr><th>Argument</th><th>Description</th><th>Type</th></tr>
+                  </thead>
+                  <tbody>
+                    ${instr.args.map(arg => `
+                      <tr>
+                        <td>${arg.name}</td>
+                        <td>${arg.description}</td>
+                        <td><span class="arg-type">${arg.typ}</span></td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </details>` : ''}
+            ${instr.tags.length ? `
+              <div class="tags">${instr.tags.map(tag =>
+                `<span class="badge badge-info">${tag}</span>`).join('')}</div>` : ''}
+          </div>
+        `;
+        fragment.appendChild(article);
+      });
+
+      section.innerHTML = '';
+      section.appendChild(fragment);
+    }
+
+    function filterAndRender() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const filtered = instructions.filter(instr => {
+        const textMatch = instr.name.toLowerCase().includes(query) ||
+                          instr.description.toLowerCase().includes(query);
+        const tagsMatch = selectedTags.size === 0 || instr.tags.some(tag => selectedTags.has(tag));
+        return textMatch && tagsMatch;
+      });
+      renderInstructions(filtered);
+    }
+
+    function onTagChange() {
+      selectedTags = new Set(
+        Array.from(document.querySelectorAll('#tag-filters input:checked'))
+          .map(cb => cb.value)
+      );
+      filterAndRender();
+    }
+
+    const searchInput = document.getElementById('search');
+    const clearSearchBtn = document.getElementById('clearSearch');
+
+    searchInput.addEventListener('input', () => {
+      filterAndRender();
+      clearSearchBtn.style.display = searchInput.value ? 'block' : 'none';
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      filterAndRender();
+      clearSearchBtn.style.display = 'none';
+    });
+
+    document.getElementById('search').addEventListener('input', () => {
+      filterAndRender();
+    });
+
+    // 🌗 Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme() {
+      const theme = localStorage.getItem('theme') || 'dark';
+      body.setAttribute('cds-theme', theme);
+      themeToggle.checked = theme === 'light';
+    }
+
+    themeToggle.addEventListener('change', () => {
+      const theme = themeToggle.checked ? 'light' : 'dark';
+      body.setAttribute('cds-theme', theme);
+      localStorage.setItem('theme', theme);
+    });
+
+    applyTheme();
+    loadDocs();
+  </script>
+</body>
+</html>

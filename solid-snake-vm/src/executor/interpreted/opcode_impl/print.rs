@@ -8,7 +8,17 @@ use crate::executor::{
     },
 };
 
-crate::define_instruction!(Print, (RegisterType, RegisterType, RegisterType), print_raw);
+crate::define_instruction!(
+    Print,
+    "Prints a UTF-8 string from memory to standard output. Reads `length` bytes from `section_id` starting at `offset`, decodes as UTF-8, and prints the resulting string.",
+    [
+        (reg_section_id: RegisterType, "Register containing the heap section index"),
+        (reg_offset: RegisterType, "Register containing the byte offset into the section"),
+        (reg_length: RegisterType, "Register containing the number of bytes to read")
+    ],
+    [SideEffects],
+    print_raw
+);
 
 fn print_raw(
     executor: &mut VmInterpretedExecutor,

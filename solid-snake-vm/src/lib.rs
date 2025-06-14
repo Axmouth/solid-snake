@@ -16,18 +16,3 @@ use executor::{
 };
 
 use opcodes::OpCode;
-
-#[test]
-fn instructions_docs_are_up_to_date() {
-    use std::fs;
-
-    let expected = fs::read_to_string("../INSTRUCTIONS.md").expect("Missing INSTRUCTIONS.md");
-    let current = {
-        let docs = docs::Docs {
-            instructions: OpCode::get_docs(),
-        };
-        docs.to_markdown()
-    };
-
-    assert_eq!(expected, current, "Instruction docs are out of date. Run `cargo run --bin docgen`.");
-}

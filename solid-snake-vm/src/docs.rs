@@ -1,8 +1,10 @@
 use std::fmt;
 
-use crate::executor::interpreted::opcode_decoder::RegisterType;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+use crate::{executor::interpreted::opcode_decoder::RegisterType};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ArgType {
     I8,
     I16,
@@ -53,22 +55,71 @@ impl_arg_type!(RegisterType, Register);
 
 // TODO Use static strs?
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct ArgDocsEntry {
     pub name: String,
     pub description: String,
     pub typ: ArgType,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct InstructionDocsEntry {
     pub name: String,
     pub description: String,
     pub opcode: u16,
     pub args: Vec<ArgDocsEntry>,
-    pub commutative: bool,
+    pub tags: Box<[InstructionTag]>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Docs {
     pub instructions: Vec<InstructionDocsEntry>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum InstructionTag {
+    /// Alters control flow: jumps, calls, returns, halts.
+    ControlFlow,
+
+    /// Reads from or writes to memory.
+    Memory,
+
+    /// Performs computation: arithmetic, bitwise, shifts, etc.
+    Arithmetic,
+
+    /// Performs logical or comparison operations.
+    Logical,
+
+    /// Has no side effects other than register output, enabling certain optimizations.
+    Pure,
+
+    /// Commutative operations, useful for reordering or common subexpression elimination.
+    Commutative,
+
+    /// Allocates or deallocates memory.
+    Allocation,
+
+    /// Moves data between registers or memory.
+    DataMovement,
+
+    /// Produces side effects visible outside the VM (e.g., print).
+    SideEffects,
+}
+
+impl fmt::Display for InstructionTag {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            InstructionTag::ControlFlow => write!(f, "Control Flow"),
+            InstructionTag::Memory => write!(f, "Memory"),
+            InstructionTag::Arithmetic => write!(f, "Arithmetic"),
+            InstructionTag::Logical => write!(f, "Logical"),
+            InstructionTag::Pure => write!(f, "Pure"),
+            InstructionTag::Commutative => write!(f, "Commutative"),
+            InstructionTag::Allocation => write!(f, "Allocation"),
+            InstructionTag::DataMovement => write!(f, "Data Movement"),
+            InstructionTag::SideEffects => write!(f, "Side Effects"),
+        }
+    }
 }
 
 impl Docs {
@@ -94,13 +145,61 @@ impl Docs {
                 markdown.push('\n');
             }
 
-            if instruction.commutative {
-                markdown.push_str("This instruction is commutative.\n\n");
-            } else {
-                markdown.push_str("This instruction is not commutative.\n\n");
+            if !instruction.tags.is_empty() {
+                markdown.push_str("### Tags\n\n");
+                for tag in &instruction.tags {
+                    markdown.push_str(&format!("- {}\n", tag));
+                }
+                markdown.push('\n');
             }
         }
 
         markdown
+    }
+
+    pub fn to_json(&self) -> String {
+        serde_json::to_string_pretty(self).expect("Failed to serialize docs to JSON")
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use crate::opcodes::OpCode;
+
+    use super::*;
+
+    #[test]
+    fn instructions_docs_are_up_to_date() {
+        use std::fs;
+
+        let expected = fs::read_to_string("../INSTRUCTIONS.md").expect("Missing INSTRUCTIONS.md");
+        let current = {
+            let docs = Docs {
+                instructions: OpCode::get_docs(),
+            };
+            docs.to_markdown()
+        };
+
+        if expected != current {
+            panic!("Instruction docs are out of date. Run `cargo run --bin docgen`.");
+        }
+    }
+
+    #[test]
+    fn instruction_docs_json() {
+        use std::fs;
+
+        let expected = fs::read_to_string("../docs.json").expect("Missing docs.json");
+        let current = {
+            let docs = Docs {
+                instructions: OpCode::get_docs(),
+            };
+            docs.to_json()
+        };
+
+        if expected != current {
+            panic!("Instruction docs are out of date. Run `cargo run --bin docgen`.");
+        }
     }
 }

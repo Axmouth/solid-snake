@@ -8,7 +8,17 @@ use crate::executor::interpreted::opcode_decoder::{RegisterType, VmErrorCode};
 macro_rules! impl_mod_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Computes the remainder of a ", stringify!($ty), " division. `dest = reg1 % reg2`. Sets error on division by zero."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (reg1: RegisterType, "Dividend register"),
+                    (reg2: RegisterType, "Divisor register")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -58,7 +68,17 @@ impl_mod_instruction!(ModuloU64, u64);
 macro_rules! impl_mod_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Computes the remainder of a ", stringify!($ty), " division using `%`. Result is undefined if inputs are NaN or infinite."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (reg1: RegisterType, "Dividend register"),
+                    (reg2: RegisterType, "Divisor register")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]

@@ -4,7 +4,7 @@ This document provides a comprehensive overview of the bytecode instructions use
 
 ## JumpIfFalse
 
-Instruction for JumpIfFalse
+Jumps to the target address if the register is zero (false).
 
 **Opcode**: `0x0001`
 
@@ -15,11 +15,14 @@ Instruction for JumpIfFalse
 - **target**: Bytecode address(byte offset) to jump to (Type: `U64`)
 - **reg**: Register to check (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Control Flow
+- Side Effects
 
 ## JumpIf
 
-Instruction for JumpIf
+Jumps to the target address if the register is non-zero (true).
 
 **Opcode**: `0x0002`
 
@@ -30,11 +33,14 @@ Instruction for JumpIf
 - **target**: Bytecode address(byte offset) to jump to (Type: `U64`)
 - **reg**: Register to check (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Control Flow
+- Side Effects
 
 ## Jump
 
-Instruction for Jump
+Unconditionally jumps to the specified bytecode address.
 
 **Opcode**: `0x0003`
 
@@ -44,11 +50,14 @@ Instruction for Jump
 
 - **target**: Bytecode address(byte offset) to jump to (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Control Flow
+- Side Effects
 
 ## LoadIndirectU8
 
-Instruction for LoadIndirectU8
+Loads a u8 value from memory at address stored in a register.
 
 **Opcode**: `0x0014`
 
@@ -56,14 +65,17 @@ Instruction for LoadIndirectU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectU16
 
-Instruction for LoadIndirectU16
+Loads a u16 value from memory at address stored in a register.
 
 **Opcode**: `0x0015`
 
@@ -71,14 +83,17 @@ Instruction for LoadIndirectU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectU32
 
-Instruction for LoadIndirectU32
+Loads a u32 value from memory at address stored in a register.
 
 **Opcode**: `0x0016`
 
@@ -86,14 +101,17 @@ Instruction for LoadIndirectU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectU64
 
-Instruction for LoadIndirectU64
+Loads a u64 value from memory at address stored in a register.
 
 **Opcode**: `0x0017`
 
@@ -101,14 +119,17 @@ Instruction for LoadIndirectU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectI8
 
-Instruction for LoadIndirectI8
+Loads a i8 value from memory at address stored in a register.
 
 **Opcode**: `0x0018`
 
@@ -116,14 +137,17 @@ Instruction for LoadIndirectI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectI16
 
-Instruction for LoadIndirectI16
+Loads a i16 value from memory at address stored in a register.
 
 **Opcode**: `0x0019`
 
@@ -131,14 +155,17 @@ Instruction for LoadIndirectI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectI32
 
-Instruction for LoadIndirectI32
+Loads a i32 value from memory at address stored in a register.
 
 **Opcode**: `0x001A`
 
@@ -146,14 +173,17 @@ Instruction for LoadIndirectI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectI64
 
-Instruction for LoadIndirectI64
+Loads a i64 value from memory at address stored in a register.
 
 **Opcode**: `0x001B`
 
@@ -161,14 +191,17 @@ Instruction for LoadIndirectI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectF32
 
-Instruction for LoadIndirectF32
+Loads a f32 value from memory at address stored in a register.
 
 **Opcode**: `0x001C`
 
@@ -176,14 +209,17 @@ Instruction for LoadIndirectF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectF64
 
-Instruction for LoadIndirectF64
+Loads a f64 value from memory at address stored in a register.
 
 **Opcode**: `0x001D`
 
@@ -191,14 +227,17 @@ Instruction for LoadIndirectF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register holding memory address (Type: `Register`)
+- **dest**: Target register to store the loaded value (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetU8
 
-Instruction for LoadIndirectWithOffsetU8
+Loads a u8 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x001E`
 
@@ -206,15 +245,18 @@ Instruction for LoadIndirectWithOffsetU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetU16
 
-Instruction for LoadIndirectWithOffsetU16
+Loads a u16 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x001F`
 
@@ -222,15 +264,18 @@ Instruction for LoadIndirectWithOffsetU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetU32
 
-Instruction for LoadIndirectWithOffsetU32
+Loads a u32 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0020`
 
@@ -238,15 +283,18 @@ Instruction for LoadIndirectWithOffsetU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetU64
 
-Instruction for LoadIndirectWithOffsetU64
+Loads a u64 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0021`
 
@@ -254,15 +302,18 @@ Instruction for LoadIndirectWithOffsetU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetI8
 
-Instruction for LoadIndirectWithOffsetI8
+Loads a i8 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0022`
 
@@ -270,15 +321,18 @@ Instruction for LoadIndirectWithOffsetI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetI16
 
-Instruction for LoadIndirectWithOffsetI16
+Loads a i16 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0023`
 
@@ -286,15 +340,18 @@ Instruction for LoadIndirectWithOffsetI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetI32
 
-Instruction for LoadIndirectWithOffsetI32
+Loads a i32 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0024`
 
@@ -302,15 +359,18 @@ Instruction for LoadIndirectWithOffsetI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetI64
 
-Instruction for LoadIndirectWithOffsetI64
+Loads a i64 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0025`
 
@@ -318,15 +378,18 @@ Instruction for LoadIndirectWithOffsetI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetF32
 
-Instruction for LoadIndirectWithOffsetF32
+Loads a f32 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0026`
 
@@ -334,15 +397,18 @@ Instruction for LoadIndirectWithOffsetF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadIndirectWithOffsetF64
 
-Instruction for LoadIndirectWithOffsetF64
+Loads a f64 value from a memory section with a runtime-computed offset.
 
 **Opcode**: `0x0027`
 
@@ -350,15 +416,18 @@ Instruction for LoadIndirectWithOffsetF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **reg_ptr**: Register holding section index (Type: `Register`)
+- **reg_offset**: Register holding byte offset within section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadImmediateU8
 
-Instruction for LoadImmediateU8
+Loads an immediate u8 value into the given register.
 
 **Opcode**: `0x0028`
 
@@ -366,14 +435,17 @@ Instruction for LoadImmediateU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u8**: Argument of type u8 (Type: `U8`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `U8`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateU16
 
-Instruction for LoadImmediateU16
+Loads an immediate u16 value into the given register.
 
 **Opcode**: `0x0029`
 
@@ -381,14 +453,17 @@ Instruction for LoadImmediateU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u16**: Argument of type u16 (Type: `U16`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `U16`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateU32
 
-Instruction for LoadImmediateU32
+Loads an immediate u32 value into the given register.
 
 **Opcode**: `0x002A`
 
@@ -396,14 +471,17 @@ Instruction for LoadImmediateU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u32**: Argument of type u32 (Type: `U32`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `U32`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateU64
 
-Instruction for LoadImmediateU64
+Loads an immediate u64 value into the given register.
 
 **Opcode**: `0x002B`
 
@@ -411,14 +489,17 @@ Instruction for LoadImmediateU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateI8
 
-Instruction for LoadImmediateI8
+Loads an immediate i8 value into the given register.
 
 **Opcode**: `0x002C`
 
@@ -426,14 +507,17 @@ Instruction for LoadImmediateI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i8**: Argument of type i8 (Type: `I8`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `I8`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateI16
 
-Instruction for LoadImmediateI16
+Loads an immediate i16 value into the given register.
 
 **Opcode**: `0x002D`
 
@@ -441,14 +525,17 @@ Instruction for LoadImmediateI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i16**: Argument of type i16 (Type: `I16`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `I16`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateI32
 
-Instruction for LoadImmediateI32
+Loads an immediate i32 value into the given register.
 
 **Opcode**: `0x002E`
 
@@ -456,14 +543,17 @@ Instruction for LoadImmediateI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i32**: Argument of type i32 (Type: `I32`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `I32`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateI64
 
-Instruction for LoadImmediateI64
+Loads an immediate i64 value into the given register.
 
 **Opcode**: `0x002F`
 
@@ -471,14 +561,17 @@ Instruction for LoadImmediateI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i64**: Argument of type i64 (Type: `I64`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `I64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateF32
 
-Instruction for LoadImmediateF32
+Loads an immediate f32 value into the given register.
 
 **Opcode**: `0x0030`
 
@@ -486,14 +579,17 @@ Instruction for LoadImmediateF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **f32**: Argument of type f32 (Type: `F32`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `F32`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadImmediateF64
 
-Instruction for LoadImmediateF64
+Loads an immediate f64 value into the given register.
 
 **Opcode**: `0x0031`
 
@@ -501,14 +597,17 @@ Instruction for LoadImmediateF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **f64**: Argument of type f64 (Type: `F64`)
+- **reg**: Target register to store the value (Type: `Register`)
+- **val**: Immediate value to load (Type: `F64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Pure
 
 ## LoadFromImmediateU8
 
-Instruction for LoadFromImmediateU8
+Loads a u8 value from the specified immediate memory address.
 
 **Opcode**: `0x003C`
 
@@ -516,14 +615,17 @@ Instruction for LoadFromImmediateU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateU16
 
-Instruction for LoadFromImmediateU16
+Loads a u16 value from the specified immediate memory address.
 
 **Opcode**: `0x003D`
 
@@ -531,14 +633,17 @@ Instruction for LoadFromImmediateU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateU32
 
-Instruction for LoadFromImmediateU32
+Loads a u32 value from the specified immediate memory address.
 
 **Opcode**: `0x003E`
 
@@ -546,14 +651,17 @@ Instruction for LoadFromImmediateU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateU64
 
-Instruction for LoadFromImmediateU64
+Loads a u64 value from the specified immediate memory address.
 
 **Opcode**: `0x003F`
 
@@ -561,14 +669,17 @@ Instruction for LoadFromImmediateU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateI8
 
-Instruction for LoadFromImmediateI8
+Loads a i8 value from the specified immediate memory address.
 
 **Opcode**: `0x0040`
 
@@ -576,14 +687,17 @@ Instruction for LoadFromImmediateI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateI16
 
-Instruction for LoadFromImmediateI16
+Loads a i16 value from the specified immediate memory address.
 
 **Opcode**: `0x0041`
 
@@ -591,14 +705,17 @@ Instruction for LoadFromImmediateI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateI32
 
-Instruction for LoadFromImmediateI32
+Loads a i32 value from the specified immediate memory address.
 
 **Opcode**: `0x0042`
 
@@ -606,14 +723,17 @@ Instruction for LoadFromImmediateI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateI64
 
-Instruction for LoadFromImmediateI64
+Loads a i64 value from the specified immediate memory address.
 
 **Opcode**: `0x0043`
 
@@ -621,14 +741,17 @@ Instruction for LoadFromImmediateI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateF32
 
-Instruction for LoadFromImmediateF32
+Loads a f32 value from the specified immediate memory address.
 
 **Opcode**: `0x0044`
 
@@ -636,14 +759,17 @@ Instruction for LoadFromImmediateF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## LoadFromImmediateF64
 
-Instruction for LoadFromImmediateF64
+Loads a f64 value from the specified immediate memory address.
 
 **Opcode**: `0x0045`
 
@@ -651,14 +777,17 @@ Instruction for LoadFromImmediateF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_dest**: Target register to store the loaded value (Type: `Register`)
+- **addr**: Immediate memory address to read from (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
+- Memory
 
 ## StoreIndirectWithOffsetU8
 
-Instruction for StoreIndirectWithOffsetU8
+Stores a u8 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x005A`
 
@@ -666,15 +795,17 @@ Instruction for StoreIndirectWithOffsetU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetU16
 
-Instruction for StoreIndirectWithOffsetU16
+Stores a u16 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x005B`
 
@@ -682,15 +813,17 @@ Instruction for StoreIndirectWithOffsetU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetU32
 
-Instruction for StoreIndirectWithOffsetU32
+Stores a u32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x005C`
 
@@ -698,15 +831,17 @@ Instruction for StoreIndirectWithOffsetU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetU64
 
-Instruction for StoreIndirectWithOffsetU64
+Stores a u64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x005D`
 
@@ -714,15 +849,17 @@ Instruction for StoreIndirectWithOffsetU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetI8
 
-Instruction for StoreIndirectWithOffsetI8
+Stores a i8 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x005E`
 
@@ -730,15 +867,17 @@ Instruction for StoreIndirectWithOffsetI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetI16
 
-Instruction for StoreIndirectWithOffsetI16
+Stores a i16 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x005F`
 
@@ -746,15 +885,17 @@ Instruction for StoreIndirectWithOffsetI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetI32
 
-Instruction for StoreIndirectWithOffsetI32
+Stores a i32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x0060`
 
@@ -762,15 +903,17 @@ Instruction for StoreIndirectWithOffsetI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetI64
 
-Instruction for StoreIndirectWithOffsetI64
+Stores a i64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x0061`
 
@@ -778,15 +921,17 @@ Instruction for StoreIndirectWithOffsetI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetF32
 
-Instruction for StoreIndirectWithOffsetF32
+Stores a f32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x0062`
 
@@ -794,15 +939,17 @@ Instruction for StoreIndirectWithOffsetF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreIndirectWithOffsetF64
 
-Instruction for StoreIndirectWithOffsetF64
+Stores a f64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.
 
 **Opcode**: `0x0063`
 
@@ -810,15 +957,17 @@ Instruction for StoreIndirectWithOffsetF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register containing the target section index (Type: `Register`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetU8
 
-Instruction for StoreFromImmediateWithOffsetU8
+Stores a u8 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0082`
 
@@ -826,15 +975,17 @@ Instruction for StoreFromImmediateWithOffsetU8
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetU16
 
-Instruction for StoreFromImmediateWithOffsetU16
+Stores a u16 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0083`
 
@@ -842,15 +993,17 @@ Instruction for StoreFromImmediateWithOffsetU16
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetU32
 
-Instruction for StoreFromImmediateWithOffsetU32
+Stores a u32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0084`
 
@@ -858,15 +1011,17 @@ Instruction for StoreFromImmediateWithOffsetU32
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetU64
 
-Instruction for StoreFromImmediateWithOffsetU64
+Stores a u64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0085`
 
@@ -874,15 +1029,17 @@ Instruction for StoreFromImmediateWithOffsetU64
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetI8
 
-Instruction for StoreFromImmediateWithOffsetI8
+Stores a i8 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0086`
 
@@ -890,15 +1047,17 @@ Instruction for StoreFromImmediateWithOffsetI8
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetI16
 
-Instruction for StoreFromImmediateWithOffsetI16
+Stores a i16 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0087`
 
@@ -906,15 +1065,17 @@ Instruction for StoreFromImmediateWithOffsetI16
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetI32
 
-Instruction for StoreFromImmediateWithOffsetI32
+Stores a i32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0088`
 
@@ -922,15 +1083,17 @@ Instruction for StoreFromImmediateWithOffsetI32
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetI64
 
-Instruction for StoreFromImmediateWithOffsetI64
+Stores a i64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x0089`
 
@@ -938,15 +1101,17 @@ Instruction for StoreFromImmediateWithOffsetI64
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetF32
 
-Instruction for StoreFromImmediateWithOffsetF32
+Stores a f32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x008A`
 
@@ -954,15 +1119,17 @@ Instruction for StoreFromImmediateWithOffsetF32
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## StoreFromImmediateWithOffsetF64
 
-Instruction for StoreFromImmediateWithOffsetF64
+Stores a f64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.
 
 **Opcode**: `0x008B`
 
@@ -970,15 +1137,17 @@ Instruction for StoreFromImmediateWithOffsetF64
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **section_idx**: Immediate index of the heap section (Type: `U64`)
+- **reg_value**: Register containing the value to store (Type: `Register`)
+- **reg_offset**: Register containing the byte offset within the section (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## LogicalAnd
 
-Instruction for LogicalAnd
+Performs logical && on the truthiness of two registers.
 
 **Opcode**: `0x0096`
 
@@ -986,15 +1155,18 @@ Instruction for LogicalAnd
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Register to store the result (0 or 1) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LogicalOr
 
-Instruction for LogicalOr
+Performs logical || on the truthiness of two registers.
 
 **Opcode**: `0x0097`
 
@@ -1002,15 +1174,18 @@ Instruction for LogicalOr
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Register to store the result (0 or 1) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LogicalNot
 
-Instruction for LogicalNot
+Performs logical negation (!), storing 1 if the input is zero, else 0.
 
 **Opcode**: `0x0098`
 
@@ -1018,14 +1193,17 @@ Instruction for LogicalNot
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Target register to store result (0 or 1) (Type: `Register`)
+- **source**: Register containing value to logically negate (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LogicalXor
 
-Instruction for LogicalXor
+Performs logical ^ on the truthiness of two registers.
 
 **Opcode**: `0x0099`
 
@@ -1033,15 +1211,18 @@ Instruction for LogicalXor
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Register to store the result (0 or 1) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## AddU8
 
-Instruction for AddU8
+Adds two u8 registers and stores the result in the destination register.
 
 **Opcode**: `0x00AA`
 
@@ -1049,15 +1230,19 @@ Instruction for AddU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddU16
 
-Instruction for AddU16
+Adds two u16 registers and stores the result in the destination register.
 
 **Opcode**: `0x00AB`
 
@@ -1065,15 +1250,19 @@ Instruction for AddU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddU32
 
-Instruction for AddU32
+Adds two u32 registers and stores the result in the destination register.
 
 **Opcode**: `0x00AC`
 
@@ -1081,15 +1270,19 @@ Instruction for AddU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddU64
 
-Instruction for AddU64
+Adds two u64 registers and stores the result in the destination register.
 
 **Opcode**: `0x00AD`
 
@@ -1097,15 +1290,19 @@ Instruction for AddU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddI8
 
-Instruction for AddI8
+Adds two i8 registers and stores the result in the destination register.
 
 **Opcode**: `0x00AE`
 
@@ -1113,15 +1310,19 @@ Instruction for AddI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddI16
 
-Instruction for AddI16
+Adds two i16 registers and stores the result in the destination register.
 
 **Opcode**: `0x00AF`
 
@@ -1129,15 +1330,19 @@ Instruction for AddI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddI32
 
-Instruction for AddI32
+Adds two i32 registers and stores the result in the destination register.
 
 **Opcode**: `0x00B0`
 
@@ -1145,15 +1350,19 @@ Instruction for AddI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddI64
 
-Instruction for AddI64
+Adds two i64 registers and stores the result in the destination register.
 
 **Opcode**: `0x00B1`
 
@@ -1161,15 +1370,19 @@ Instruction for AddI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddF32
 
-Instruction for AddF32
+Adds two f32 floating-point registers and stores the result in the destination register.
 
 **Opcode**: `0x00B2`
 
@@ -1177,15 +1390,19 @@ Instruction for AddF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## AddF64
 
-Instruction for AddF64
+Adds two f64 floating-point registers and stores the result in the destination register.
 
 **Opcode**: `0x00B3`
 
@@ -1193,15 +1410,19 @@ Instruction for AddF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: First operand (Type: `Register`)
+- **reg2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
+- Commutative
 
 ## SubtractU8
 
-Instruction for SubtractU8
+Subtracts two u8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00C8`
 
@@ -1209,15 +1430,17 @@ Instruction for SubtractU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractU16
 
-Instruction for SubtractU16
+Subtracts two u16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00C9`
 
@@ -1225,15 +1448,17 @@ Instruction for SubtractU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractU32
 
-Instruction for SubtractU32
+Subtracts two u32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00CA`
 
@@ -1241,15 +1466,17 @@ Instruction for SubtractU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractU64
 
-Instruction for SubtractU64
+Subtracts two u64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00CB`
 
@@ -1257,15 +1484,17 @@ Instruction for SubtractU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractI8
 
-Instruction for SubtractI8
+Subtracts two i8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00CC`
 
@@ -1273,15 +1502,17 @@ Instruction for SubtractI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractI16
 
-Instruction for SubtractI16
+Subtracts two i16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00CD`
 
@@ -1289,15 +1520,17 @@ Instruction for SubtractI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractI32
 
-Instruction for SubtractI32
+Subtracts two i32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00CE`
 
@@ -1305,15 +1538,17 @@ Instruction for SubtractI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractI64
 
-Instruction for SubtractI64
+Subtracts two i64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00CF`
 
@@ -1321,15 +1556,17 @@ Instruction for SubtractI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractF32
 
-Instruction for SubtractF32
+Subtracts two f32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00D0`
 
@@ -1337,15 +1574,17 @@ Instruction for SubtractF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## SubtractF64
 
-Instruction for SubtractF64
+Subtracts two f64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00D1`
 
@@ -1353,15 +1592,17 @@ Instruction for SubtractF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (minuend) (Type: `Register`)
+- **reg2**: Second operand register (subtrahend) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyU8
 
-Instruction for MultiplyU8
+Multiplies two u8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00E6`
 
@@ -1369,15 +1610,17 @@ Instruction for MultiplyU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyU16
 
-Instruction for MultiplyU16
+Multiplies two u16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00E7`
 
@@ -1385,15 +1628,17 @@ Instruction for MultiplyU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyU32
 
-Instruction for MultiplyU32
+Multiplies two u32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00E8`
 
@@ -1401,15 +1646,17 @@ Instruction for MultiplyU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyU64
 
-Instruction for MultiplyU64
+Multiplies two u64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00E9`
 
@@ -1417,15 +1664,17 @@ Instruction for MultiplyU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyI8
 
-Instruction for MultiplyI8
+Multiplies two i8 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00EA`
 
@@ -1433,15 +1682,17 @@ Instruction for MultiplyI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyI16
 
-Instruction for MultiplyI16
+Multiplies two i16 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00EB`
 
@@ -1449,15 +1700,17 @@ Instruction for MultiplyI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyI32
 
-Instruction for MultiplyI32
+Multiplies two i32 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00EC`
 
@@ -1465,15 +1718,17 @@ Instruction for MultiplyI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyI64
 
-Instruction for MultiplyI64
+Multiplies two i64 values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00ED`
 
@@ -1481,15 +1736,17 @@ Instruction for MultiplyI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyF32
 
-Instruction for MultiplyF32
+Multiplies two f32 floating-point values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00EE`
 
@@ -1497,15 +1754,17 @@ Instruction for MultiplyF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## MultiplyF64
 
-Instruction for MultiplyF64
+Multiplies two f64 floating-point values from `reg1` and `reg2`, storing the result in `dest`.
 
 **Opcode**: `0x00EF`
 
@@ -1513,15 +1772,17 @@ Instruction for MultiplyF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## DivideU8
 
-Instruction for DivideU8
+Divides one u8 register by another and stores the result.
 
 **Opcode**: `0x0104`
 
@@ -1529,15 +1790,18 @@ Instruction for DivideU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideU16
 
-Instruction for DivideU16
+Divides one u16 register by another and stores the result.
 
 **Opcode**: `0x0105`
 
@@ -1545,15 +1809,18 @@ Instruction for DivideU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideU32
 
-Instruction for DivideU32
+Divides one u32 register by another and stores the result.
 
 **Opcode**: `0x0106`
 
@@ -1561,15 +1828,18 @@ Instruction for DivideU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideU64
 
-Instruction for DivideU64
+Divides one u64 register by another and stores the result.
 
 **Opcode**: `0x0107`
 
@@ -1577,15 +1847,18 @@ Instruction for DivideU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideI8
 
-Instruction for DivideI8
+Divides one i8 register by another and stores the result.
 
 **Opcode**: `0x0108`
 
@@ -1593,15 +1866,18 @@ Instruction for DivideI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideI16
 
-Instruction for DivideI16
+Divides one i16 register by another and stores the result.
 
 **Opcode**: `0x0109`
 
@@ -1609,15 +1885,18 @@ Instruction for DivideI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideI32
 
-Instruction for DivideI32
+Divides one i32 register by another and stores the result.
 
 **Opcode**: `0x010A`
 
@@ -1625,15 +1904,18 @@ Instruction for DivideI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideI64
 
-Instruction for DivideI64
+Divides one i64 register by another and stores the result.
 
 **Opcode**: `0x010B`
 
@@ -1641,15 +1923,18 @@ Instruction for DivideI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideF32
 
-Instruction for DivideF32
+Divides one f32 floating-point register by another and stores the result.
 
 **Opcode**: `0x010C`
 
@@ -1657,15 +1942,18 @@ Instruction for DivideF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DivideF64
 
-Instruction for DivideF64
+Divides one f64 floating-point register by another and stores the result.
 
 **Opcode**: `0x010D`
 
@@ -1673,15 +1961,18 @@ Instruction for DivideF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Numerator register (Type: `Register`)
+- **reg2**: Denominator register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## ModuloU8
 
-Instruction for ModuloU8
+Computes the remainder of a u8 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0122`
 
@@ -1689,15 +1980,17 @@ Instruction for ModuloU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloU16
 
-Instruction for ModuloU16
+Computes the remainder of a u16 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0123`
 
@@ -1705,15 +1998,17 @@ Instruction for ModuloU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloU32
 
-Instruction for ModuloU32
+Computes the remainder of a u32 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0124`
 
@@ -1721,15 +2016,17 @@ Instruction for ModuloU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloU64
 
-Instruction for ModuloU64
+Computes the remainder of a u64 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0125`
 
@@ -1737,15 +2034,17 @@ Instruction for ModuloU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloI8
 
-Instruction for ModuloI8
+Computes the remainder of a i8 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0126`
 
@@ -1753,15 +2052,17 @@ Instruction for ModuloI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloI16
 
-Instruction for ModuloI16
+Computes the remainder of a i16 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0127`
 
@@ -1769,15 +2070,17 @@ Instruction for ModuloI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloI32
 
-Instruction for ModuloI32
+Computes the remainder of a i32 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0128`
 
@@ -1785,15 +2088,17 @@ Instruction for ModuloI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloI64
 
-Instruction for ModuloI64
+Computes the remainder of a i64 division. `dest = reg1 % reg2`. Sets error on division by zero.
 
 **Opcode**: `0x0129`
 
@@ -1801,15 +2106,17 @@ Instruction for ModuloI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloF32
 
-Instruction for ModuloF32
+Computes the remainder of a f32 division using `%`. Result is undefined if inputs are NaN or infinite.
 
 **Opcode**: `0x012A`
 
@@ -1817,15 +2124,17 @@ Instruction for ModuloF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ModuloF64
 
-Instruction for ModuloF64
+Computes the remainder of a f64 division using `%`. Result is undefined if inputs are NaN or infinite.
 
 **Opcode**: `0x012B`
 
@@ -1833,15 +2142,17 @@ Instruction for ModuloF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **reg1**: Dividend register (Type: `Register`)
+- **reg2**: Divisor register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## EqualU8
 
-Instruction for EqualU8
+Checks equality between two u8 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x015E`
 
@@ -1849,15 +2160,19 @@ Instruction for EqualU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualU16
 
-Instruction for EqualU16
+Checks equality between two u16 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x015F`
 
@@ -1865,15 +2180,19 @@ Instruction for EqualU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualU32
 
-Instruction for EqualU32
+Checks equality between two u32 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0160`
 
@@ -1881,15 +2200,19 @@ Instruction for EqualU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualU64
 
-Instruction for EqualU64
+Checks equality between two u64 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0161`
 
@@ -1897,15 +2220,19 @@ Instruction for EqualU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualI8
 
-Instruction for EqualI8
+Checks equality between two i8 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0162`
 
@@ -1913,15 +2240,19 @@ Instruction for EqualI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualI16
 
-Instruction for EqualI16
+Checks equality between two i16 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0163`
 
@@ -1929,15 +2260,19 @@ Instruction for EqualI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualI32
 
-Instruction for EqualI32
+Checks equality between two i32 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0164`
 
@@ -1945,15 +2280,19 @@ Instruction for EqualI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualI64
 
-Instruction for EqualI64
+Checks equality between two i64 registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0165`
 
@@ -1961,15 +2300,19 @@ Instruction for EqualI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualF32
 
-Instruction for EqualF32
+Checks equality between two f32 floating-point registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0166`
 
@@ -1977,15 +2320,19 @@ Instruction for EqualF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## EqualF64
 
-Instruction for EqualF64
+Checks equality between two f64 floating-point registers. Sets 1 if equal, 0 otherwise.
 
 **Opcode**: `0x0167`
 
@@ -1993,15 +2340,19 @@ Instruction for EqualF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
+- Commutative
 
 ## NotEqualU8
 
-Instruction for NotEqualU8
+Compares two u8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x017C`
 
@@ -2009,15 +2360,17 @@ Instruction for NotEqualU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualU16
 
-Instruction for NotEqualU16
+Compares two u16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x017D`
 
@@ -2025,15 +2378,17 @@ Instruction for NotEqualU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualU32
 
-Instruction for NotEqualU32
+Compares two u32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x017E`
 
@@ -2041,15 +2396,17 @@ Instruction for NotEqualU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualU64
 
-Instruction for NotEqualU64
+Compares two u64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x017F`
 
@@ -2057,15 +2414,17 @@ Instruction for NotEqualU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualI8
 
-Instruction for NotEqualI8
+Compares two i8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x0180`
 
@@ -2073,15 +2432,17 @@ Instruction for NotEqualI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualI16
 
-Instruction for NotEqualI16
+Compares two i16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x0181`
 
@@ -2089,15 +2450,17 @@ Instruction for NotEqualI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualI32
 
-Instruction for NotEqualI32
+Compares two i32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x0182`
 
@@ -2105,15 +2468,17 @@ Instruction for NotEqualI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualI64
 
-Instruction for NotEqualI64
+Compares two i64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x0183`
 
@@ -2121,15 +2486,17 @@ Instruction for NotEqualI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualF32
 
-Instruction for NotEqualF32
+Compares two f32 floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x0184`
 
@@ -2137,15 +2504,17 @@ Instruction for NotEqualF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## NotEqualF64
 
-Instruction for NotEqualF64
+Compares two f64 floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.
 
 **Opcode**: `0x0185`
 
@@ -2153,15 +2522,17 @@ Instruction for NotEqualF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register to store the result (1 or 0) (Type: `Register`)
+- **reg1**: First operand register (Type: `Register`)
+- **reg2**: Second operand register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
 
 ## LessThanU8
 
-Instruction for LessThanU8
+Compares two u8 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x019A`
 
@@ -2169,15 +2540,18 @@ Instruction for LessThanU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanU16
 
-Instruction for LessThanU16
+Compares two u16 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x019B`
 
@@ -2185,15 +2559,18 @@ Instruction for LessThanU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanU32
 
-Instruction for LessThanU32
+Compares two u32 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x019C`
 
@@ -2201,15 +2578,18 @@ Instruction for LessThanU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanU64
 
-Instruction for LessThanU64
+Compares two u64 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x019D`
 
@@ -2217,15 +2597,18 @@ Instruction for LessThanU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanI8
 
-Instruction for LessThanI8
+Compares two i8 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x019E`
 
@@ -2233,15 +2616,18 @@ Instruction for LessThanI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanI16
 
-Instruction for LessThanI16
+Compares two i16 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x019F`
 
@@ -2249,15 +2635,18 @@ Instruction for LessThanI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanI32
 
-Instruction for LessThanI32
+Compares two i32 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x01A0`
 
@@ -2265,15 +2654,18 @@ Instruction for LessThanI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanI64
 
-Instruction for LessThanI64
+Compares two i64 registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x01A1`
 
@@ -2281,15 +2673,18 @@ Instruction for LessThanI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanF32
 
-Instruction for LessThanF32
+Compares two f32 floating-point registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x01A2`
 
@@ -2297,15 +2692,18 @@ Instruction for LessThanF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanF64
 
-Instruction for LessThanF64
+Compares two f64 floating-point registers. Sets 1 if the first is less than the second, else 0.
 
 **Opcode**: `0x01A3`
 
@@ -2313,15 +2711,18 @@ Instruction for LessThanF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualU8
 
-Instruction for LessThanOrEqualU8
+Compares two u8 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01B8`
 
@@ -2329,15 +2730,18 @@ Instruction for LessThanOrEqualU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualU16
 
-Instruction for LessThanOrEqualU16
+Compares two u16 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01B9`
 
@@ -2345,15 +2749,18 @@ Instruction for LessThanOrEqualU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualU32
 
-Instruction for LessThanOrEqualU32
+Compares two u32 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01BA`
 
@@ -2361,15 +2768,18 @@ Instruction for LessThanOrEqualU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualU64
 
-Instruction for LessThanOrEqualU64
+Compares two u64 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01BB`
 
@@ -2377,15 +2787,18 @@ Instruction for LessThanOrEqualU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualI8
 
-Instruction for LessThanOrEqualI8
+Compares two i8 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01BC`
 
@@ -2393,15 +2806,18 @@ Instruction for LessThanOrEqualI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualI16
 
-Instruction for LessThanOrEqualI16
+Compares two i16 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01BD`
 
@@ -2409,15 +2825,18 @@ Instruction for LessThanOrEqualI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualI32
 
-Instruction for LessThanOrEqualI32
+Compares two i32 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01BE`
 
@@ -2425,15 +2844,18 @@ Instruction for LessThanOrEqualI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualI64
 
-Instruction for LessThanOrEqualI64
+Compares two i64 registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01BF`
 
@@ -2441,15 +2863,18 @@ Instruction for LessThanOrEqualI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualF32
 
-Instruction for LessThanOrEqualF32
+Compares two f32 floating-point registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01C0`
 
@@ -2457,15 +2882,18 @@ Instruction for LessThanOrEqualF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## LessThanOrEqualF64
 
-Instruction for LessThanOrEqualF64
+Compares two f64 floating-point registers. Sets 1 if the first is less than or equal to the second, else 0.
 
 **Opcode**: `0x01C1`
 
@@ -2473,15 +2901,18 @@ Instruction for LessThanOrEqualF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanU8
 
-Instruction for GreaterThanU8
+Compares two u8 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01D6`
 
@@ -2489,15 +2920,18 @@ Instruction for GreaterThanU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanU16
 
-Instruction for GreaterThanU16
+Compares two u16 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01D7`
 
@@ -2505,15 +2939,18 @@ Instruction for GreaterThanU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanU32
 
-Instruction for GreaterThanU32
+Compares two u32 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01D8`
 
@@ -2521,15 +2958,18 @@ Instruction for GreaterThanU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanU64
 
-Instruction for GreaterThanU64
+Compares two u64 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01D9`
 
@@ -2537,15 +2977,18 @@ Instruction for GreaterThanU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanI8
 
-Instruction for GreaterThanI8
+Compares two i8 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01DA`
 
@@ -2553,15 +2996,18 @@ Instruction for GreaterThanI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanI16
 
-Instruction for GreaterThanI16
+Compares two i16 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01DB`
 
@@ -2569,15 +3015,18 @@ Instruction for GreaterThanI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanI32
 
-Instruction for GreaterThanI32
+Compares two i32 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01DC`
 
@@ -2585,15 +3034,18 @@ Instruction for GreaterThanI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanI64
 
-Instruction for GreaterThanI64
+Compares two i64 registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01DD`
 
@@ -2601,15 +3053,18 @@ Instruction for GreaterThanI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanF32
 
-Instruction for GreaterThanF32
+Compares two f32 floating-point registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01DE`
 
@@ -2617,15 +3072,18 @@ Instruction for GreaterThanF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanF64
 
-Instruction for GreaterThanF64
+Compares two f64 floating-point registers. Sets 1 if the first is greater than the second, else 0.
 
 **Opcode**: `0x01DF`
 
@@ -2633,15 +3091,18 @@ Instruction for GreaterThanF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualU8
 
-Instruction for GreaterThanOrEqualU8
+Compares two u8 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01F4`
 
@@ -2649,15 +3110,18 @@ Instruction for GreaterThanOrEqualU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualU16
 
-Instruction for GreaterThanOrEqualU16
+Compares two u16 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01F5`
 
@@ -2665,15 +3129,18 @@ Instruction for GreaterThanOrEqualU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualU32
 
-Instruction for GreaterThanOrEqualU32
+Compares two u32 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01F6`
 
@@ -2681,15 +3148,18 @@ Instruction for GreaterThanOrEqualU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualU64
 
-Instruction for GreaterThanOrEqualU64
+Compares two u64 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01F7`
 
@@ -2697,15 +3167,18 @@ Instruction for GreaterThanOrEqualU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualI8
 
-Instruction for GreaterThanOrEqualI8
+Compares two i8 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01F8`
 
@@ -2713,15 +3186,18 @@ Instruction for GreaterThanOrEqualI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualI16
 
-Instruction for GreaterThanOrEqualI16
+Compares two i16 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01F9`
 
@@ -2729,15 +3205,18 @@ Instruction for GreaterThanOrEqualI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualI32
 
-Instruction for GreaterThanOrEqualI32
+Compares two i32 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01FA`
 
@@ -2745,15 +3224,18 @@ Instruction for GreaterThanOrEqualI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualI64
 
-Instruction for GreaterThanOrEqualI64
+Compares two i64 registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01FB`
 
@@ -2761,15 +3243,18 @@ Instruction for GreaterThanOrEqualI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualF32
 
-Instruction for GreaterThanOrEqualF32
+Compares two f32 floating-point registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01FC`
 
@@ -2777,15 +3262,18 @@ Instruction for GreaterThanOrEqualF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## GreaterThanOrEqualF64
 
-Instruction for GreaterThanOrEqualF64
+Compares two f64 floating-point registers. Sets 1 if the first is greater than or equal to the second, else 0.
 
 **Opcode**: `0x01FD`
 
@@ -2793,15 +3281,18 @@ Instruction for GreaterThanOrEqualF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for result (1 or 0) (Type: `Register`)
+- **reg1**: First operand (left-hand side) (Type: `Register`)
+- **reg2**: Second operand (right-hand side) (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Logical
+- Pure
 
 ## CallFunction
 
-Instruction for CallFunction
+Calls a function at the specified bytecode address. Saves the return address and switches stack frame.
 
 **Opcode**: `0x0258`
 
@@ -2809,23 +3300,29 @@ Instruction for CallFunction
 
 ### Arguments
 
-- **u64**: Argument of type u64 (Type: `U64`)
+- **target**: Bytecode address (offset) to jump to for the function (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Control Flow
+- Side Effects
 
 ## Return
 
-Instruction for Return
+Returns from the current function by restoring the previous frame and program counter.
 
 **Opcode**: `0x0259`
 
 ### Instruction Details
 
-This instruction is not commutative.
+### Tags
+
+- Control Flow
+- Side Effects
 
 ## Allocate
 
-Instruction for Allocate
+Allocates a heap section of size from `reg_size` and stores the section index in `reg_target`.
 
 **Opcode**: `0x025A`
 
@@ -2833,14 +3330,16 @@ Instruction for Allocate
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_target**: Register to store the section index (Type: `Register`)
+- **reg_size**: Register containing the allocation size in bytes (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Allocation
 
 ## Deallocate
 
-Instruction for Deallocate
+Frees the heap section at the index given in `reg_target`.
 
 **Opcode**: `0x025B`
 
@@ -2848,13 +3347,15 @@ Instruction for Deallocate
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_target**: Register containing the section index to free (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Allocation
 
 ## Memcpy
 
-Instruction for Memcpy
+Copies memory from a source heap section to a destination heap section.
 
 **Opcode**: `0x025C`
 
@@ -2862,17 +3363,19 @@ Instruction for Memcpy
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_dest**: Register with destination section index (Type: `Register`)
+- **reg_dest_offset**: Offset in destination section (Type: `Register`)
+- **reg_src**: Register with source section index (Type: `Register`)
+- **reg_src_offset**: Offset in source section (Type: `Register`)
+- **reg_size**: Number of bytes to copy (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## MemSet
 
-Instruction for MemSet
+Fills a heap section with a repeated byte value.
 
 **Opcode**: `0x025D`
 
@@ -2880,25 +3383,30 @@ Instruction for MemSet
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_ptr**: Register with section index to fill (Type: `Register`)
+- **reg_value**: Register with byte value to fill (only lowest 8 bits used) (Type: `Register`)
+- **reg_size**: Register with number of bytes to fill (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
 
 ## Halt
 
-Instruction for Halt
+Halts execution of the virtual machine immediately.
 
 **Opcode**: `0x025E`
 
 ### Instruction Details
 
-This instruction is not commutative.
+### Tags
+
+- Control Flow
+- Side Effects
 
 ## MoveU8
 
-Instruction for MoveU8
+Moves a u8 value from one register to another. `dest = source`.
 
 **Opcode**: `0x0335`
 
@@ -2906,14 +3414,16 @@ Instruction for MoveU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveU16
 
-Instruction for MoveU16
+Moves a u16 value from one register to another. `dest = source`.
 
 **Opcode**: `0x0336`
 
@@ -2921,14 +3431,16 @@ Instruction for MoveU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveU32
 
-Instruction for MoveU32
+Moves a u32 value from one register to another. `dest = source`.
 
 **Opcode**: `0x0337`
 
@@ -2936,14 +3448,16 @@ Instruction for MoveU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveU64
 
-Instruction for MoveU64
+Moves a u64 value from one register to another. `dest = source`.
 
 **Opcode**: `0x0338`
 
@@ -2951,14 +3465,16 @@ Instruction for MoveU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveI8
 
-Instruction for MoveI8
+Moves a i8 value from one register to another. `dest = source`.
 
 **Opcode**: `0x0339`
 
@@ -2966,14 +3482,16 @@ Instruction for MoveI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveI16
 
-Instruction for MoveI16
+Moves a i16 value from one register to another. `dest = source`.
 
 **Opcode**: `0x033A`
 
@@ -2981,14 +3499,16 @@ Instruction for MoveI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveI32
 
-Instruction for MoveI32
+Moves a i32 value from one register to another. `dest = source`.
 
 **Opcode**: `0x033B`
 
@@ -2996,14 +3516,16 @@ Instruction for MoveI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveI64
 
-Instruction for MoveI64
+Moves a i64 value from one register to another. `dest = source`.
 
 **Opcode**: `0x033C`
 
@@ -3011,14 +3533,16 @@ Instruction for MoveI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveF32
 
-Instruction for MoveF32
+Moves a f32 value from one register to another. `dest = source`.
 
 **Opcode**: `0x033D`
 
@@ -3026,14 +3550,16 @@ Instruction for MoveF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## MoveF64
 
-Instruction for MoveF64
+Moves a f64 value from one register to another. `dest = source`.
 
 **Opcode**: `0x033E`
 
@@ -3041,14 +3567,16 @@ Instruction for MoveF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **source**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Data Movement
 
 ## IncrementU8
 
-Instruction for IncrementU8
+Adds an immediate u8 value to the destination register.
 
 **Opcode**: `0x0349`
 
@@ -3056,14 +3584,16 @@ Instruction for IncrementU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u8**: Argument of type u8 (Type: `U8`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `U8`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementU16
 
-Instruction for IncrementU16
+Adds an immediate u16 value to the destination register.
 
 **Opcode**: `0x034A`
 
@@ -3071,14 +3601,16 @@ Instruction for IncrementU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u16**: Argument of type u16 (Type: `U16`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `U16`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementU32
 
-Instruction for IncrementU32
+Adds an immediate u32 value to the destination register.
 
 **Opcode**: `0x034B`
 
@@ -3086,14 +3618,16 @@ Instruction for IncrementU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u32**: Argument of type u32 (Type: `U32`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `U32`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementU64
 
-Instruction for IncrementU64
+Adds an immediate u64 value to the destination register.
 
 **Opcode**: `0x034C`
 
@@ -3101,14 +3635,16 @@ Instruction for IncrementU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementI8
 
-Instruction for IncrementI8
+Adds an immediate i8 value to the destination register.
 
 **Opcode**: `0x034D`
 
@@ -3116,14 +3652,16 @@ Instruction for IncrementI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i8**: Argument of type i8 (Type: `I8`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `I8`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementI16
 
-Instruction for IncrementI16
+Adds an immediate i16 value to the destination register.
 
 **Opcode**: `0x034E`
 
@@ -3131,14 +3669,16 @@ Instruction for IncrementI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i16**: Argument of type i16 (Type: `I16`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `I16`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementI32
 
-Instruction for IncrementI32
+Adds an immediate i32 value to the destination register.
 
 **Opcode**: `0x034F`
 
@@ -3146,14 +3686,16 @@ Instruction for IncrementI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i32**: Argument of type i32 (Type: `I32`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `I32`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementI64
 
-Instruction for IncrementI64
+Adds an immediate i64 value to the destination register.
 
 **Opcode**: `0x0350`
 
@@ -3161,14 +3703,16 @@ Instruction for IncrementI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i64**: Argument of type i64 (Type: `I64`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `I64`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementF32
 
-Instruction for IncrementF32
+Adds an immediate f32 floating-point value to the destination register.
 
 **Opcode**: `0x0351`
 
@@ -3176,14 +3720,16 @@ Instruction for IncrementF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **f32**: Argument of type f32 (Type: `F32`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `F32`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## IncrementF64
 
-Instruction for IncrementF64
+Adds an immediate f64 floating-point value to the destination register.
 
 **Opcode**: `0x0352`
 
@@ -3191,14 +3737,16 @@ Instruction for IncrementF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **f64**: Argument of type f64 (Type: `F64`)
+- **dest**: Target register to be incremented (Type: `Register`)
+- **incr_val**: Immediate value to add to the register (Type: `F64`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## DecrementU8
 
-Instruction for DecrementU8
+Decrements a u8 register by a constant value.
 
 **Opcode**: `0x035D`
 
@@ -3206,14 +3754,17 @@ Instruction for DecrementU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u8**: Argument of type u8 (Type: `U8`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `U8`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementU16
 
-Instruction for DecrementU16
+Decrements a u16 register by a constant value.
 
 **Opcode**: `0x035E`
 
@@ -3221,14 +3772,17 @@ Instruction for DecrementU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u16**: Argument of type u16 (Type: `U16`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `U16`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementU32
 
-Instruction for DecrementU32
+Decrements a u32 register by a constant value.
 
 **Opcode**: `0x035F`
 
@@ -3236,14 +3790,17 @@ Instruction for DecrementU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u32**: Argument of type u32 (Type: `U32`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `U32`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementU64
 
-Instruction for DecrementU64
+Decrements a u64 register by a constant value.
 
 **Opcode**: `0x0360`
 
@@ -3251,14 +3808,17 @@ Instruction for DecrementU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementI8
 
-Instruction for DecrementI8
+Decrements a i8 register by a constant value.
 
 **Opcode**: `0x0361`
 
@@ -3266,14 +3826,17 @@ Instruction for DecrementI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i8**: Argument of type i8 (Type: `I8`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `I8`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementI16
 
-Instruction for DecrementI16
+Decrements a i16 register by a constant value.
 
 **Opcode**: `0x0362`
 
@@ -3281,14 +3844,17 @@ Instruction for DecrementI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i16**: Argument of type i16 (Type: `I16`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `I16`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementI32
 
-Instruction for DecrementI32
+Decrements a i32 register by a constant value.
 
 **Opcode**: `0x0363`
 
@@ -3296,14 +3862,17 @@ Instruction for DecrementI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i32**: Argument of type i32 (Type: `I32`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `I32`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementI64
 
-Instruction for DecrementI64
+Decrements a i64 register by a constant value.
 
 **Opcode**: `0x0364`
 
@@ -3311,14 +3880,17 @@ Instruction for DecrementI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **i64**: Argument of type i64 (Type: `I64`)
+- **dest**: Register to decrement (Type: `Register`)
+- **decr_val**: Constant value to subtract (Type: `I64`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementF32
 
-Instruction for DecrementF32
+Decrements a f32 floating-point register by a constant value.
 
 **Opcode**: `0x0365`
 
@@ -3326,14 +3898,17 @@ Instruction for DecrementF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **f32**: Argument of type f32 (Type: `F32`)
+- **dest**: Register to decrement (Type: `Register`)
+- **incr_val**: Constant value to subtract (Type: `F32`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## DecrementF64
 
-Instruction for DecrementF64
+Decrements a f64 floating-point register by a constant value.
 
 **Opcode**: `0x0366`
 
@@ -3341,14 +3916,17 @@ Instruction for DecrementF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **f64**: Argument of type f64 (Type: `F64`)
+- **dest**: Register to decrement (Type: `Register`)
+- **incr_val**: Constant value to subtract (Type: `F64`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Pure
 
 ## BitwiseAndU8
 
-Instruction for BitwiseAndU8
+Performs a bitwise AND between two u8 registers and stores the result.
 
 **Opcode**: `0x0384`
 
@@ -3356,15 +3934,20 @@ Instruction for BitwiseAndU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndU16
 
-Instruction for BitwiseAndU16
+Performs a bitwise AND between two u16 registers and stores the result.
 
 **Opcode**: `0x0385`
 
@@ -3372,15 +3955,20 @@ Instruction for BitwiseAndU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndU32
 
-Instruction for BitwiseAndU32
+Performs a bitwise AND between two u32 registers and stores the result.
 
 **Opcode**: `0x0386`
 
@@ -3388,15 +3976,20 @@ Instruction for BitwiseAndU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndU64
 
-Instruction for BitwiseAndU64
+Performs a bitwise AND between two u64 registers and stores the result.
 
 **Opcode**: `0x0387`
 
@@ -3404,15 +3997,20 @@ Instruction for BitwiseAndU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndI8
 
-Instruction for BitwiseAndI8
+Performs a bitwise AND between two i8 registers and stores the result.
 
 **Opcode**: `0x0388`
 
@@ -3420,15 +4018,20 @@ Instruction for BitwiseAndI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndI16
 
-Instruction for BitwiseAndI16
+Performs a bitwise AND between two i16 registers and stores the result.
 
 **Opcode**: `0x0389`
 
@@ -3436,15 +4039,20 @@ Instruction for BitwiseAndI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndI32
 
-Instruction for BitwiseAndI32
+Performs a bitwise AND between two i32 registers and stores the result.
 
 **Opcode**: `0x038A`
 
@@ -3452,15 +4060,20 @@ Instruction for BitwiseAndI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseAndI64
 
-Instruction for BitwiseAndI64
+Performs a bitwise AND between two i64 registers and stores the result.
 
 **Opcode**: `0x038B`
 
@@ -3468,15 +4081,20 @@ Instruction for BitwiseAndI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrU8
 
-Instruction for BitwiseOrU8
+Performs a bitwise OR between two u8 registers and stores the result.
 
 **Opcode**: `0x038E`
 
@@ -3484,15 +4102,20 @@ Instruction for BitwiseOrU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrU16
 
-Instruction for BitwiseOrU16
+Performs a bitwise OR between two u16 registers and stores the result.
 
 **Opcode**: `0x038F`
 
@@ -3500,15 +4123,20 @@ Instruction for BitwiseOrU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrU32
 
-Instruction for BitwiseOrU32
+Performs a bitwise OR between two u32 registers and stores the result.
 
 **Opcode**: `0x0390`
 
@@ -3516,15 +4144,20 @@ Instruction for BitwiseOrU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrU64
 
-Instruction for BitwiseOrU64
+Performs a bitwise OR between two u64 registers and stores the result.
 
 **Opcode**: `0x0391`
 
@@ -3532,15 +4165,20 @@ Instruction for BitwiseOrU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrI8
 
-Instruction for BitwiseOrI8
+Performs a bitwise OR between two i8 registers and stores the result.
 
 **Opcode**: `0x0392`
 
@@ -3548,15 +4186,20 @@ Instruction for BitwiseOrI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrI16
 
-Instruction for BitwiseOrI16
+Performs a bitwise OR between two i16 registers and stores the result.
 
 **Opcode**: `0x0393`
 
@@ -3564,15 +4207,20 @@ Instruction for BitwiseOrI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrI32
 
-Instruction for BitwiseOrI32
+Performs a bitwise OR between two i32 registers and stores the result.
 
 **Opcode**: `0x0394`
 
@@ -3580,15 +4228,20 @@ Instruction for BitwiseOrI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseOrI64
 
-Instruction for BitwiseOrI64
+Performs a bitwise OR between two i64 registers and stores the result.
 
 **Opcode**: `0x0395`
 
@@ -3596,15 +4249,20 @@ Instruction for BitwiseOrI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorU8
 
-Instruction for BitwiseXorU8
+Performs a bitwise XOR between two u8 registers and stores the result.
 
 **Opcode**: `0x0398`
 
@@ -3612,15 +4270,20 @@ Instruction for BitwiseXorU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorU16
 
-Instruction for BitwiseXorU16
+Performs a bitwise XOR between two u16 registers and stores the result.
 
 **Opcode**: `0x0399`
 
@@ -3628,15 +4291,20 @@ Instruction for BitwiseXorU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorU32
 
-Instruction for BitwiseXorU32
+Performs a bitwise XOR between two u32 registers and stores the result.
 
 **Opcode**: `0x039A`
 
@@ -3644,15 +4312,20 @@ Instruction for BitwiseXorU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorU64
 
-Instruction for BitwiseXorU64
+Performs a bitwise XOR between two u64 registers and stores the result.
 
 **Opcode**: `0x039B`
 
@@ -3660,15 +4333,20 @@ Instruction for BitwiseXorU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorI8
 
-Instruction for BitwiseXorI8
+Performs a bitwise XOR between two i8 registers and stores the result.
 
 **Opcode**: `0x039C`
 
@@ -3676,15 +4354,20 @@ Instruction for BitwiseXorI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorI16
 
-Instruction for BitwiseXorI16
+Performs a bitwise XOR between two i16 registers and stores the result.
 
 **Opcode**: `0x039D`
 
@@ -3692,15 +4375,20 @@ Instruction for BitwiseXorI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorI32
 
-Instruction for BitwiseXorI32
+Performs a bitwise XOR between two i32 registers and stores the result.
 
 **Opcode**: `0x039E`
 
@@ -3708,15 +4396,20 @@ Instruction for BitwiseXorI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseXorI64
 
-Instruction for BitwiseXorI64
+Performs a bitwise XOR between two i64 registers and stores the result.
 
 **Opcode**: `0x039F`
 
@@ -3724,15 +4417,20 @@ Instruction for BitwiseXorI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **r1**: First operand (Type: `Register`)
+- **r2**: Second operand (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
+- Commutative
 
 ## BitwiseNotU8
 
-Instruction for BitwiseNotU8
+Performs a bitwise NOT on a u8 register and stores the result.
 
 **Opcode**: `0x03A2`
 
@@ -3740,14 +4438,18 @@ Instruction for BitwiseNotU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotU16
 
-Instruction for BitwiseNotU16
+Performs a bitwise NOT on a u16 register and stores the result.
 
 **Opcode**: `0x03A3`
 
@@ -3755,14 +4457,18 @@ Instruction for BitwiseNotU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotU32
 
-Instruction for BitwiseNotU32
+Performs a bitwise NOT on a u32 register and stores the result.
 
 **Opcode**: `0x03A4`
 
@@ -3770,14 +4476,18 @@ Instruction for BitwiseNotU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotU64
 
-Instruction for BitwiseNotU64
+Performs a bitwise NOT on a u64 register and stores the result.
 
 **Opcode**: `0x03A5`
 
@@ -3785,14 +4495,18 @@ Instruction for BitwiseNotU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotI8
 
-Instruction for BitwiseNotI8
+Performs a bitwise NOT on a i8 register and stores the result.
 
 **Opcode**: `0x03A6`
 
@@ -3800,14 +4514,18 @@ Instruction for BitwiseNotI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotI16
 
-Instruction for BitwiseNotI16
+Performs a bitwise NOT on a i16 register and stores the result.
 
 **Opcode**: `0x03A7`
 
@@ -3815,14 +4533,18 @@ Instruction for BitwiseNotI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotI32
 
-Instruction for BitwiseNotI32
+Performs a bitwise NOT on a i32 register and stores the result.
 
 **Opcode**: `0x03A8`
 
@@ -3830,14 +4552,18 @@ Instruction for BitwiseNotI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## BitwiseNotI64
 
-Instruction for BitwiseNotI64
+Performs a bitwise NOT on a i64 register and stores the result.
 
 **Opcode**: `0x03A9`
 
@@ -3845,14 +4571,18 @@ Instruction for BitwiseNotI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register (Type: `Register`)
+- **src**: Source register (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
+- Logical
+- Pure
 
 ## ShiftLeftU8
 
-Instruction for ShiftLeftU8
+Performs left bit shift on a u8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03AC`
 
@@ -3860,15 +4590,17 @@ Instruction for ShiftLeftU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftU16
 
-Instruction for ShiftLeftU16
+Performs left bit shift on a u16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03AD`
 
@@ -3876,15 +4608,17 @@ Instruction for ShiftLeftU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftU32
 
-Instruction for ShiftLeftU32
+Performs left bit shift on a u32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03AE`
 
@@ -3892,15 +4626,17 @@ Instruction for ShiftLeftU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftU64
 
-Instruction for ShiftLeftU64
+Performs left bit shift on a u64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03AF`
 
@@ -3908,15 +4644,17 @@ Instruction for ShiftLeftU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftI8
 
-Instruction for ShiftLeftI8
+Performs left bit shift on a i8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B0`
 
@@ -3924,15 +4662,17 @@ Instruction for ShiftLeftI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftI16
 
-Instruction for ShiftLeftI16
+Performs left bit shift on a i16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B1`
 
@@ -3940,15 +4680,17 @@ Instruction for ShiftLeftI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftI32
 
-Instruction for ShiftLeftI32
+Performs left bit shift on a i32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B2`
 
@@ -3956,15 +4698,17 @@ Instruction for ShiftLeftI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftLeftI64
 
-Instruction for ShiftLeftI64
+Performs left bit shift on a i64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B3`
 
@@ -3972,15 +4716,17 @@ Instruction for ShiftLeftI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightU8
 
-Instruction for ShiftRightU8
+Performs right bit shift on a u8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B6`
 
@@ -3988,15 +4734,17 @@ Instruction for ShiftRightU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightU16
 
-Instruction for ShiftRightU16
+Performs right bit shift on a u16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B7`
 
@@ -4004,15 +4752,17 @@ Instruction for ShiftRightU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightU32
 
-Instruction for ShiftRightU32
+Performs right bit shift on a u32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B8`
 
@@ -4020,15 +4770,17 @@ Instruction for ShiftRightU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightU64
 
-Instruction for ShiftRightU64
+Performs right bit shift on a u64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03B9`
 
@@ -4036,15 +4788,17 @@ Instruction for ShiftRightU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightI8
 
-Instruction for ShiftRightI8
+Performs right bit shift on a i8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03BA`
 
@@ -4052,15 +4806,17 @@ Instruction for ShiftRightI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightI16
 
-Instruction for ShiftRightI16
+Performs right bit shift on a i16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03BB`
 
@@ -4068,15 +4824,17 @@ Instruction for ShiftRightI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightI32
 
-Instruction for ShiftRightI32
+Performs right bit shift on a i32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03BC`
 
@@ -4084,15 +4842,17 @@ Instruction for ShiftRightI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## ShiftRightI64
 
-Instruction for ShiftRightI64
+Performs right bit shift on a i64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.
 
 **Opcode**: `0x03BD`
 
@@ -4100,15 +4860,17 @@ Instruction for ShiftRightI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **dest**: Destination register for the shifted result (Type: `Register`)
+- **val_reg**: Register containing the value to shift (Type: `Register`)
+- **shift_reg**: Register containing the shift amount (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Arithmetic
 
 ## Print
 
-Instruction for Print
+Prints a UTF-8 string from memory to standard output. Reads `length` bytes from `section_id` starting at `offset`, decodes as UTF-8, and prints the resulting string.
 
 **Opcode**: `0x03E8`
 
@@ -4116,15 +4878,17 @@ Instruction for Print
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg_section_id**: Register containing the heap section index (Type: `Register`)
+- **reg_offset**: Register containing the byte offset into the section (Type: `Register`)
+- **reg_length**: Register containing the number of bytes to read (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## StoreConstantArray
 
-Instruction for StoreConstantArray
+Copies a constant array (identified by `const_id`) into a newly allocated heap section, storing the section index in `reg_ptr`.
 
 **Opcode**: `0x0406`
 
@@ -4132,14 +4896,17 @@ Instruction for StoreConstantArray
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
-- **u64**: Argument of type u64 (Type: `U64`)
+- **reg_ptr**: Register to store the resulting section index (Type: `Register`)
+- **const_id**: Identifier of the constant array to store (Type: `U64`)
 
-This instruction is not commutative.
+### Tags
+
+- Memory
+- Allocation
 
 ## DebugPrintU8
 
-Instruction for DebugPrintU8
+Prints the value of a u8 register to stdout for debugging.
 
 **Opcode**: `0x07D0`
 
@@ -4147,13 +4914,15 @@ Instruction for DebugPrintU8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintU16
 
-Instruction for DebugPrintU16
+Prints the value of a u16 register to stdout for debugging.
 
 **Opcode**: `0x07D1`
 
@@ -4161,13 +4930,15 @@ Instruction for DebugPrintU16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintU32
 
-Instruction for DebugPrintU32
+Prints the value of a u32 register to stdout for debugging.
 
 **Opcode**: `0x07D2`
 
@@ -4175,13 +4946,15 @@ Instruction for DebugPrintU32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintU64
 
-Instruction for DebugPrintU64
+Prints the value of a u64 register to stdout for debugging.
 
 **Opcode**: `0x07D3`
 
@@ -4189,13 +4962,15 @@ Instruction for DebugPrintU64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintI8
 
-Instruction for DebugPrintI8
+Prints the value of a i8 register to stdout for debugging.
 
 **Opcode**: `0x4E24`
 
@@ -4203,13 +4978,15 @@ Instruction for DebugPrintI8
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintI16
 
-Instruction for DebugPrintI16
+Prints the value of a i16 register to stdout for debugging.
 
 **Opcode**: `0x07D5`
 
@@ -4217,13 +4994,15 @@ Instruction for DebugPrintI16
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintI32
 
-Instruction for DebugPrintI32
+Prints the value of a i32 register to stdout for debugging.
 
 **Opcode**: `0x07D6`
 
@@ -4231,13 +5010,15 @@ Instruction for DebugPrintI32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintI64
 
-Instruction for DebugPrintI64
+Prints the value of a i64 register to stdout for debugging.
 
 **Opcode**: `0x07D7`
 
@@ -4245,13 +5026,15 @@ Instruction for DebugPrintI64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintF32
 
-Instruction for DebugPrintF32
+Prints the value of a f32 register to stdout for debugging.
 
 **Opcode**: `0x07D8`
 
@@ -4259,13 +5042,15 @@ Instruction for DebugPrintF32
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintF64
 
-Instruction for DebugPrintF64
+Prints the value of a f64 register to stdout for debugging.
 
 **Opcode**: `0x07D9`
 
@@ -4273,13 +5058,15 @@ Instruction for DebugPrintF64
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **source**: Register to print (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 
 ## DebugPrintRaw
 
-Instruction for DebugPrintRaw
+Prints the raw 64-bit value of a register in hexadecimal for debugging.
 
 **Opcode**: `0x07DA`
 
@@ -4287,7 +5074,9 @@ Instruction for DebugPrintRaw
 
 ### Arguments
 
-- **RegisterType**: Argument of type RegisterType (Type: `Register`)
+- **reg**: Register to inspect as raw bits (Type: `Register`)
 
-This instruction is not commutative.
+### Tags
+
+- Side Effects
 

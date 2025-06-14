@@ -9,7 +9,16 @@ use crate::executor::interpreted::opcode_decoder::RegisterType;
 macro_rules! impl_mov_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Moves a ", stringify!($ty), " value from one register to another. `dest = source`."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (source: RegisterType, "Source register")
+                ],
+                [DataMovement],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]

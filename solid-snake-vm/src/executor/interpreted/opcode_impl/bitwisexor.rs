@@ -10,7 +10,13 @@ macro_rules! impl_bitwise_xor_instruction {
         paste! {
             $crate::define_instruction!(
                 $opcode,
-                (RegisterType, RegisterType, RegisterType),
+                concat!("Performs a bitwise XOR between two ", stringify!($ty), " registers and stores the result."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (r1: RegisterType, "First operand"),
+                    (r2: RegisterType, "Second operand")
+                ],
+                [Arithmetic, Logical, Pure, Commutative],
                 [<$opcode handler>]
             );
 

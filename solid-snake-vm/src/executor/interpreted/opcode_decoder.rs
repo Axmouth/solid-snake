@@ -290,8 +290,9 @@ macro_rules! define_instruction {
     // --- Rich form with doc metadata and flags ---
     (
         $name:ident,
+        $description:expr,
         [ $( ($arg_name:ident : $arg_ty:ty, $arg_desc:expr) ),* ],
-        $commutative:expr,
+        [$( $tag:ident ),*],
         $handler:expr
     ) => {
         paste::paste! {
@@ -322,11 +323,21 @@ macro_rules! define_instruction {
 
                     InstructionDocsEntry {
                         name: stringify!($name).to_string(),
-                        description: format!("Instruction for {}", stringify!($name)),
+                        description: $description.to_string(),
                         args,
                         opcode: Self::OPCODE as u16,
-                        commutative: $commutative,
+                        tags: Box::new([
+                                $( $crate::docs::InstructionTag::$tag ),*
+                            ]),
                     }
+                }
+
+                #[allow(dead_code)]
+                #[inline]
+                pub fn tags() -> &'static [$crate::docs::InstructionTag] {
+                    return &[
+                        $( $crate::docs::InstructionTag::$tag ),*
+                    ];
                 }
 
                 #[allow(dead_code)]
@@ -395,22 +406,6 @@ macro_rules! define_instruction {
                     [<$name Instruction>]::decoded_handler(executor, self.args)
                 }
             }
-        }
-    };
-    
-    // --- Basic form with just types (no names/descriptions) ---
-    (
-        $name:ident,
-        ( $( $arg_ty:ty ),* ),
-        $handler:expr
-    ) => {
-        paste::paste! {
-            $crate::define_instruction!(
-                $name,
-                [ $( ([<$arg_ty>] : $arg_ty, concat!("Argument of type ", stringify!($arg_ty))) ),* ],
-                false,
-                $handler
-            );
         }
     };
 }

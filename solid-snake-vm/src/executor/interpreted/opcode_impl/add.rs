@@ -9,7 +9,17 @@ use crate::set_error_if;
 macro_rules! impl_add_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Adds two ", stringify!($ty), " registers and stores the result in the destination register."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (reg1: RegisterType, "First operand"),
+                    (reg2: RegisterType, "Second operand")
+                ],
+                [Arithmetic, Pure, Commutative],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -56,7 +66,17 @@ impl_add_instruction!(AddU64, u64);
 macro_rules! impl_add_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-        $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+        $crate::define_instruction!(
+            $opcode,
+            concat!("Adds two ", stringify!($ty), " floating-point registers and stores the result in the destination register."),
+            [
+                (dest: RegisterType, "Destination register"),
+                (reg1: RegisterType, "First operand"),
+                (reg2: RegisterType, "Second operand")
+            ],
+            [Arithmetic, Pure, Commutative],
+            [<$opcode handler>]
+        );
 
         #[inline(always)]
         #[allow(non_snake_case)]

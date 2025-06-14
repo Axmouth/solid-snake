@@ -9,7 +9,16 @@ use crate::set_error_if;
 macro_rules! impl_incr_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Adds an immediate ", stringify!($ty), " value to the destination register."),
+                [
+                    (dest: RegisterType, "Target register to be incremented"),
+                    (incr_val: $ty, "Immediate value to add to the register")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -54,7 +63,16 @@ impl_incr_instruction!(IncrementU64, u64);
 macro_rules! impl_incr_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
+        $crate::define_instruction!(
+            $opcode,
+            concat!("Adds an immediate ", stringify!($ty), " floating-point value to the destination register."),
+            [
+                (dest: RegisterType, "Target register to be incremented"),
+                (incr_val: $ty, "Immediate value to add to the register")
+            ],
+            [Arithmetic],
+            [<$opcode handler>]
+        );
 
         #[inline(always)]
         #[allow(non_snake_case)]

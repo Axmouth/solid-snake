@@ -9,7 +9,17 @@ use crate::set_error_if;
 macro_rules! impl_mul_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Multiplies two ", stringify!($ty), " values from `reg1` and `reg2`, storing the result in `dest`."),
+                [
+                    (dest: RegisterType, "Destination register to store the result"),
+                    (reg1: RegisterType, "First operand register"),
+                    (reg2: RegisterType, "Second operand register")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -54,7 +64,17 @@ impl_mul_instruction!(MultiplyU64, u64);
 macro_rules! impl_mul_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Multiplies two ", stringify!($ty), " floating-point values from `reg1` and `reg2`, storing the result in `dest`."),
+                [
+                    (dest: RegisterType, "Destination register to store the result"),
+                    (reg1: RegisterType, "First operand register"),
+                    (reg2: RegisterType, "Second operand register")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]

@@ -10,7 +10,12 @@ macro_rules! impl_bitwise_not_instruction {
         paste! {
             $crate::define_instruction!(
                 $opcode,
-                (RegisterType, RegisterType),
+                concat!("Performs a bitwise NOT on a ", stringify!($ty), " register and stores the result."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (src: RegisterType, "Source register")
+                ],
+                [Arithmetic, Logical, Pure],
                 [<$opcode handler>]
             );
 

@@ -8,7 +8,17 @@ use crate::executor::interpreted::opcode_decoder::RegisterType;
 macro_rules! impl_notequal_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Compares two ", stringify!($ty), " values for inequality. Sets `dest` to 1 if not equal, 0 otherwise."),
+                [
+                    (dest: RegisterType, "Destination register to store the result (1 or 0)"),
+                    (reg1: RegisterType, "First operand register"),
+                    (reg2: RegisterType, "Second operand register")
+                ],
+                [Logical],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -55,7 +65,17 @@ impl_notequal_instruction!(NotEqualU64, u64);
 macro_rules! impl_notequal_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode:snake handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Compares two ", stringify!($ty), " floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise."),
+                [
+                    (dest: RegisterType, "Destination register to store the result (1 or 0)"),
+                    (reg1: RegisterType, "First operand register"),
+                    (reg2: RegisterType, "Second operand register")
+                ],
+                [Logical],
+                [<$opcode:snake handler>]
+            );
 
             #[inline(always)]
             pub fn [<$opcode:snake handler>](

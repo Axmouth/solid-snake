@@ -7,22 +7,50 @@ use crate::executor::interpreted::implimentation::{
 };
 use crate::executor::interpreted::opcode_decoder::RegisterType;
 
-define_instruction!(Allocate, (RegisterType, RegisterType), allocate_handler);
-define_instruction!(Deallocate, (RegisterType), deallocate_handler);
+define_instruction!(
+    Allocate,
+    "Allocates a heap section of size from `reg_size` and stores the section index in `reg_target`.",
+    [
+        (reg_target: RegisterType, "Register to store the section index"),
+        (reg_size: RegisterType, "Register containing the allocation size in bytes")
+    ],
+    [Allocation],
+    allocate_handler
+);
+
+define_instruction!(
+    Deallocate,
+    "Frees the heap section at the index given in `reg_target`.",
+    [
+        (reg_target: RegisterType, "Register containing the section index to free")
+    ],
+    [Allocation],
+    deallocate_handler
+);
+
 define_instruction!(
     Memcpy,
-    (
-        RegisterType,
-        RegisterType,
-        RegisterType,
-        RegisterType,
-        RegisterType
-    ),
+    "Copies memory from a source heap section to a destination heap section.",
+    [
+        (reg_dest: RegisterType, "Register with destination section index"),
+        (reg_dest_offset: RegisterType, "Offset in destination section"),
+        (reg_src: RegisterType, "Register with source section index"),
+        (reg_src_offset: RegisterType, "Offset in source section"),
+        (reg_size: RegisterType, "Number of bytes to copy")
+    ],
+    [Memory],
     memcpy_handler
 );
+
 define_instruction!(
     MemSet,
-    (RegisterType, RegisterType, RegisterType),
+    "Fills a heap section with a repeated byte value.",
+    [
+        (reg_ptr: RegisterType, "Register with section index to fill"),
+        (reg_value: RegisterType, "Register with byte value to fill (only lowest 8 bits used)"),
+        (reg_size: RegisterType, "Register with number of bytes to fill")
+    ],
+    [Memory],
     memset_handler
 );
 

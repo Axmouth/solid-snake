@@ -11,7 +11,20 @@ use crate::executor::interpreted::opcode_decoder::RegisterType;
 macro_rules! impl_store_indirect_with_offset {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!(
+                    "Stores a ", stringify!($ty),
+                    " value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`."
+                ),
+                [
+                    (reg_ptr: RegisterType, "Register containing the target section index"),
+                    (reg_value: RegisterType, "Register containing the value to store"),
+                    (reg_offset: RegisterType, "Register containing the byte offset within the section")
+                ],
+                [Memory],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -54,7 +67,20 @@ impl_store_indirect_with_offset!(StoreIndirectWithOffsetF64, f64);
 macro_rules! impl_store_from_imm_with_offset {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (u64, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!(
+                    "Stores a ", stringify!($ty),
+                    " value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`."
+                ),
+                [
+                    (section_idx: u64, "Immediate index of the heap section"),
+                    (reg_value: RegisterType, "Register containing the value to store"),
+                    (reg_offset: RegisterType, "Register containing the byte offset within the section")
+                ],
+                [Memory],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -97,7 +123,12 @@ impl_store_from_imm_with_offset!(StoreFromImmediateWithOffsetF64, f64);
 
 define_instruction!(
     StoreConstantArray,
-    (RegisterType, u64),
+    "Copies a constant array (identified by `const_id`) into a newly allocated heap section, storing the section index in `reg_ptr`.",
+    [
+        (reg_ptr: RegisterType, "Register to store the resulting section index"),
+        (const_id: u64, "Identifier of the constant array to store")
+    ],
+    [Memory, Allocation],
     store_constant_array_handler
 );
 

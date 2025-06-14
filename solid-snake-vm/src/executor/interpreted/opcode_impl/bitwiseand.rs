@@ -8,7 +8,18 @@ use crate::executor::interpreted::opcode_decoder::RegisterType;
 macro_rules! impl_bitwise_and_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Performs a bitwise AND between two ", stringify!($ty), " registers and stores the result."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (r1: RegisterType, "First operand"),
+                    (r2: RegisterType, "Second operand")
+                ],
+                [Arithmetic, Logical, Pure, Commutative],
+                [<$opcode handler>]
+            );
+
 
             #[inline(always)]
             #[allow(non_snake_case)]

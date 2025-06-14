@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write};
+use std::{fs::{self, File}, io::Write};
 
 use solid_snake_vm::{docs::Docs, opcodes::OpCode};
 
@@ -7,7 +7,24 @@ fn main() -> std::io::Result<()> {
         instructions: OpCode::get_docs(),
     };
 
-    let mut file = File::create("INSTRUCTIONS.md")?;
-    file.write_all(docs.to_markdown().as_bytes())?;
+    let mut md_file = File::create("INSTRUCTIONS.md")?;
+    md_file.write_all(docs.to_markdown().as_bytes())?;
+
+    let mut json_file = File::create("docs.json")?;
+    json_file.write_all(docs.to_json().as_bytes())?;
+
+    println!("Documentation generated successfully in INSTRUCTIONS.md and docs.json");
+
+    let template = fs::read_to_string("docs.template.html").expect("Failed to read template.html");
+    let docs = fs::read_to_string("docs.json").expect("Failed to read docs.json");
+
+    // Escape closing script tags to prevent breaking out of the tag
+    let safe_json = docs.replace("</script>", "<\\/script>");
+
+    let output = template.replace("__DOCS_PLACEHOLDER__", &safe_json);
+    fs::write("docs.index.html", output).expect("Failed to write docs.index.html");
+
+    println!("✅ Generated docs.index.html");
+
     Ok(())
 }

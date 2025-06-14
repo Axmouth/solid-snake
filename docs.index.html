@@ -1,0 +1,6930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solid Snake Bytecode Instructions</title>
+
+  <!-- Clarity Design CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/global.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/styles/theme.dark.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@clr/ui@17.0.0/clr-ui.min.css" />
+
+  <style>
+  body[cds-theme="dark"] {
+    --cds-alias-background: #121212;
+    --cds-alias-background-hover: #1e1e1e;
+    --cds-alias-object-text: #f0f0f0;
+    --cds-alias-border: #333;
+  }
+
+  body[cds-theme="dark"] {
+    --cds-alias-status-info-text: #4ea1f3;
+  }
+
+  body {
+    margin: 2rem;
+    font-family: system-ui, sans-serif;
+  }
+
+  .instruction.card {
+    margin-bottom: 1.5rem;
+  }
+
+  .tags {
+    margin-top: 1rem;
+  }
+
+  .tags .badge {
+    background-color: var(--cds-alias-status-info-text, #4ea1f3);
+    color: white;
+    border-radius: 2em;
+    padding: 0.3em 0.75em;
+    font-size: 0.8em;
+  }
+
+  .theme-toggle {
+    float: right;
+    margin-top: -3.5rem;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .clr-control-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  #clearSearch {
+    display: none;
+  }
+
+  details.clr-accordion {
+    border: 1px solid var(--clr-accordion-text-color);
+    border-radius: 4px;
+    margin-top: 1rem;
+    padding: 0; /* reset browser default */
+    display: block;
+    width: auto; /* fix overflow issue */
+    margin: 1rem 0;
+  }
+
+  details.clr-accordion > summary {
+    padding: 0.6em 1em;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+    width: auto; /* fix overflow issue */
+  }
+
+  details.clr-accordion > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .clr-accordion-header {
+    padding: 0.6em 1em;
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .clr-accordion-button::before {
+    content: "▶";
+    display: inline-block;
+    margin-right: 0.5em;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .clr-accordion-button::before {
+    transform: rotate(90deg);
+  }
+
+  .clr-accordion-panel {
+    padding: 0.5em 1em;
+  }
+
+  .arg-table {
+    margin-top: 0.5em;
+    font-size: 0.95em;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  /* Shared styling for all themes */
+  .arg-table th,
+  .arg-table td {
+    padding: 0.5em 0.75em;
+    text-align: left;
+    border: 1px solid var(--cds-alias-border, #ccc);
+    word-wrap: break-word;
+    box-sizing: border-box;
+  }
+
+  .arg-table td:last-child {
+    text-align: right;
+    font-style: italic;
+    color: var(--cds-alias-status-info-text, #0078d4);
+  }
+
+  /* Light Theme Defaults */
+  body[cds-theme="light"] .arg-table th {
+    background-color: var(--cds-alias-background-hover, #f5f5f5);
+    color: var(--cds-alias-object-text, #111);
+  }
+
+  body[cds-theme="light"] .arg-table td {
+    background-color: var(--cds-alias-background, #fff);
+    color: var(--cds-alias-object-text, #111);
+  }
+
+  /* Dark Theme Overrides */
+  body[cds-theme="dark"] .arg-table th {
+    background-color: var(--cds-alias-background-hover, #2a2f36);
+    color: var(--cds-alias-object-text, #f0f0f0);
+    border: 1px solid var(--cds-alias-border, #333);
+  }
+
+  body[cds-theme="dark"] .arg-table td {
+    color: var(--cds-alias-object-text, #f0f0f0);
+  }
+
+  .instruction.card {
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+  }
+  </style>
+</head>
+
+<body cds-theme="dark">
+  <h1>Solid Snake Bytecode Instructions</h1>
+  <div class="theme-toggle">
+    <label>
+      <input type="checkbox" id="themeToggle"> Light Theme
+    </label>
+  </div>
+
+  <div class="clr-form clr-form-horizontal" style="margin-top: 2rem;">
+    <div style="position: relative; max-width: 500px;">
+      <input type="search" 
+        id="search"
+        class="clr-input"
+        placeholder="Search instructions..."
+        style="width: 100%; padding: 1rem; font-size: 1.1rem; border: 2px solid #444; border-radius: 6px;"
+      />
+
+      <button
+        id="clearSearch"
+        type="button"
+        style="
+          position: absolute;
+          right: 0.4em;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          font-size: 1.2em;
+          cursor: pointer;
+          color: #ccc;
+        "
+        aria-label="Clear search"
+      >
+    &times;
+  </button>
+</div>
+
+  </div>
+
+  <h2 style="margin-top: 2rem;">Filter by Tag</h2>
+  <section class="clr-form clr-form-horizontal">
+    <div id="tag-filters" class="clr-control-container"></div>
+  </section>
+
+  <section id="instructions"></section>
+
+  <!-- Embedded docs data -->
+  <script id="docs-data" type="application/json">{
+  "instructions": [
+    {
+      "name": "JumpIfFalse",
+      "description": "Jumps to the target address if the register is zero (false).",
+      "opcode": 1,
+      "args": [
+        {
+          "name": "target",
+          "description": "Bytecode address(byte offset) to jump to",
+          "typ": "U64"
+        },
+        {
+          "name": "reg",
+          "description": "Register to check",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "ControlFlow",
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "JumpIf",
+      "description": "Jumps to the target address if the register is non-zero (true).",
+      "opcode": 2,
+      "args": [
+        {
+          "name": "target",
+          "description": "Bytecode address(byte offset) to jump to",
+          "typ": "U64"
+        },
+        {
+          "name": "reg",
+          "description": "Register to check",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "ControlFlow",
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "Jump",
+      "description": "Unconditionally jumps to the specified bytecode address.",
+      "opcode": 3,
+      "args": [
+        {
+          "name": "target",
+          "description": "Bytecode address(byte offset) to jump to",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "ControlFlow",
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "LoadIndirectU8",
+      "description": "Loads a u8 value from memory at address stored in a register.",
+      "opcode": 20,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectU16",
+      "description": "Loads a u16 value from memory at address stored in a register.",
+      "opcode": 21,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectU32",
+      "description": "Loads a u32 value from memory at address stored in a register.",
+      "opcode": 22,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectU64",
+      "description": "Loads a u64 value from memory at address stored in a register.",
+      "opcode": 23,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectI8",
+      "description": "Loads a i8 value from memory at address stored in a register.",
+      "opcode": 24,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectI16",
+      "description": "Loads a i16 value from memory at address stored in a register.",
+      "opcode": 25,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectI32",
+      "description": "Loads a i32 value from memory at address stored in a register.",
+      "opcode": 26,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectI64",
+      "description": "Loads a i64 value from memory at address stored in a register.",
+      "opcode": 27,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectF32",
+      "description": "Loads a f32 value from memory at address stored in a register.",
+      "opcode": 28,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectF64",
+      "description": "Loads a f64 value from memory at address stored in a register.",
+      "opcode": 29,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register holding memory address",
+          "typ": "Register"
+        },
+        {
+          "name": "dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetU8",
+      "description": "Loads a u8 value from a memory section with a runtime-computed offset.",
+      "opcode": 30,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetU16",
+      "description": "Loads a u16 value from a memory section with a runtime-computed offset.",
+      "opcode": 31,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetU32",
+      "description": "Loads a u32 value from a memory section with a runtime-computed offset.",
+      "opcode": 32,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetU64",
+      "description": "Loads a u64 value from a memory section with a runtime-computed offset.",
+      "opcode": 33,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetI8",
+      "description": "Loads a i8 value from a memory section with a runtime-computed offset.",
+      "opcode": 34,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetI16",
+      "description": "Loads a i16 value from a memory section with a runtime-computed offset.",
+      "opcode": 35,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetI32",
+      "description": "Loads a i32 value from a memory section with a runtime-computed offset.",
+      "opcode": 36,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetI64",
+      "description": "Loads a i64 value from a memory section with a runtime-computed offset.",
+      "opcode": 37,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetF32",
+      "description": "Loads a f32 value from a memory section with a runtime-computed offset.",
+      "opcode": 38,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadIndirectWithOffsetF64",
+      "description": "Loads a f64 value from a memory section with a runtime-computed offset.",
+      "opcode": 39,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_ptr",
+          "description": "Register holding section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register holding byte offset within section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadImmediateU8",
+      "description": "Loads an immediate u8 value into the given register.",
+      "opcode": 40,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "U8"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateU16",
+      "description": "Loads an immediate u16 value into the given register.",
+      "opcode": 41,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "U16"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateU32",
+      "description": "Loads an immediate u32 value into the given register.",
+      "opcode": 42,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "U32"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateU64",
+      "description": "Loads an immediate u64 value into the given register.",
+      "opcode": 43,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateI8",
+      "description": "Loads an immediate i8 value into the given register.",
+      "opcode": 44,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "I8"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateI16",
+      "description": "Loads an immediate i16 value into the given register.",
+      "opcode": 45,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "I16"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateI32",
+      "description": "Loads an immediate i32 value into the given register.",
+      "opcode": 46,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "I32"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateI64",
+      "description": "Loads an immediate i64 value into the given register.",
+      "opcode": 47,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "I64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateF32",
+      "description": "Loads an immediate f32 value into the given register.",
+      "opcode": 48,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "F32"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadImmediateF64",
+      "description": "Loads an immediate f64 value into the given register.",
+      "opcode": 49,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Target register to store the value",
+          "typ": "Register"
+        },
+        {
+          "name": "val",
+          "description": "Immediate value to load",
+          "typ": "F64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateU8",
+      "description": "Loads a u8 value from the specified immediate memory address.",
+      "opcode": 60,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateU16",
+      "description": "Loads a u16 value from the specified immediate memory address.",
+      "opcode": 61,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateU32",
+      "description": "Loads a u32 value from the specified immediate memory address.",
+      "opcode": 62,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateU64",
+      "description": "Loads a u64 value from the specified immediate memory address.",
+      "opcode": 63,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateI8",
+      "description": "Loads a i8 value from the specified immediate memory address.",
+      "opcode": 64,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateI16",
+      "description": "Loads a i16 value from the specified immediate memory address.",
+      "opcode": 65,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateI32",
+      "description": "Loads a i32 value from the specified immediate memory address.",
+      "opcode": 66,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateI64",
+      "description": "Loads a i64 value from the specified immediate memory address.",
+      "opcode": 67,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateF32",
+      "description": "Loads a f32 value from the specified immediate memory address.",
+      "opcode": 68,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "LoadFromImmediateF64",
+      "description": "Loads a f64 value from the specified immediate memory address.",
+      "opcode": 69,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Target register to store the loaded value",
+          "typ": "Register"
+        },
+        {
+          "name": "addr",
+          "description": "Immediate memory address to read from",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "DataMovement",
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetU8",
+      "description": "Stores a u8 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 90,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetU16",
+      "description": "Stores a u16 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 91,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetU32",
+      "description": "Stores a u32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 92,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetU64",
+      "description": "Stores a u64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 93,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetI8",
+      "description": "Stores a i8 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 94,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetI16",
+      "description": "Stores a i16 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 95,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetI32",
+      "description": "Stores a i32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 96,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetI64",
+      "description": "Stores a i64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 97,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetF32",
+      "description": "Stores a f32 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 98,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreIndirectWithOffsetF64",
+      "description": "Stores a f64 value from `reg_value` into the heap section at the index in `reg_ptr`, at the byte offset given in `reg_offset`.",
+      "opcode": 99,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register containing the target section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetU8",
+      "description": "Stores a u8 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 130,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetU16",
+      "description": "Stores a u16 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 131,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetU32",
+      "description": "Stores a u32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 132,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetU64",
+      "description": "Stores a u64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 133,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetI8",
+      "description": "Stores a i8 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 134,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetI16",
+      "description": "Stores a i16 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 135,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetI32",
+      "description": "Stores a i32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 136,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetI64",
+      "description": "Stores a i64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 137,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetF32",
+      "description": "Stores a f32 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 138,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "StoreFromImmediateWithOffsetF64",
+      "description": "Stores a f64 value from `reg_value` into the heap section at immediate index `section_idx`, with byte offset from `reg_offset`.",
+      "opcode": 139,
+      "args": [
+        {
+          "name": "section_idx",
+          "description": "Immediate index of the heap section",
+          "typ": "U64"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register containing the value to store",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset within the section",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "LogicalAnd",
+      "description": "Performs logical && on the truthiness of two registers.",
+      "opcode": 150,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to store the result (0 or 1)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LogicalOr",
+      "description": "Performs logical || on the truthiness of two registers.",
+      "opcode": 151,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to store the result (0 or 1)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LogicalNot",
+      "description": "Performs logical negation (!), storing 1 if the input is zero, else 0.",
+      "opcode": 152,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to store result (0 or 1)",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Register containing value to logically negate",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LogicalXor",
+      "description": "Performs logical ^ on the truthiness of two registers.",
+      "opcode": 153,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to store the result (0 or 1)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "AddU8",
+      "description": "Adds two u8 registers and stores the result in the destination register.",
+      "opcode": 170,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddU16",
+      "description": "Adds two u16 registers and stores the result in the destination register.",
+      "opcode": 171,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddU32",
+      "description": "Adds two u32 registers and stores the result in the destination register.",
+      "opcode": 172,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddU64",
+      "description": "Adds two u64 registers and stores the result in the destination register.",
+      "opcode": 173,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddI8",
+      "description": "Adds two i8 registers and stores the result in the destination register.",
+      "opcode": 174,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddI16",
+      "description": "Adds two i16 registers and stores the result in the destination register.",
+      "opcode": 175,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddI32",
+      "description": "Adds two i32 registers and stores the result in the destination register.",
+      "opcode": 176,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddI64",
+      "description": "Adds two i64 registers and stores the result in the destination register.",
+      "opcode": 177,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddF32",
+      "description": "Adds two f32 floating-point registers and stores the result in the destination register.",
+      "opcode": 178,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "AddF64",
+      "description": "Adds two f64 floating-point registers and stores the result in the destination register.",
+      "opcode": 179,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "SubtractU8",
+      "description": "Subtracts two u8 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 200,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractU16",
+      "description": "Subtracts two u16 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 201,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractU32",
+      "description": "Subtracts two u32 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 202,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractU64",
+      "description": "Subtracts two u64 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 203,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractI8",
+      "description": "Subtracts two i8 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 204,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractI16",
+      "description": "Subtracts two i16 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 205,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractI32",
+      "description": "Subtracts two i32 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 206,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractI64",
+      "description": "Subtracts two i64 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 207,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractF32",
+      "description": "Subtracts two f32 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 208,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "SubtractF64",
+      "description": "Subtracts two f64 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 209,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register (minuend)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register (subtrahend)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyU8",
+      "description": "Multiplies two u8 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 230,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyU16",
+      "description": "Multiplies two u16 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 231,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyU32",
+      "description": "Multiplies two u32 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 232,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyU64",
+      "description": "Multiplies two u64 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 233,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyI8",
+      "description": "Multiplies two i8 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 234,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyI16",
+      "description": "Multiplies two i16 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 235,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyI32",
+      "description": "Multiplies two i32 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 236,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyI64",
+      "description": "Multiplies two i64 values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 237,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyF32",
+      "description": "Multiplies two f32 floating-point values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 238,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "MultiplyF64",
+      "description": "Multiplies two f64 floating-point values from `reg1` and `reg2`, storing the result in `dest`.",
+      "opcode": 239,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "DivideU8",
+      "description": "Divides one u8 register by another and stores the result.",
+      "opcode": 260,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideU16",
+      "description": "Divides one u16 register by another and stores the result.",
+      "opcode": 261,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideU32",
+      "description": "Divides one u32 register by another and stores the result.",
+      "opcode": 262,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideU64",
+      "description": "Divides one u64 register by another and stores the result.",
+      "opcode": 263,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideI8",
+      "description": "Divides one i8 register by another and stores the result.",
+      "opcode": 264,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideI16",
+      "description": "Divides one i16 register by another and stores the result.",
+      "opcode": 265,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideI32",
+      "description": "Divides one i32 register by another and stores the result.",
+      "opcode": 266,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideI64",
+      "description": "Divides one i64 register by another and stores the result.",
+      "opcode": 267,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideF32",
+      "description": "Divides one f32 floating-point register by another and stores the result.",
+      "opcode": 268,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DivideF64",
+      "description": "Divides one f64 floating-point register by another and stores the result.",
+      "opcode": 269,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Numerator register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Denominator register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "ModuloU8",
+      "description": "Computes the remainder of a u8 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 290,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloU16",
+      "description": "Computes the remainder of a u16 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 291,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloU32",
+      "description": "Computes the remainder of a u32 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 292,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloU64",
+      "description": "Computes the remainder of a u64 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 293,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloI8",
+      "description": "Computes the remainder of a i8 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 294,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloI16",
+      "description": "Computes the remainder of a i16 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 295,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloI32",
+      "description": "Computes the remainder of a i32 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 296,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloI64",
+      "description": "Computes the remainder of a i64 division. `dest = reg1 % reg2`. Sets error on division by zero.",
+      "opcode": 297,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloF32",
+      "description": "Computes the remainder of a f32 division using `%`. Result is undefined if inputs are NaN or infinite.",
+      "opcode": 298,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ModuloF64",
+      "description": "Computes the remainder of a f64 division using `%`. Result is undefined if inputs are NaN or infinite.",
+      "opcode": 299,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "Dividend register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Divisor register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "EqualU8",
+      "description": "Checks equality between two u8 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 350,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualU16",
+      "description": "Checks equality between two u16 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 351,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualU32",
+      "description": "Checks equality between two u32 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 352,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualU64",
+      "description": "Checks equality between two u64 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 353,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualI8",
+      "description": "Checks equality between two i8 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 354,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualI16",
+      "description": "Checks equality between two i16 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 355,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualI32",
+      "description": "Checks equality between two i32 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 356,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualI64",
+      "description": "Checks equality between two i64 registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 357,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualF32",
+      "description": "Checks equality between two f32 floating-point registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 358,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "EqualF64",
+      "description": "Checks equality between two f64 floating-point registers. Sets 1 if equal, 0 otherwise.",
+      "opcode": 359,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "NotEqualU8",
+      "description": "Compares two u8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 380,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualU16",
+      "description": "Compares two u16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 381,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualU32",
+      "description": "Compares two u32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 382,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualU64",
+      "description": "Compares two u64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 383,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualI8",
+      "description": "Compares two i8 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 384,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualI16",
+      "description": "Compares two i16 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 385,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualI32",
+      "description": "Compares two i32 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 386,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualI64",
+      "description": "Compares two i64 values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 387,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualF32",
+      "description": "Compares two f32 floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 388,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "NotEqualF64",
+      "description": "Compares two f64 floating-point values for inequality. Sets `dest` to 1 if not equal, 0 otherwise.",
+      "opcode": 389,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register to store the result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand register",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical"
+      ]
+    },
+    {
+      "name": "LessThanU8",
+      "description": "Compares two u8 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 410,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanU16",
+      "description": "Compares two u16 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 411,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanU32",
+      "description": "Compares two u32 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 412,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanU64",
+      "description": "Compares two u64 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 413,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanI8",
+      "description": "Compares two i8 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 414,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanI16",
+      "description": "Compares two i16 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 415,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanI32",
+      "description": "Compares two i32 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 416,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanI64",
+      "description": "Compares two i64 registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 417,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanF32",
+      "description": "Compares two f32 floating-point registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 418,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanF64",
+      "description": "Compares two f64 floating-point registers. Sets 1 if the first is less than the second, else 0.",
+      "opcode": 419,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualU8",
+      "description": "Compares two u8 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 440,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualU16",
+      "description": "Compares two u16 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 441,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualU32",
+      "description": "Compares two u32 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 442,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualU64",
+      "description": "Compares two u64 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 443,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualI8",
+      "description": "Compares two i8 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 444,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualI16",
+      "description": "Compares two i16 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 445,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualI32",
+      "description": "Compares two i32 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 446,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualI64",
+      "description": "Compares two i64 registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 447,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualF32",
+      "description": "Compares two f32 floating-point registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 448,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "LessThanOrEqualF64",
+      "description": "Compares two f64 floating-point registers. Sets 1 if the first is less than or equal to the second, else 0.",
+      "opcode": 449,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanU8",
+      "description": "Compares two u8 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 470,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanU16",
+      "description": "Compares two u16 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 471,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanU32",
+      "description": "Compares two u32 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 472,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanU64",
+      "description": "Compares two u64 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 473,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanI8",
+      "description": "Compares two i8 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 474,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanI16",
+      "description": "Compares two i16 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 475,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanI32",
+      "description": "Compares two i32 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 476,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanI64",
+      "description": "Compares two i64 registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 477,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanF32",
+      "description": "Compares two f32 floating-point registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 478,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanF64",
+      "description": "Compares two f64 floating-point registers. Sets 1 if the first is greater than the second, else 0.",
+      "opcode": 479,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualU8",
+      "description": "Compares two u8 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 500,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualU16",
+      "description": "Compares two u16 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 501,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualU32",
+      "description": "Compares two u32 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 502,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualU64",
+      "description": "Compares two u64 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 503,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualI8",
+      "description": "Compares two i8 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 504,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualI16",
+      "description": "Compares two i16 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 505,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualI32",
+      "description": "Compares two i32 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 506,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualI64",
+      "description": "Compares two i64 registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 507,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualF32",
+      "description": "Compares two f32 floating-point registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 508,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "GreaterThanOrEqualF64",
+      "description": "Compares two f64 floating-point registers. Sets 1 if the first is greater than or equal to the second, else 0.",
+      "opcode": 509,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for result (1 or 0)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg1",
+          "description": "First operand (left-hand side)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg2",
+          "description": "Second operand (right-hand side)",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "CallFunction",
+      "description": "Calls a function at the specified bytecode address. Saves the return address and switches stack frame.",
+      "opcode": 600,
+      "args": [
+        {
+          "name": "target",
+          "description": "Bytecode address (offset) to jump to for the function",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "ControlFlow",
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "Return",
+      "description": "Returns from the current function by restoring the previous frame and program counter.",
+      "opcode": 601,
+      "args": [],
+      "tags": [
+        "ControlFlow",
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "Allocate",
+      "description": "Allocates a heap section of size from `reg_size` and stores the section index in `reg_target`.",
+      "opcode": 602,
+      "args": [
+        {
+          "name": "reg_target",
+          "description": "Register to store the section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_size",
+          "description": "Register containing the allocation size in bytes",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Allocation"
+      ]
+    },
+    {
+      "name": "Deallocate",
+      "description": "Frees the heap section at the index given in `reg_target`.",
+      "opcode": 603,
+      "args": [
+        {
+          "name": "reg_target",
+          "description": "Register containing the section index to free",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Allocation"
+      ]
+    },
+    {
+      "name": "Memcpy",
+      "description": "Copies memory from a source heap section to a destination heap section.",
+      "opcode": 604,
+      "args": [
+        {
+          "name": "reg_dest",
+          "description": "Register with destination section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_dest_offset",
+          "description": "Offset in destination section",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_src",
+          "description": "Register with source section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_src_offset",
+          "description": "Offset in source section",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_size",
+          "description": "Number of bytes to copy",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "MemSet",
+      "description": "Fills a heap section with a repeated byte value.",
+      "opcode": 605,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register with section index to fill",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_value",
+          "description": "Register with byte value to fill (only lowest 8 bits used)",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_size",
+          "description": "Register with number of bytes to fill",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Memory"
+      ]
+    },
+    {
+      "name": "Halt",
+      "description": "Halts execution of the virtual machine immediately.",
+      "opcode": 606,
+      "args": [],
+      "tags": [
+        "ControlFlow",
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "MoveU8",
+      "description": "Moves a u8 value from one register to another. `dest = source`.",
+      "opcode": 821,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveU16",
+      "description": "Moves a u16 value from one register to another. `dest = source`.",
+      "opcode": 822,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveU32",
+      "description": "Moves a u32 value from one register to another. `dest = source`.",
+      "opcode": 823,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveU64",
+      "description": "Moves a u64 value from one register to another. `dest = source`.",
+      "opcode": 824,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveI8",
+      "description": "Moves a i8 value from one register to another. `dest = source`.",
+      "opcode": 825,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveI16",
+      "description": "Moves a i16 value from one register to another. `dest = source`.",
+      "opcode": 826,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveI32",
+      "description": "Moves a i32 value from one register to another. `dest = source`.",
+      "opcode": 827,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveI64",
+      "description": "Moves a i64 value from one register to another. `dest = source`.",
+      "opcode": 828,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveF32",
+      "description": "Moves a f32 value from one register to another. `dest = source`.",
+      "opcode": 829,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "MoveF64",
+      "description": "Moves a f64 value from one register to another. `dest = source`.",
+      "opcode": 830,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "source",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "DataMovement"
+      ]
+    },
+    {
+      "name": "IncrementU8",
+      "description": "Adds an immediate u8 value to the destination register.",
+      "opcode": 841,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "U8"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementU16",
+      "description": "Adds an immediate u16 value to the destination register.",
+      "opcode": 842,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "U16"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementU32",
+      "description": "Adds an immediate u32 value to the destination register.",
+      "opcode": 843,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "U32"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementU64",
+      "description": "Adds an immediate u64 value to the destination register.",
+      "opcode": 844,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementI8",
+      "description": "Adds an immediate i8 value to the destination register.",
+      "opcode": 845,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "I8"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementI16",
+      "description": "Adds an immediate i16 value to the destination register.",
+      "opcode": 846,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "I16"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementI32",
+      "description": "Adds an immediate i32 value to the destination register.",
+      "opcode": 847,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "I32"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementI64",
+      "description": "Adds an immediate i64 value to the destination register.",
+      "opcode": 848,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "I64"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementF32",
+      "description": "Adds an immediate f32 floating-point value to the destination register.",
+      "opcode": 849,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "F32"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "IncrementF64",
+      "description": "Adds an immediate f64 floating-point value to the destination register.",
+      "opcode": 850,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Target register to be incremented",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Immediate value to add to the register",
+          "typ": "F64"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "DecrementU8",
+      "description": "Decrements a u8 register by a constant value.",
+      "opcode": 861,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "U8"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementU16",
+      "description": "Decrements a u16 register by a constant value.",
+      "opcode": 862,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "U16"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementU32",
+      "description": "Decrements a u32 register by a constant value.",
+      "opcode": 863,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "U32"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementU64",
+      "description": "Decrements a u64 register by a constant value.",
+      "opcode": 864,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementI8",
+      "description": "Decrements a i8 register by a constant value.",
+      "opcode": 865,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "I8"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementI16",
+      "description": "Decrements a i16 register by a constant value.",
+      "opcode": 866,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "I16"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementI32",
+      "description": "Decrements a i32 register by a constant value.",
+      "opcode": 867,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "I32"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementI64",
+      "description": "Decrements a i64 register by a constant value.",
+      "opcode": 868,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "decr_val",
+          "description": "Constant value to subtract",
+          "typ": "I64"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementF32",
+      "description": "Decrements a f32 floating-point register by a constant value.",
+      "opcode": 869,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Constant value to subtract",
+          "typ": "F32"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "DecrementF64",
+      "description": "Decrements a f64 floating-point register by a constant value.",
+      "opcode": 870,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Register to decrement",
+          "typ": "Register"
+        },
+        {
+          "name": "incr_val",
+          "description": "Constant value to subtract",
+          "typ": "F64"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseAndU8",
+      "description": "Performs a bitwise AND between two u8 registers and stores the result.",
+      "opcode": 900,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndU16",
+      "description": "Performs a bitwise AND between two u16 registers and stores the result.",
+      "opcode": 901,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndU32",
+      "description": "Performs a bitwise AND between two u32 registers and stores the result.",
+      "opcode": 902,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndU64",
+      "description": "Performs a bitwise AND between two u64 registers and stores the result.",
+      "opcode": 903,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndI8",
+      "description": "Performs a bitwise AND between two i8 registers and stores the result.",
+      "opcode": 904,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndI16",
+      "description": "Performs a bitwise AND between two i16 registers and stores the result.",
+      "opcode": 905,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndI32",
+      "description": "Performs a bitwise AND between two i32 registers and stores the result.",
+      "opcode": 906,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseAndI64",
+      "description": "Performs a bitwise AND between two i64 registers and stores the result.",
+      "opcode": 907,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrU8",
+      "description": "Performs a bitwise OR between two u8 registers and stores the result.",
+      "opcode": 910,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrU16",
+      "description": "Performs a bitwise OR between two u16 registers and stores the result.",
+      "opcode": 911,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrU32",
+      "description": "Performs a bitwise OR between two u32 registers and stores the result.",
+      "opcode": 912,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrU64",
+      "description": "Performs a bitwise OR between two u64 registers and stores the result.",
+      "opcode": 913,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrI8",
+      "description": "Performs a bitwise OR between two i8 registers and stores the result.",
+      "opcode": 914,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrI16",
+      "description": "Performs a bitwise OR between two i16 registers and stores the result.",
+      "opcode": 915,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrI32",
+      "description": "Performs a bitwise OR between two i32 registers and stores the result.",
+      "opcode": 916,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseOrI64",
+      "description": "Performs a bitwise OR between two i64 registers and stores the result.",
+      "opcode": 917,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorU8",
+      "description": "Performs a bitwise XOR between two u8 registers and stores the result.",
+      "opcode": 920,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorU16",
+      "description": "Performs a bitwise XOR between two u16 registers and stores the result.",
+      "opcode": 921,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorU32",
+      "description": "Performs a bitwise XOR between two u32 registers and stores the result.",
+      "opcode": 922,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorU64",
+      "description": "Performs a bitwise XOR between two u64 registers and stores the result.",
+      "opcode": 923,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorI8",
+      "description": "Performs a bitwise XOR between two i8 registers and stores the result.",
+      "opcode": 924,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorI16",
+      "description": "Performs a bitwise XOR between two i16 registers and stores the result.",
+      "opcode": 925,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorI32",
+      "description": "Performs a bitwise XOR between two i32 registers and stores the result.",
+      "opcode": 926,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseXorI64",
+      "description": "Performs a bitwise XOR between two i64 registers and stores the result.",
+      "opcode": 927,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "r1",
+          "description": "First operand",
+          "typ": "Register"
+        },
+        {
+          "name": "r2",
+          "description": "Second operand",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure",
+        "Commutative"
+      ]
+    },
+    {
+      "name": "BitwiseNotU8",
+      "description": "Performs a bitwise NOT on a u8 register and stores the result.",
+      "opcode": 930,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotU16",
+      "description": "Performs a bitwise NOT on a u16 register and stores the result.",
+      "opcode": 931,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotU32",
+      "description": "Performs a bitwise NOT on a u32 register and stores the result.",
+      "opcode": 932,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotU64",
+      "description": "Performs a bitwise NOT on a u64 register and stores the result.",
+      "opcode": 933,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotI8",
+      "description": "Performs a bitwise NOT on a i8 register and stores the result.",
+      "opcode": 934,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotI16",
+      "description": "Performs a bitwise NOT on a i16 register and stores the result.",
+      "opcode": 935,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotI32",
+      "description": "Performs a bitwise NOT on a i32 register and stores the result.",
+      "opcode": 936,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "BitwiseNotI64",
+      "description": "Performs a bitwise NOT on a i64 register and stores the result.",
+      "opcode": 937,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register",
+          "typ": "Register"
+        },
+        {
+          "name": "src",
+          "description": "Source register",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic",
+        "Logical",
+        "Pure"
+      ]
+    },
+    {
+      "name": "ShiftLeftU8",
+      "description": "Performs left bit shift on a u8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 940,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftU16",
+      "description": "Performs left bit shift on a u16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 941,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftU32",
+      "description": "Performs left bit shift on a u32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 942,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftU64",
+      "description": "Performs left bit shift on a u64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 943,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftI8",
+      "description": "Performs left bit shift on a i8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 944,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftI16",
+      "description": "Performs left bit shift on a i16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 945,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftI32",
+      "description": "Performs left bit shift on a i32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 946,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftLeftI64",
+      "description": "Performs left bit shift on a i64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 947,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightU8",
+      "description": "Performs right bit shift on a u8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 950,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightU16",
+      "description": "Performs right bit shift on a u16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 951,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightU32",
+      "description": "Performs right bit shift on a u32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 952,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightU64",
+      "description": "Performs right bit shift on a u64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 953,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightI8",
+      "description": "Performs right bit shift on a i8 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 954,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightI16",
+      "description": "Performs right bit shift on a i16 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 955,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightI32",
+      "description": "Performs right bit shift on a i32 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 956,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "ShiftRightI64",
+      "description": "Performs right bit shift on a i64 value from `val_reg` by amount in `shift_reg`, storing result in `dest`.",
+      "opcode": 957,
+      "args": [
+        {
+          "name": "dest",
+          "description": "Destination register for the shifted result",
+          "typ": "Register"
+        },
+        {
+          "name": "val_reg",
+          "description": "Register containing the value to shift",
+          "typ": "Register"
+        },
+        {
+          "name": "shift_reg",
+          "description": "Register containing the shift amount",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "Arithmetic"
+      ]
+    },
+    {
+      "name": "Print",
+      "description": "Prints a UTF-8 string from memory to standard output. Reads `length` bytes from `section_id` starting at `offset`, decodes as UTF-8, and prints the resulting string.",
+      "opcode": 1000,
+      "args": [
+        {
+          "name": "reg_section_id",
+          "description": "Register containing the heap section index",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_offset",
+          "description": "Register containing the byte offset into the section",
+          "typ": "Register"
+        },
+        {
+          "name": "reg_length",
+          "description": "Register containing the number of bytes to read",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "StoreConstantArray",
+      "description": "Copies a constant array (identified by `const_id`) into a newly allocated heap section, storing the section index in `reg_ptr`.",
+      "opcode": 1030,
+      "args": [
+        {
+          "name": "reg_ptr",
+          "description": "Register to store the resulting section index",
+          "typ": "Register"
+        },
+        {
+          "name": "const_id",
+          "description": "Identifier of the constant array to store",
+          "typ": "U64"
+        }
+      ],
+      "tags": [
+        "Memory",
+        "Allocation"
+      ]
+    },
+    {
+      "name": "DebugPrintU8",
+      "description": "Prints the value of a u8 register to stdout for debugging.",
+      "opcode": 2000,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintU16",
+      "description": "Prints the value of a u16 register to stdout for debugging.",
+      "opcode": 2001,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintU32",
+      "description": "Prints the value of a u32 register to stdout for debugging.",
+      "opcode": 2002,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintU64",
+      "description": "Prints the value of a u64 register to stdout for debugging.",
+      "opcode": 2003,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintI8",
+      "description": "Prints the value of a i8 register to stdout for debugging.",
+      "opcode": 20004,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintI16",
+      "description": "Prints the value of a i16 register to stdout for debugging.",
+      "opcode": 2005,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintI32",
+      "description": "Prints the value of a i32 register to stdout for debugging.",
+      "opcode": 2006,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintI64",
+      "description": "Prints the value of a i64 register to stdout for debugging.",
+      "opcode": 2007,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintF32",
+      "description": "Prints the value of a f32 register to stdout for debugging.",
+      "opcode": 2008,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintF64",
+      "description": "Prints the value of a f64 register to stdout for debugging.",
+      "opcode": 2009,
+      "args": [
+        {
+          "name": "source",
+          "description": "Register to print",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    },
+    {
+      "name": "DebugPrintRaw",
+      "description": "Prints the raw 64-bit value of a register in hexadecimal for debugging.",
+      "opcode": 2010,
+      "args": [
+        {
+          "name": "reg",
+          "description": "Register to inspect as raw bits",
+          "typ": "Register"
+        }
+      ],
+      "tags": [
+        "SideEffects"
+      ]
+    }
+  ]
+}</script>
+
+  <script>
+    let instructions = [];
+    let selectedTags = new Set();
+
+    function loadDocs() {
+      const json = document.getElementById('docs-data').textContent;
+      const data = JSON.parse(json);
+      instructions = data.instructions;
+      renderTagFilters(instructions);
+      renderInstructions(instructions);
+    }
+
+    function renderTagFilters(instructions) {
+      const allTags = [...new Set(instructions.flatMap(i => i.tags))].sort();
+      const container = document.getElementById('tag-filters');
+      container.innerHTML = '';
+      allTags.forEach(tag => {
+        const id = `tag-${tag}`;
+        container.innerHTML += `
+          <label class="clr-checkbox" for="${id}">
+            <input type="checkbox" id="${id}" value="${tag}" onchange="onTagChange()" />
+            <span>${tag}</span>
+          </label>`;
+      });
+    }
+
+    function renderInstructions(list) {
+      const section = document.getElementById('instructions');
+      const fragment = document.createDocumentFragment();
+
+      list.forEach(instr => {
+        const article = document.createElement('div');
+        article.className = 'card instruction';
+        article.innerHTML = `
+          <div class="card-block">
+            <h3 class="card-title">${instr.name}</h3>
+            <p>${instr.description}</p>
+            <p><strong>Opcode:</strong> 0x${instr.opcode.toString(16).padStart(4, '0')}</p>
+            ${instr.args.length ? `
+              <details class="clr-accordion">
+                <summary class="clr-accordion-header">
+                  <span class="clr-accordion-button">Arguments</span>
+                </summary>
+                <table class="arg-table">
+                  <thead>
+                    <tr><th>Argument</th><th>Description</th><th>Type</th></tr>
+                  </thead>
+                  <tbody>
+                    ${instr.args.map(arg => `
+                      <tr>
+                        <td>${arg.name}</td>
+                        <td>${arg.description}</td>
+                        <td><span class="arg-type">${arg.typ}</span></td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </details>` : ''}
+            ${instr.tags.length ? `
+              <div class="tags">${instr.tags.map(tag =>
+                `<span class="badge badge-info">${tag}</span>`).join('')}</div>` : ''}
+          </div>
+        `;
+        fragment.appendChild(article);
+      });
+
+      section.innerHTML = '';
+      section.appendChild(fragment);
+    }
+
+    function filterAndRender() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const filtered = instructions.filter(instr => {
+        const textMatch = instr.name.toLowerCase().includes(query) ||
+                          instr.description.toLowerCase().includes(query);
+        const tagsMatch = selectedTags.size === 0 || instr.tags.some(tag => selectedTags.has(tag));
+        return textMatch && tagsMatch;
+      });
+      renderInstructions(filtered);
+    }
+
+    function onTagChange() {
+      selectedTags = new Set(
+        Array.from(document.querySelectorAll('#tag-filters input:checked'))
+          .map(cb => cb.value)
+      );
+      filterAndRender();
+    }
+
+    const searchInput = document.getElementById('search');
+    const clearSearchBtn = document.getElementById('clearSearch');
+
+    searchInput.addEventListener('input', () => {
+      filterAndRender();
+      clearSearchBtn.style.display = searchInput.value ? 'block' : 'none';
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      filterAndRender();
+      clearSearchBtn.style.display = 'none';
+    });
+
+    document.getElementById('search').addEventListener('input', () => {
+      filterAndRender();
+    });
+
+    // 🌗 Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme() {
+      const theme = localStorage.getItem('theme') || 'dark';
+      body.setAttribute('cds-theme', theme);
+      themeToggle.checked = theme === 'light';
+    }
+
+    themeToggle.addEventListener('change', () => {
+      const theme = themeToggle.checked ? 'light' : 'dark';
+      body.setAttribute('cds-theme', theme);
+      localStorage.setItem('theme', theme);
+    });
+
+    applyTheme();
+    loadDocs();
+  </script>
+</body>
+</html>

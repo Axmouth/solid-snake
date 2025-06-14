@@ -7,7 +7,17 @@ use crate::executor::interpreted::opcode_decoder::RegisterType;
 
 macro_rules! impl_logical_binop {
     ($name:ident, $opcode:ident, $op:tt) => {
-        $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), $name);
+        $crate::define_instruction!(
+            $opcode,
+            concat!("Performs logical ", stringify!($op), " on the truthiness of two registers."),
+            [
+                (dest: RegisterType, "Register to store the result (0 or 1)"),
+                (reg1: RegisterType, "First operand register"),
+                (reg2: RegisterType, "Second operand register")
+            ],
+            [Logical, Pure],
+            $name
+        );
 
         #[inline(always)]
         fn $name(
@@ -40,7 +50,16 @@ macro_rules! impl_logical_binop {
     };
 }
 
-define_instruction!(LogicalNot, (RegisterType, RegisterType), logical_not);
+define_instruction!(
+    LogicalNot,
+    "Performs logical negation (!), storing 1 if the input is zero, else 0.",
+    [
+        (dest: RegisterType, "Target register to store result (0 or 1)"),
+        (source: RegisterType, "Register containing value to logically negate")
+    ],
+    [Logical, Pure],
+    logical_not
+);
 
 #[inline(always)]
 fn logical_not(

@@ -11,9 +11,31 @@ use crate::{
     },
 };
 
-define_instruction!(Jump, [(target: u64, "Bytecode address(byte offset) to jump to")], false, jump);
-define_instruction!(JumpIf, [(target: u64, "Bytecode address(byte offset) to jump to"), (reg: RegisterType, "Register to check")], false, jumpif);
-define_instruction!(JumpIfFalse, [(target: u64, "Bytecode address(byte offset) to jump to"), (reg: RegisterType, "Register to check")], false, jumpiffalse);
+define_instruction!(
+    Jump,
+    "Unconditionally jumps to the specified bytecode address.",
+    [
+        (target: u64, "Bytecode address(byte offset) to jump to")
+    ], [ControlFlow, SideEffects],
+    jump);
+define_instruction!(
+    JumpIf,
+    "Jumps to the target address if the register is non-zero (true).",
+    [
+        (target: u64, "Bytecode address(byte offset) to jump to"),
+        (reg: RegisterType, "Register to check")
+        ],
+    [ControlFlow, SideEffects],
+    jumpif);
+define_instruction!(
+    JumpIfFalse,
+    "Jumps to the target address if the register is zero (false).",
+    [
+        (target: u64, "Bytecode address(byte offset) to jump to"),
+        (reg: RegisterType, "Register to check")
+        ],
+    [ControlFlow, SideEffects],
+    jumpiffalse);
 
 #[inline(always)]
 pub fn jump(executor: &mut VmInterpretedExecutor, args: JumpArgs) -> Result<(), VmExecutionError> {

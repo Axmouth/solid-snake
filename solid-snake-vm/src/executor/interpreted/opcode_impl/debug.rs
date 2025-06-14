@@ -9,10 +9,19 @@ use crate::executor::{
     },
 };
 
-macro_rules! impl_mov_instruction {
+macro_rules! impl_dbg_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Prints the value of a ", stringify!($ty), " register to stdout for debugging."),
+                [
+                    (source: RegisterType, "Register to print")
+                ],
+                [SideEffects],
+                [<$opcode handler>]
+            );
+
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -34,18 +43,26 @@ macro_rules! impl_mov_instruction {
     };
 }
 
-impl_mov_instruction!(DebugPrintI8, i8);
-impl_mov_instruction!(DebugPrintI16, i16);
-impl_mov_instruction!(DebugPrintI32, i32);
-impl_mov_instruction!(DebugPrintI64, i64);
-impl_mov_instruction!(DebugPrintU8, u8);
-impl_mov_instruction!(DebugPrintU16, u16);
-impl_mov_instruction!(DebugPrintU32, u32);
-impl_mov_instruction!(DebugPrintU64, u64);
-impl_mov_instruction!(DebugPrintF32, f32);
-impl_mov_instruction!(DebugPrintF64, f64);
+impl_dbg_instruction!(DebugPrintI8, i8);
+impl_dbg_instruction!(DebugPrintI16, i16);
+impl_dbg_instruction!(DebugPrintI32, i32);
+impl_dbg_instruction!(DebugPrintI64, i64);
+impl_dbg_instruction!(DebugPrintU8, u8);
+impl_dbg_instruction!(DebugPrintU16, u16);
+impl_dbg_instruction!(DebugPrintU32, u32);
+impl_dbg_instruction!(DebugPrintU64, u64);
+impl_dbg_instruction!(DebugPrintF32, f32);
+impl_dbg_instruction!(DebugPrintF64, f64);
 
-crate::define_instruction!(DebugPrintRaw, (RegisterType), debug_print_raw);
+crate::define_instruction!(
+    DebugPrintRaw,
+    "Prints the raw 64-bit value of a register in hexadecimal for debugging.",
+    [
+        (reg: RegisterType, "Register to inspect as raw bits")
+    ],
+    [SideEffects],
+    debug_print_raw
+);
 
 fn debug_print_raw(
     executor: &mut VmInterpretedExecutor,

@@ -10,7 +10,16 @@ use crate::executor::interpreted::opcode_decoder::{FromBytes, RegisterType};
 macro_rules! impl_load_immediate {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Loads an immediate ", stringify!($ty), " value into the given register."),
+                [
+                    (reg: RegisterType, "Target register to store the value"),
+                    (val: $ty, "Immediate value to load")
+                ],
+                [DataMovement, Pure],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -45,7 +54,16 @@ impl_load_immediate!(LoadImmediateF64, f64);
 macro_rules! impl_load_indirect {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Loads a ", stringify!($ty), " value from memory at address stored in a register."),
+                [
+                    (reg_ptr: RegisterType, "Register holding memory address"),
+                    (dest: RegisterType, "Target register to store the loaded value")
+                ],
+                [DataMovement, Memory],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -80,7 +98,17 @@ impl_load_indirect!(LoadIndirectF64, f64);
 macro_rules! impl_load_from_imm_addr {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, u64), [<$opcode handler>]);
+            // TODO better description
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Loads a ", stringify!($ty), " value from the specified immediate memory address."),
+                [
+                    (reg_dest: RegisterType, "Target register to store the loaded value"),
+                    (addr: u64, "Immediate memory address to read from")
+                ],
+                [DataMovement, Memory],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -114,7 +142,17 @@ impl_load_from_imm_addr!(LoadFromImmediateF64, f64);
 macro_rules! impl_load_indirect_with_offset {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Loads a ", stringify!($ty), " value from a memory section with a runtime-computed offset."),
+                [
+                    (reg_dest: RegisterType, "Target register to store the loaded value"),
+                    (reg_ptr: RegisterType, "Register holding section index"),
+                    (reg_offset: RegisterType, "Register holding byte offset within section")
+                ],
+                [DataMovement, Memory],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]

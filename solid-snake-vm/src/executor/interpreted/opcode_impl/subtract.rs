@@ -9,7 +9,19 @@ use crate::set_error_if;
 macro_rules! impl_subtract_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!(
+                    "Subtracts two ", stringify!($ty), " values from `reg1` and `reg2`, storing the result in `dest`."
+                ),
+                [
+                    (dest: RegisterType, "Destination register to store the result"),
+                    (reg1: RegisterType, "First operand register (minuend)"),
+                    (reg2: RegisterType, "Second operand register (subtrahend)")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -57,7 +69,19 @@ impl_subtract_instruction!(SubtractU64, u64);
 macro_rules! impl_subtract_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-        $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!(
+                    "Subtracts two ", stringify!($ty), " values from `reg1` and `reg2`, storing the result in `dest`."
+                ),
+                [
+                    (dest: RegisterType, "Destination register to store the result"),
+                    (reg1: RegisterType, "First operand register (minuend)"),
+                    (reg2: RegisterType, "Second operand register (subtrahend)")
+                ],
+                [Arithmetic],
+                [<$opcode handler>]
+            );
 
         #[inline(always)]
         #[allow(non_snake_case)]

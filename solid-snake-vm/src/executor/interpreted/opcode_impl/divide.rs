@@ -8,7 +8,17 @@ use crate::executor::interpreted::opcode_decoder::{RegisterType, VmErrorCode};
 macro_rules! impl_div_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Divides one ", stringify!($ty), " register by another and stores the result."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (reg1: RegisterType, "Numerator register"),
+                    (reg2: RegisterType, "Denominator register")
+                ],
+                [Arithmetic, Pure],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -58,7 +68,17 @@ impl_div_instruction!(DivideU64, u64);
 macro_rules! impl_div_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, RegisterType, RegisterType), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Divides one ", stringify!($ty), " floating-point register by another and stores the result."),
+                [
+                    (dest: RegisterType, "Destination register"),
+                    (reg1: RegisterType, "Numerator register"),
+                    (reg2: RegisterType, "Denominator register")
+                ],
+                [Arithmetic, Pure],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]

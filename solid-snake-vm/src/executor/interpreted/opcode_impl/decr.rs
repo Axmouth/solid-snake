@@ -9,7 +9,16 @@ use crate::set_error_if;
 macro_rules! impl_incr_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
+            $crate::define_instruction!(
+                $opcode,
+                concat!("Decrements a ", stringify!($ty), " register by a constant value."),
+                [
+                    (dest: RegisterType, "Register to decrement"),
+                    (decr_val: $ty, "Constant value to subtract")
+                ],
+                [Arithmetic, Pure],
+                [<$opcode handler>]
+            );
 
             #[inline(always)]
             #[allow(non_snake_case)]
@@ -54,7 +63,16 @@ impl_incr_instruction!(DecrementU64, u64);
 macro_rules! impl_incr_float_instruction {
     ($opcode:ident, $ty:ty) => {
         paste! {
-            $crate::define_instruction!($opcode, (RegisterType, $ty), [<$opcode handler>]);
+        $crate::define_instruction!(
+            $opcode,
+            concat!("Decrements a ", stringify!($ty), " floating-point register by a constant value."),
+            [
+                (dest: RegisterType, "Register to decrement"),
+                (incr_val: $ty, "Constant value to subtract")
+            ],
+            [Arithmetic, Pure],
+            [<$opcode handler>]
+        );
 
         #[inline(always)]
         #[allow(non_snake_case)]
